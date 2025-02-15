@@ -735,10 +735,10 @@ GameObject:
   - component: {fileID: 6833741699472645983}
   - component: {fileID: 1613618120013209949}
   - component: {fileID: 993355081631408958}
-  - component: {fileID: 1000944648531581929}
   - component: {fileID: 8902774501964331573}
   - component: {fileID: 673459907000437321}
   - component: {fileID: 6570250062829795874}
+  - component: {fileID: 7443369529922938572}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -914,21 +914,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   _damage: 20
---- !u!114 &1000944648531581929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 6159075296024010482}
 --- !u!114 &8902774501964331573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,6 +958,21 @@ MonoBehaviour:
   - {fileID: 673459907000437321}
   - {fileID: 8902774501964331573}
   - {fileID: 1667992498702006102}
+--- !u!114 &7443369529922938572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc52a85fb8dd30f448aff157c41dd6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6159075296024010482}
 --- !u!1001 &1816829190041194633
 PrefabInstance:
   m_ObjectHideFlags: 0

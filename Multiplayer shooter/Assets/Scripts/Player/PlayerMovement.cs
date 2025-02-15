@@ -2,7 +2,6 @@ using System;
 using Game.Player;
 using System.Collections;
 using UnityEngine;
-using Unity.Netcode;
 using UnityEngine.InputSystem;
 
 namespace Game.Input
