@@ -16,12 +16,13 @@ namespace Game.Input
 
         private CharacterController _characterController;
         private PlayerInput _playerInputActions;
-        private Health _health;
 
         private Vector3 _movementDirection;
         private Vector3 _velocity;
 
         private float _stamina;
+
+        public Action Jumped;
 
         public Action StartedStaminaConsumption;
         public Action EndedStaminaConsumtion;
@@ -42,8 +43,10 @@ namespace Game.Input
 
         public bool IsMoving
         {
-            get { return _characterController.velocity.magnitude > 0; }
+            get { return _movementDirection.x != 0 || _movementDirection.z != 0; }
         }
+
+        public bool IsFlying => !_characterController.isGrounded;
 
         #region MONO
         private void Start()
@@ -110,6 +113,7 @@ namespace Game.Input
             _velocity.y = Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
 
             _characterController.Move(_velocity * Time.deltaTime);
+            Jumped?.Invoke();
         }
 
         private IEnumerator ConsumeStamina()
