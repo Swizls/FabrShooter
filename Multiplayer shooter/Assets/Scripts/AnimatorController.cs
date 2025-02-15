@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class AnimatorController : MonoBehaviour
 {
+    private const string MOVE_X = "moveX";
+    private const string MOVE_Y = "moveY";
+    private float ANIMATION_CHANGE_SPEED = 0.3f;
+
     private PlayerMovement _playerMovement;
     private Animator _animator;
     private PlayerInput _playerInputActions;
@@ -27,8 +31,8 @@ public class AnimatorController : MonoBehaviour
     {
         Vector2 dir = _playerInputActions.Player.Move.ReadValue<Vector2>();
 
-        _animator.SetFloat("moveX", dir.x);
-        _animator.SetFloat("moveY", dir.y);
+        _animator.SetFloat(MOVE_X, Mathf.Lerp(_animator.GetFloat(MOVE_X), dir.x, ANIMATION_CHANGE_SPEED));
+        _animator.SetFloat(MOVE_Y, Mathf.Lerp(_animator.GetFloat(MOVE_Y), dir.y, ANIMATION_CHANGE_SPEED));
     }
 
 }
