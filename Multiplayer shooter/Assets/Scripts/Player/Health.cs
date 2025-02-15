@@ -10,14 +10,14 @@ public class Health : NetworkBehaviour
 
     public Action OnDeath;
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(int damage)
     {
         if (damage < 0 || _value.Value <= 0)
             return;
 
         _value.Value -= damage;
-        Debug.Log($"Health: {_value.Value}");
+        Debug.Log($"Client: {OwnerClientId}; Got damage;");
 
         if (_value.Value <= 0)
             Die();

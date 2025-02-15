@@ -10,7 +10,6 @@ namespace Game.Input
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : NetworkBehaviour
     {
-        private const float FALL_SPEED = 1f;
         private const float GRAVITY = -9.81f;
 
         [SerializeField] private PlayerConfigSO _config;
@@ -51,19 +50,19 @@ namespace Game.Input
         private void Start()
         {
             _characterController = GetComponent<CharacterController>();
-            _health = GetComponent<Health>();
+            //_health = GetComponent<Health>();
             _playerInputActions = new PlayerInput();
 
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Jump.performed += Jump;
             _stamina = _config.MaxStamina;
 
-            _health.OnDeath += OnPlayerDeath;
+            //_health.OnDeath += OnPlayerDeath;
         }
 
         private void OnDisable()
         {
-            _health.OnDeath -= OnPlayerDeath;
+            //_health.OnDeath -= OnPlayerDeath;
             _characterController.Move(Vector3.zero);
         }
 
@@ -138,7 +137,7 @@ namespace Game.Input
             while (IsRunning && IsAbleToRun)
             {
                 _stamina -= _config.StaminaConsumptionSpeed * Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
 
             StartCoroutine(RestoreStamina());

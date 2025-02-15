@@ -26,17 +26,19 @@ public class PlayerAttack : NetworkBehaviour
 
     private void OnDisable()
     {
-        _playerInput.Player.Attack.performed -= Attack;
+        if(_playerInput != null )
+            _playerInput.Player.Attack.performed -= Attack;
     }
 
     private void Attack(InputAction.CallbackContext context)
     {
         if (!IsOwner) return;
 
-          if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
+        if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
         {
             if (hit.collider.gameObject.TryGetComponent(out NetworkObject networkObject))
             {
+                Debug.Log("Client: " + OwnerClientId + "; Made shot;");
                 ulong targetId = networkObject.NetworkObjectId;
                 AttackServerRpc(targetId);
             }
@@ -51,6 +53,7 @@ public class PlayerAttack : NetworkBehaviour
 
         if (targetObject.TryGetComponent(out Health health))
         {
+            Debug.Log("Client: " + OwnerClientId + "; Hitted client: " + targetId);
             health.TakeDamageServerRpc(_damage);
         }
     }
