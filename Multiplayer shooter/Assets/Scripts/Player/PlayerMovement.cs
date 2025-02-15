@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace Game.Input
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovement : NetworkBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
         private const float GRAVITY = -9.81f;
 
@@ -50,42 +50,25 @@ namespace Game.Input
         private void Start()
         {
             _characterController = GetComponent<CharacterController>();
-            //_health = GetComponent<Health>();
             _playerInputActions = new PlayerInput();
 
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Jump.performed += Jump;
             _stamina = _config.MaxStamina;
-
-            //_health.OnDeath += OnPlayerDeath;
         }
 
         private void OnDisable()
         {
-            //_health.OnDeath -= OnPlayerDeath;
             _characterController.Move(Vector3.zero);
-        }
-
-        private void OnPlayerDeath()
-        {
-            this.enabled = false;
         }
 
         private void Update()
         {
-            if (!IsOwner)
-            {
-                Destroy(this);
-                return;
-            }
-
             ListenMovementInput();
         }
 
         private void FixedUpdate()
         {
-            if (!IsOwner) return;
-
             Move();
             ApplyGravity();
         }

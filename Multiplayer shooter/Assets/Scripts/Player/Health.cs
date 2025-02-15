@@ -8,7 +8,19 @@ public class Health : NetworkBehaviour
 
     private NetworkVariable<int> _value = new NetworkVariable<int>(DEFAULT_HEALTH);
 
+    public Action OnValueChange;
     public Action OnDeath;
+
+    public int Value => _value.Value;
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) return;
+
+        HealthUI healthUI = FindFirstObjectByType<HealthUI>();
+
+        healthUI.Initialize(this);
+    }
 
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(int damage)
@@ -18,6 +30,8 @@ public class Health : NetworkBehaviour
 
         _value.Value -= damage;
         Debug.Log($"Client: {OwnerClientId}; Got damage;");
+
+        OnValueChange?.Invoke();
 
         if (_value.Value <= 0)
             Die();
