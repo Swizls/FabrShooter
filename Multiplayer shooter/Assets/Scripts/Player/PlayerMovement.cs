@@ -11,6 +11,7 @@ namespace Game.Input
     public class PlayerMovement : NetworkBehaviour
     {
         private const float FALL_SPEED = 1f;
+        private const float GRAVITY = -9.81f;
 
         [SerializeField] private PlayerConfigSO _config;
         [SerializeField] private Camera _camera;
@@ -20,9 +21,9 @@ namespace Game.Input
         private Health _health;
 
         private Vector3 _movementDirection;
+        private Vector3 _velocity;
 
         private float _stamina;
-        private bool _isJumping;
 
         public Action StartedStaminaConsumption;
         public Action EndedStaminaConsumtion;
@@ -55,7 +56,6 @@ namespace Game.Input
 
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Jump.performed += Jump;
-
             _stamina = _config.MaxStamina;
 
             _health.OnDeath += OnPlayerDeath;
@@ -65,7 +65,6 @@ namespace Game.Input
         {
             _health.OnDeath -= OnPlayerDeath;
             _characterController.Move(Vector3.zero);
-            _playerInputActions.Player.Jump.performed -= Jump;
         }
 
         private void OnPlayerDeath()
@@ -89,6 +88,13 @@ namespace Game.Input
             if (!IsOwner) return;
 
             Move();
+            ApplyGravity();
+        }
+
+        private void ApplyGravity()
+        {
+            _velocity.y += GRAVITY * Time.deltaTime;
+            _characterController.Move(_velocity * Time.deltaTime);
         }
 
         private void OnDrawGizmos()
@@ -112,36 +118,17 @@ namespace Game.Input
 
             float speed = IsRunning && IsAbleToRun ? _config.WalkingSpeed * _config.SprintingMultiplier : _config.WalkingSpeed;
 
-            _movementDirection.y = _characterController.isGrounded || !_isJumping ? _movementDirection.y : -FALL_SPEED;
-
-            _characterController.Move(_movementDirection * speed);
+            _characterController.Move(_movementDirection * speed * Time.deltaTime);
         }
 
         private void Jump(InputAction.CallbackContext context)
         {
-            if (_characterController.isGrounded == false && _isJumping)
+            if (_characterController.isGrounded == false)
                 return;
 
-            _isJumping = true;
+            _velocity.y = Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
 
-            _movementDirection.y = 1;
-
-            StartCoroutine(JumpCoroutine());
-        }
-
-        private IEnumerator JumpCoroutine()
-        {
-            float timer = 2f;
-
-            while (timer > 0)
-            {
-                _movementDirection.y = 1;
-                timer -= Time.deltaTime;
-
-                yield return new WaitForEndOfFrame();
-            }
-
-            _isJumping = false;
+            _characterController.Move(_velocity * Time.deltaTime);
         }
 
         private IEnumerator ConsumeStamina()

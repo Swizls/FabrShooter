@@ -12,12 +12,6 @@ namespace Game.Input
 
         private bool _canMoveCamera = true;
 
-        private void Start()
-        {
-            if (!IsOwner)
-                Destroy(gameObject);
-        }
-
         private void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;

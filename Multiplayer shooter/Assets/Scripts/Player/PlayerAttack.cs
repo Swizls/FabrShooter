@@ -33,7 +33,7 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
+          if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
         {
             if (hit.collider.gameObject.TryGetComponent(out NetworkObject networkObject))
             {

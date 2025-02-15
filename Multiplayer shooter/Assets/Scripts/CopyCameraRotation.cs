@@ -6,6 +6,6 @@ public class CopyCameraRotation : MonoBehaviour
 
     private void Update()
     {
-        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, _cameraTransform.eulerAngles.y, transform.eulerAngles.z) ;        
+        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, _cameraTransform.eulerAngles.y, transform.eulerAngles.z);        
     }
 }
