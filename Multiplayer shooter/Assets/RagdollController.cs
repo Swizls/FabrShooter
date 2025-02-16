@@ -1,18 +1,19 @@
-using Game.Input;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class RagdollController : MonoBehaviour
 {
-    [SerializeField] private List<Behaviour> _components;
+    [SerializeField] private GameObject _root;
 
     private Rigidbody[] _rigidbodies;
     private Collider[] _colliders;
 
     private void Start()
     {
-        _rigidbodies = GetComponentsInChildren<Rigidbody>();
-        _colliders  = GetComponentsInChildren<Collider>();
+        if (_root == null)
+            throw new System.NullReferenceException("Rig root is not setted");
+
+        _rigidbodies = _root.GetComponentsInChildren<Rigidbody>();
+        _colliders  = _root.GetComponentsInChildren<Collider>();
 
         DisableRagdoll();
     }
@@ -24,11 +25,6 @@ public class RagdollController : MonoBehaviour
             rigidbody.isKinematic = true;
             rigidbody.useGravity = false;
         }
-
-        foreach(var component in _components)
-        {
-            component.enabled = true;
-        }
     }
 
     public void EnableRagdoll()
@@ -37,11 +33,6 @@ public class RagdollController : MonoBehaviour
         {
             rigidbody.isKinematic = false;
             rigidbody.useGravity = true;
-        }
-
-        foreach (var component in _components)
-        {
-            component.enabled = false;
         }
     }
 }

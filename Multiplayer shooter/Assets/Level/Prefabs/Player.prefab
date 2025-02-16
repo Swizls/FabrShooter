@@ -960,6 +960,8 @@ GameObject:
   - component: {fileID: 6570250062829795874}
   - component: {fileID: 7443369529922938572}
   - component: {fileID: 3044149546643821798}
+  - component: {fileID: 5030506938916953451}
+  - component: {fileID: 5791546456260378216}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1207,6 +1209,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hookSpeed: 50
+--- !u!114 &5030506938916953451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77971ee89fe55e4d8165f53e0e8f721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  _componentsToDisableOnDeath:
+  - {fileID: 673459907000437321}
+  - {fileID: 1667992498702006102}
+  - {fileID: 8902774501964331573}
+  - {fileID: 1780928761626770333}
+  - {fileID: 6159075296024010482}
+--- !u!114 &5791546456260378216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1e3a941c544c44b8dcb4d4fd04d9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _root: {fileID: 6066231928263577928}
 --- !u!1001 &1816829190041194633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2375,6 +2409,11 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1 &6066231928263577928 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1134072514500038, guid: fb3d5dfd858d50849b27275f4d9be34c, type: 3}
+  m_PrefabInstance: {fileID: 6065102550823650446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6066238757929954044 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1141981023039090, guid: fb3d5dfd858d50849b27275f4d9be34c, type: 3}
