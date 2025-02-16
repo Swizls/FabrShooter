@@ -2,22 +2,21 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent (typeof (AudioSource))]
 public class PlayerAttack : NetworkBehaviour
 {
     [SerializeField] private int _damage;
+    [SerializeField] private AudioClip _shotSFX;
 
     private Transform _cameraTransform;
     private PlayerInput _playerInput;
+    private AudioSource _audioSource;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        if (!IsOwner)
-        {
-            Destroy(this);
-            return;
-        }
-
         _cameraTransform = GetComponentInChildren<Camera>().transform;
+        _audioSource = GetComponent<AudioSource>();
+
         _playerInput = new PlayerInput();
 
         _playerInput.Enable();
@@ -34,11 +33,13 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (!IsOwner) return;
 
+        PlayShotSFX();
+        Debug.Log("Client: " + OwnerClientId + "; Made shot;");
+
         if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
         {
             if (hit.collider.gameObject.TryGetComponent(out NetworkObject networkObject))
             {
-                Debug.Log("Client: " + OwnerClientId + "; Made shot;");
                 ulong targetId = networkObject.NetworkObjectId;
                 AttackServerRpc(targetId);
             }
@@ -52,9 +53,21 @@ public class PlayerAttack : NetworkBehaviour
             return;
 
         if (targetObject.TryGetComponent(out Health health))
-        {
-            Debug.Log("Client: " + OwnerClientId + "; Hitted client: " + targetId);
             health.TakeDamageServerRpc(_damage);
-        }
+    }
+
+    private void PlayShotSFX()
+    {
+        _audioSource.clip = _shotSFX;
+        _audioSource.Play();
+
+        PlayShotSFXClientRpc();
+    }
+
+    [ClientRpc]
+    private void PlayShotSFXClientRpc()
+    {
+        _audioSource.clip = _shotSFX;
+        _audioSource.Play();
     }
 }

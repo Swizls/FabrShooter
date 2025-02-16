@@ -13,7 +13,7 @@ public class Health : NetworkBehaviour
 
     public int Value => _value.Value;
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
         if (!IsOwner) return;
 
