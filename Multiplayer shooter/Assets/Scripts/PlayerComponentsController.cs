@@ -32,6 +32,8 @@ namespace FabrShooter
                 component.enabled = false;
 
             _ragdollController.EnableRagdoll();
+
+            GetComponentInChildren<Camera>().gameObject.SetActive(false);
         }
     }
 }

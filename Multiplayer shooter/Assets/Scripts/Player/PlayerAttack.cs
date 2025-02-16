@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace FabrShooter 
 {
     [RequireComponent(typeof(AudioSource))]
-    public class PlayerAttack : NetworkBehaviour
+    public class PlayerAttack : MonoBehaviour
     {
         [SerializeField] private int _damage;
         [SerializeField] private AudioClip _shotSFX;
@@ -14,7 +14,9 @@ namespace FabrShooter
         private PlayerInput _playerInput;
         private AudioSource _audioSource;
 
-        public override void OnNetworkSpawn()
+        private ServerDamageDelaer _damageDealer;
+
+        private void Start()
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _audioSource = GetComponent<AudioSource>();
@@ -23,6 +25,8 @@ namespace FabrShooter
 
             _playerInput.Enable();
             _playerInput.Player.Attack.performed += Attack;
+
+            _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
         }
 
         private void OnDisable()
@@ -33,44 +37,30 @@ namespace FabrShooter
 
         private void Attack(InputAction.CallbackContext context)
         {
-            if (!IsOwner) return;
-
             PlayShotSFX();
-            Debug.Log("Client: " + OwnerClientId + "; Made shot;");
 
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
             {
+                Debug.Log($"Client perform attack; Hitted {hit.collider.gameObject.name}");
                 if (hit.collider.gameObject.TryGetComponent(out NetworkObject networkObject))
                 {
                     ulong targetId = networkObject.NetworkObjectId;
-                    AttackServerRpc(targetId);
+                    _damageDealer.DealDamageServerRpc(targetId, _damage);
                 }
             }
-        }
-
-        [ServerRpc]
-        private void AttackServerRpc(ulong targetId)
-        {
-            if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(targetId, out NetworkObject targetObject))
-                return;
-
-            if (targetObject.TryGetComponent(out Health health))
-                health.TakeDamageServerRpc(_damage);
         }
 
         private void PlayShotSFX()
         {
             _audioSource.clip = _shotSFX;
             _audioSource.Play();
-
-            PlayShotSFXClientRpc();
         }
 
-        [ClientRpc]
-        private void PlayShotSFXClientRpc()
-        {
-            _audioSource.clip = _shotSFX;
-            _audioSource.Play();
-        }
+        //[ClientRpc]
+        //private void PlayShotSFXClientRpc()
+        //{
+        //    _audioSource.clip = _shotSFX;
+        //    _audioSource.Play();
+        //}
     }
 }

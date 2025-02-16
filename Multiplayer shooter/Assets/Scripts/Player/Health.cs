@@ -22,7 +22,7 @@ namespace FabrShooter
 
             HealthUI healthUI = FindFirstObjectByType<HealthUI>();
 
-            healthUI.Initialize(this);
+            healthUI.Initialize(this, OwnerClientId);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -32,7 +32,7 @@ namespace FabrShooter
                 return;
 
             _value.Value -= damage;
-            Debug.Log($"Client: {OwnerClientId}; Got damage;");
+            Debug.Log($"Client: {OwnerClientId}; Got damage; Health: {_value.Value}");
 
             OnValueChange?.Invoke();
 

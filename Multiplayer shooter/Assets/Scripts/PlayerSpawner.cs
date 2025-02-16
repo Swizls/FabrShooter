@@ -8,6 +8,8 @@ namespace FabrShooter
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private Transform[] _spawnPoints;
 
+        [SerializeField] private ServerDamageDelaer _damageDealer;
+
         public override void OnNetworkSpawn()
         {
             if (IsServer)
@@ -16,7 +18,7 @@ namespace FabrShooter
             }
         }
 
-        private void OnDestroy()
+        public override void OnNetworkDespawn()
         {
             if (IsServer)
             {

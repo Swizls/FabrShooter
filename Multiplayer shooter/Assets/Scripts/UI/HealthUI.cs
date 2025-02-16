@@ -7,6 +7,8 @@ namespace FabrShooter.UI
     {
         [SerializeField] private TextMeshProUGUI _healthTitleText;
         [SerializeField] private TextMeshProUGUI _healthValueText;
+        [SerializeField] private TextMeshProUGUI _clientTitleText;
+        [SerializeField] private TextMeshProUGUI _clientValueText;
 
         private Health _health;
 
@@ -14,16 +16,22 @@ namespace FabrShooter.UI
         {
             _healthTitleText.gameObject.SetActive(false);
             _healthValueText.gameObject.SetActive(false);
+            _clientTitleText.gameObject.SetActive(false);
+            _clientValueText.gameObject.SetActive(false);
         }
 
-        public void Initialize(Health health)
+        public void Initialize(Health health, ulong clientID)
         {
             _health = health;
             _health.OnValueChange += OnValueChange;
 
             _healthTitleText.gameObject.SetActive(true);
             _healthValueText.gameObject.SetActive(true);
+            _clientTitleText.gameObject.SetActive(true);
+            _clientValueText.gameObject.SetActive(true);
 
+
+            _clientValueText.text = clientID.ToString();
             SetValue(_health.Value);
         }
 
