@@ -5,6 +5,7 @@ public class AnimatorController : MonoBehaviour
 {
     private const string MOVE_X = "moveX";
     private const string MOVE_Y = "moveY";
+    private const string IS_FLYING = "IsFlying";
     private float ANIMATION_CHANGE_SPEED = 0.3f;
 
     private PlayerMovement _playerMovement;
@@ -25,6 +26,12 @@ public class AnimatorController : MonoBehaviour
     private void Update()
     {
         SetMovementDirection();
+        SetFlyingBool();
+    }
+
+    private void SetFlyingBool()
+    {
+        _animator.SetBool(IS_FLYING, _playerMovement.IsFlying);
     }
 
     private void SetMovementDirection()
