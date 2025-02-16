@@ -1,45 +1,49 @@
+using FabrShooter.UI;
 using System;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Health : NetworkBehaviour
+namespace FabrShooter
 {
-    private const int DEFAULT_HEALTH = 100;
-
-    private NetworkVariable<int> _value = new NetworkVariable<int>(DEFAULT_HEALTH);
-
-    public Action OnValueChange;
-    public Action OnDeath;
-
-    public int Value => _value.Value;
-
-    private void Start()
+    public class Health : NetworkBehaviour
     {
-        if (!IsOwner) return;
+        private const int DEFAULT_HEALTH = 100;
 
-        HealthUI healthUI = FindFirstObjectByType<HealthUI>();
+        private NetworkVariable<int> _value = new NetworkVariable<int>(DEFAULT_HEALTH);
 
-        healthUI.Initialize(this);
-    }
+        public Action OnValueChange;
+        public Action<ulong> OnDeath;
 
-    [ServerRpc(RequireOwnership = false)]
-    public void TakeDamageServerRpc(int damage)
-    {
-        if (damage < 0 || _value.Value <= 0)
-            return;
+        public int Value => _value.Value;
 
-        _value.Value -= damage;
-        Debug.Log($"Client: {OwnerClientId}; Got damage;");
+        public override void OnNetworkSpawn()
+        {
+            if (!IsOwner) return;
 
-        OnValueChange?.Invoke();
+            HealthUI healthUI = FindFirstObjectByType<HealthUI>();
 
-        if (_value.Value <= 0)
-            Die();
-    }
+            healthUI.Initialize(this);
+        }
 
-    private void Die()
-    {
-        Debug.Log($"Client: {OwnerClientId}; Died;");
-        OnDeath?.Invoke();
+        [ServerRpc(RequireOwnership = false)]
+        public void TakeDamageServerRpc(int damage)
+        {
+            if (damage < 0 || _value.Value <= 0)
+                return;
+
+            _value.Value -= damage;
+            Debug.Log($"Client: {OwnerClientId}; Got damage;");
+
+            OnValueChange?.Invoke();
+
+            if (_value.Value <= 0)
+                Die();
+        }
+
+        private void Die()
+        {
+            Debug.Log($"Client: {OwnerClientId}; Died;");
+            OnDeath?.Invoke(OwnerClientId);
+        }
     }
 }

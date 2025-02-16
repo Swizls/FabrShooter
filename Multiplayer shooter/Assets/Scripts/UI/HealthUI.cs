@@ -1,36 +1,47 @@
 using TMPro;
 using UnityEngine;
 
-public class HealthUI : MonoBehaviour
+namespace FabrShooter.UI
 {
-    [SerializeField] private TextMeshProUGUI _healthTitleText;
-    [SerializeField] private TextMeshProUGUI _healthValueText;
-
-    private Health _health;
-
-    private void Start()
+    public class HealthUI : MonoBehaviour
     {
-        _healthTitleText.gameObject.SetActive(false);
-        _healthValueText.gameObject.SetActive(false);
-    }
+        [SerializeField] private TextMeshProUGUI _healthTitleText;
+        [SerializeField] private TextMeshProUGUI _healthValueText;
 
-    public void Initialize(Health health)
-    {
-        _health = health;
-        _health.OnValueChange += OnValueChange;
+        private Health _health;
 
-        _healthTitleText.gameObject.SetActive(true);
-        _healthValueText.gameObject.SetActive(true);
-    }
+        private void Start()
+        {
+            _healthTitleText.gameObject.SetActive(false);
+            _healthValueText.gameObject.SetActive(false);
+        }
 
-    private void OnDisable()
-    {
-        if(_health != null)
-            _health.OnValueChange -= OnValueChange;
-    }
+        public void Initialize(Health health)
+        {
+            _health = health;
+            _health.OnValueChange += OnValueChange;
 
-    private void OnValueChange()
-    {
-        _healthValueText.text = _health.Value.ToString();
+            _healthTitleText.gameObject.SetActive(true);
+            _healthValueText.gameObject.SetActive(true);
+
+            SetValue(_health.Value);
+        }
+
+        private void OnDisable()
+        {
+            if (_health != null)
+                _health.OnValueChange -= OnValueChange;
+        }
+
+        private void OnValueChange()
+        {
+            SetValue(_health.Value);
+        }
+
+        private void SetValue(int value)
+        {
+            _healthValueText.text = value.ToString();
+        }
     }
 }
+

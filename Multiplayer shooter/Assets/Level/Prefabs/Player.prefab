@@ -1139,7 +1139,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _damage: 20
   _shotSFX: {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
-  _audioSource: {fileID: 4916741586388440953}
 --- !u!114 &8902774501964331573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1257,7 +1256,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
   m_Resource: {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1266,7 +1265,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 100
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
