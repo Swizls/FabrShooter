@@ -39,6 +39,7 @@ public class Health : NetworkBehaviour
 
     private void Die()
     {
+        Debug.Log($"Client: {OwnerClientId}; Died;");
         OnDeath?.Invoke();
     }
 }
