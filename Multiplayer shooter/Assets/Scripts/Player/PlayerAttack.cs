@@ -42,11 +42,28 @@ namespace FabrShooter
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
             {
                 Debug.Log($"Client perform attack; Hitted {hit.collider.gameObject.name}");
-                if (hit.collider.gameObject.TryGetComponent(out NetworkObject networkObject))
+                if (TryGetNetworkObject(hit.collider.gameObject, out NetworkObject networkObject))
                 {
                     ulong targetId = networkObject.NetworkObjectId;
                     _damageDealer.DealDamageServerRpc(targetId, _damage);
                 }
+            }
+
+            bool TryGetNetworkObject(GameObject gameObj, out NetworkObject obj)
+            {
+                obj = gameObj.GetComponent<NetworkObject>();
+                if (obj != null)
+                    return true;
+
+                obj = gameObj.GetComponentInChildren<NetworkObject>();
+                if (obj != null)
+                    return true;
+
+                obj = gameObj.GetComponentInParent<NetworkObject>();
+                if (obj != null)
+                    return true;
+
+                return false;
             }
         }
 
