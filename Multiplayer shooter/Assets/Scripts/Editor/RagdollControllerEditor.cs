@@ -1,21 +1,25 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(RagdollController))]
-public class RagdollControllerEditor : Editor
+namespace FabrShooter.EditorExtension 
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(RagdollController))]
+    public class RagdollControllerEditor : Editor
     {
-        base.OnInspectorGUI();
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
 
-        RagdollController ragdollController = (RagdollController)target;
+            RagdollController ragdollController = (RagdollController)target;
 
-        GUI.enabled = Application.isPlaying;
+            GUI.enabled = Application.isPlaying;
 
-        if (GUILayout.Button("Disable ragdoll"))
-            ragdollController.DisableRagdoll();
+            if (GUILayout.Button("Disable ragdoll"))
+                ragdollController.DisableRagdollClientRpc();
 
-        if (GUILayout.Button("Enable ragdoll"))
-            ragdollController.EnableRagdoll();
+            if (GUILayout.Button("Enable ragdoll"))
+                ragdollController.EnableRagdollClientRpc();
+        }
     }
+
 }

@@ -9,34 +9,32 @@ namespace FabrShooter
     {
         private const int DEFAULT_HEALTH = 100;
 
-        private NetworkVariable<int> _value = new NetworkVariable<int>(DEFAULT_HEALTH);
+        private int _value = DEFAULT_HEALTH;
 
         public Action OnValueChange;
         public Action<ulong> OnDeath;
 
-        public int Value => _value.Value;
+        public int Value => _value;
 
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
 
             HealthUI healthUI = FindFirstObjectByType<HealthUI>();
-
             healthUI.Initialize(this, OwnerClientId);
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void TakeDamageServerRpc(int damage)
+        [ClientRpc]
+        public void TakeDamageClientRpc(int damage)
         {
-            if (damage < 0 || _value.Value <= 0)
+            if (damage < 0 || _value <= 0)
                 return;
 
-            _value.Value -= damage;
-            Debug.Log($"Client: {OwnerClientId}; Got damage; Health: {_value.Value}");
+            _value -= damage;
 
             OnValueChange?.Invoke();
 
-            if (_value.Value <= 0)
+            if (_value <= 0)
                 Die();
         }
 

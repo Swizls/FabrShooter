@@ -13,9 +13,9 @@ namespace FabrShooter
                 return;
 
             if (targetObject.TryGetComponent(out Health health))
-                health.TakeDamageServerRpc(damage);
+                health.TakeDamageClientRpc(damage);
 
-            Debug.Log($"Perform damage deal to client({clientID}); Damage: {damage}");
+            //Debug.Log($"Perform damage deal to client({clientID}); Damage: {damage}");
         }
     }
 }

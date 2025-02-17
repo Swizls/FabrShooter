@@ -59,11 +59,6 @@ namespace Game.Input
             _stamina = _config.MaxStamina;
         }
 
-        private void OnDisable()
-        {
-            _characterController.Move(Vector3.zero);
-        }
-
         private void Update()
         {
             ListenMovementInput();

@@ -1,38 +1,43 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class RagdollController : MonoBehaviour
+namespace FabrShooter 
 {
-    [SerializeField] private GameObject _root;
-
-    private Rigidbody[] _rigidbodies;
-    private Collider[] _colliders;
-
-    private void Start()
+    [RequireComponent(typeof(NetworkObject))]
+    public class RagdollController : NetworkBehaviour
     {
-        if (_root == null)
-            throw new System.NullReferenceException("Rig root is not setted");
+        [SerializeField] private GameObject _root;
 
-        _rigidbodies = _root.GetComponentsInChildren<Rigidbody>();
-        _colliders  = _root.GetComponentsInChildren<Collider>();
+        private Rigidbody[] _rigidbodies;
 
-        DisableRagdoll();
-    }
-
-    public void DisableRagdoll()
-    {
-        foreach(var rigidbody in _rigidbodies)
+        public override void OnNetworkSpawn()
         {
-            rigidbody.isKinematic = true;
-            rigidbody.useGravity = false;
+            if (_root == null)
+                throw new System.NullReferenceException("Rig root is not setted");
+
+            _rigidbodies = _root.GetComponentsInChildren<Rigidbody>();
+
+            DisableRagdollClientRpc();
         }
-    }
 
-    public void EnableRagdoll()
-    {
-        foreach (var rigidbody in _rigidbodies)
+        [ClientRpc]
+        public void DisableRagdollClientRpc()
         {
-            rigidbody.isKinematic = false;
-            rigidbody.useGravity = true;
+            foreach (var rigidbody in _rigidbodies)
+            {
+                rigidbody.isKinematic = true;
+                rigidbody.useGravity = false;
+            }
+        }
+
+        [ClientRpc]
+        public void EnableRagdollClientRpc()
+        {
+            foreach (var rigidbody in _rigidbodies)
+            {
+                rigidbody.isKinematic = false;
+                rigidbody.useGravity = true;
+            }
         }
     }
 }

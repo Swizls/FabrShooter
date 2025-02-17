@@ -948,21 +948,20 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4788088403618367942}
-  - component: {fileID: 6067666858450123431}
   - component: {fileID: 7705176660799579671}
   - component: {fileID: 980113645187754448}
   - component: {fileID: 6570250062829795874}
   - component: {fileID: 1667992498702006102}
   - component: {fileID: 6833741699472645983}
+  - component: {fileID: 7443369529922938572}
   - component: {fileID: 1613618120013209949}
   - component: {fileID: 993355081631408958}
   - component: {fileID: 8902774501964331573}
   - component: {fileID: 673459907000437321}
-  - component: {fileID: 7443369529922938572}
   - component: {fileID: 3044149546643821798}
-  - component: {fileID: 5030506938916953451}
   - component: {fileID: 5791546456260378216}
   - component: {fileID: 4916741586388440953}
+  - component: {fileID: 1285732701526285236}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -988,29 +987,6 @@ Transform:
   - {fileID: 6968080305832661315}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &6067666858450123431
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.29
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!143 &7705176660799579671
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1075,12 +1051,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   _cameraObject: {fileID: 7224542654078037021}
+  _characterController: {fileID: 7705176660799579671}
   _localScripts:
   - {fileID: 673459907000437321}
   - {fileID: 8902774501964331573}
   - {fileID: 1667992498702006102}
   - {fileID: 3044149546643821798}
   - {fileID: 993355081631408958}
+  - {fileID: 1285732701526285236}
 --- !u!114 &1667992498702006102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,6 +1109,21 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &7443369529922938572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc52a85fb8dd30f448aff157c41dd6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6159075296024010482}
 --- !u!114 &1613618120013209949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1156,7 +1149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368dcec2302eb5848958ed2fe57fc29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
   _damage: 20
   _shotSFX: {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
 --- !u!114 &8902774501964331573
@@ -1184,21 +1176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraTransform: {fileID: 2106839548618876534}
---- !u!114 &7443369529922938572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc52a85fb8dd30f448aff157c41dd6bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 6159075296024010482}
 --- !u!114 &3044149546643821798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,25 +1189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hookSpeed: 50
---- !u!114 &5030506938916953451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d77971ee89fe55e4d8165f53e0e8f721, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  _componentsToDisableOnDeath:
-  - {fileID: 673459907000437321}
-  - {fileID: 1667992498702006102}
-  - {fileID: 8902774501964331573}
-  - {fileID: 1780928761626770333}
-  - {fileID: 6159075296024010482}
 --- !u!114 &5791546456260378216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1243,7 +1201,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1e3a941c544c44b8dcb4d4fd04d9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   _root: {fileID: 6066231928263577928}
+  _componentsToDisableOnRegdoll:
+  - {fileID: 993355081631408958}
+  - {fileID: 3044149546643821798}
+  - {fileID: 673459907000437321}
+  - {fileID: 1780928761626770333}
+  - {fileID: 6159075296024010482}
+  - {fileID: 8902774501964331573}
+  - {fileID: 1667992498702006102}
 --- !u!82 &4916741586388440953
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1341,6 +1308,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1285732701526285236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1395cbc9a494541be36f3de6a58172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentsToDisableOnDeath:
+  - {fileID: 673459907000437321}
+  - {fileID: 1667992498702006102}
+  - {fileID: 8902774501964331573}
+  - {fileID: 6159075296024010482}
+  - {fileID: 673459907000437321}
+  - {fileID: 1780928761626770333}
 --- !u!1001 &1816829190041194633
 PrefabInstance:
   m_ObjectHideFlags: 0

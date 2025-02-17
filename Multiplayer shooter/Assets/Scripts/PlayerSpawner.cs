@@ -31,14 +31,15 @@ namespace FabrShooter
             Transform spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
             GameObject playerInstance = Instantiate(_playerPrefab, spawnPoint.position, spawnPoint.rotation);
 
-            playerInstance.GetComponent<Health>().OnDeath += RespawnPlayer;
-
             NetworkObject networkObject = playerInstance.GetComponent<NetworkObject>();
             networkObject.SpawnAsPlayerObject(clientId);
         }
 
-        private void RespawnPlayer(ulong clientId)
+        [ServerRpc(RequireOwnership = false)]
+        public void RespawnPlayerServerRpc(ulong clientId)
         {
+            if (!IsOwner) return;
+
             SpawnPlayer(clientId);
         }
     }

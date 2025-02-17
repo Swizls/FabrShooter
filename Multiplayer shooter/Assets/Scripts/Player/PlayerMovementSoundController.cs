@@ -12,7 +12,7 @@ public class PlayerMovementSoundController : NetworkBehaviour
     private AudioSource _audioSource;
     private PlayerMovement _playerMovement;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
         _audioSource = GetComponent<AudioSource>();
         _playerMovement = GetComponentInParent<PlayerMovement>();
