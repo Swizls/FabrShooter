@@ -12,6 +12,7 @@ namespace FabrShooter
         private float ANIMATION_CHANGE_SPEED = 0.3f;
 
         private PlayerMovement _playerMovement;
+        private PlayerAttack _playerAttack;
         private Animator _animator;
         private PlayerInputActions _playerInputActions;
 
@@ -19,6 +20,9 @@ namespace FabrShooter
         {
             _animator = GetComponentInChildren<Animator>();
             _playerMovement = GetComponent<PlayerMovement>();
+            _playerAttack = GetComponent<PlayerAttack>();
+
+            _playerAttack.OnPunch += ActivateTriggerPunch;
 
             _playerInputActions = new PlayerInputActions();
             _playerInputActions.Player.Enable();
@@ -26,24 +30,31 @@ namespace FabrShooter
 
         private void OnEnable()
         {
-            if (_playerInputActions == null)
-                return;
+            if (_playerInputActions != null)
+                _playerInputActions.Player.Enable();
 
-            _playerInputActions.Player.Enable();
+            if(_playerAttack != null)
+                _playerAttack.OnPunch += ActivateTriggerPunch;
         }
 
         private void OnDisable()
         {
-            if (_playerInputActions == null)
-                return;
+            if (_playerInputActions != null)
+                _playerInputActions.Player.Disable();
 
-            _playerInputActions.Player.Disable();
+            if(_playerAttack != null)
+                _playerAttack.OnPunch -= ActivateTriggerPunch;
         }
 
         private void Update()
         {
             SetMovementDirection();
             SetFlyingBool();
+        }
+
+        private void ActivateTriggerPunch()
+        {
+            _animator.SetTrigger("Punch");
         }
 
         private void SetFlyingBool()

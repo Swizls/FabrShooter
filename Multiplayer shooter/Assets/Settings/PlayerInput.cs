@@ -100,6 +100,15 @@ namespace FabrShooter.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""f508370f-b808-4bc1-a014-ee6b19b3afea"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -452,6 +461,17 @@ namespace FabrShooter.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94bcfdfe-e9bc-4d29-9ea1-3601d2836374"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1067,6 +1087,7 @@ namespace FabrShooter.Input
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_Hook = m_Player.FindAction("Hook", throwIfNotFound: true);
+            m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1155,6 +1176,7 @@ namespace FabrShooter.Input
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_Hook;
+        private readonly InputAction m_Player_Punch;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
@@ -1167,6 +1189,7 @@ namespace FabrShooter.Input
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
             public InputAction @Hook => m_Wrapper.m_Player_Hook;
+            public InputAction @Punch => m_Wrapper.m_Player_Punch;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1200,6 +1223,9 @@ namespace FabrShooter.Input
                 @Hook.started += instance.OnHook;
                 @Hook.performed += instance.OnHook;
                 @Hook.canceled += instance.OnHook;
+                @Punch.started += instance.OnPunch;
+                @Punch.performed += instance.OnPunch;
+                @Punch.canceled += instance.OnPunch;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1228,6 +1254,9 @@ namespace FabrShooter.Input
                 @Hook.started -= instance.OnHook;
                 @Hook.performed -= instance.OnHook;
                 @Hook.canceled -= instance.OnHook;
+                @Punch.started -= instance.OnPunch;
+                @Punch.performed -= instance.OnPunch;
+                @Punch.canceled -= instance.OnPunch;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1426,6 +1455,7 @@ namespace FabrShooter.Input
             void OnJump(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnHook(InputAction.CallbackContext context);
+            void OnPunch(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
