@@ -963,6 +963,7 @@ GameObject:
   - component: {fileID: 1285732701526285236}
   - component: {fileID: 4916741586388440953}
   - component: {fileID: 7541696177156031811}
+  - component: {fileID: 5226998639205829117}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1338,6 +1339,19 @@ MonoBehaviour:
   _ragdollCameraParent: {fileID: 1691927865662683772}
   _ragdollCameraOffset: {x: 0, y: 2, z: -4}
   _rotationOffset: {x: 0.21643962, y: 0, z: 0, w: 0.976296}
+--- !u!114 &5226998639205829117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31673e38592ef994fa684ad804db1ef6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentWeapon: {fileID: 11400000, guid: 657221a273fe5294381d8f7c6f5ea46f, type: 2}
 --- !u!1 &8314001998798772150
 GameObject:
   m_ObjectHideFlags: 0

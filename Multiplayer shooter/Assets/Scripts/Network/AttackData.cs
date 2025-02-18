@@ -1,18 +1,33 @@
+using Unity.Netcode;
+
 namespace FabrShooter
 {
-    public struct AttackData
+    public struct AttackData : INetworkSerializable
     {
-        public readonly DamageSenderType SenderType;
-        public readonly ulong TargetID;
-        public readonly int Damage;
-        public readonly bool UseKnockback;
+        private DamageSenderType _senderType;
+        private ulong _targetID;
+        private int _damage;
+        private bool _useKnockback;
+
+        public DamageSenderType DamageSenderType => _senderType;
+        public ulong TargetID => _targetID;
+        public int Damage => _damage;
+        public bool UseKnockback => _useKnockback;
 
         public AttackData(DamageSenderType senderType, ulong targetID, int damage, bool useKnockback = false)
         {
-            SenderType = senderType;
-            TargetID = targetID;
-            Damage = damage;
-            UseKnockback = useKnockback;
+            _senderType = senderType;
+            _targetID = targetID;
+            _damage = damage;
+            _useKnockback = useKnockback;
+        }
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref _senderType);
+            serializer.SerializeValue(ref _targetID);
+            serializer.SerializeValue(ref _damage);
+            serializer.SerializeValue(ref _useKnockback);
         }
     }
 }

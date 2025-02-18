@@ -5,13 +5,16 @@ using UnityEngine.InputSystem;
 namespace FabrShooter 
 {
     [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(Inventory))]
     public class PlayerAttack : MonoBehaviour
     {
         [SerializeField] private int _damage;
         [SerializeField] private AudioClip _shotSFX;
 
         private Transform _cameraTransform;
+
         private PlayerInput _playerInput;
+        private Inventory _inventory;
         private AudioSource _audioSource;
 
         private ServerDamageDelaer _damageDealer;
@@ -20,6 +23,7 @@ namespace FabrShooter
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _audioSource = GetComponent<AudioSource>();
+            _inventory = GetComponent<Inventory>();
 
             _playerInput = new PlayerInput();
 
@@ -46,7 +50,12 @@ namespace FabrShooter
                 {
                     ulong targetId = networkObject.NetworkObjectId;
 
-                    AttackData attackData = new AttackData(DamageSenderType.Client, targetId, _damage);
+                    AttackData attackData = new AttackData(
+                        DamageSenderType.Client,
+                        targetId,
+                        _inventory.CurrentWeapon.Damage,
+                        _inventory.CurrentWeapon.UseKnockback
+                    );
 
                     _damageDealer.DealDamageServerRpc(attackData);
                 }
