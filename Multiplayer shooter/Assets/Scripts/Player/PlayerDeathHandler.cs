@@ -1,14 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace FabrShooter
 {
     public class PlayerDeathHandler : MonoBehaviour
     {
-        [SerializeField] private List<Behaviour> _componentsToDisableOnDeath;
-
         private Health _health;
         private RagdollController _ragdollController;
 
@@ -22,15 +18,16 @@ namespace FabrShooter
 
         private void OnDisable()
         {
-            _health.OnDeath -= OnPlayerDeath;
+            Debug.Log($"Disabling health component. Health is {_health}");
+            if(_health == null)
+                _health.OnDeath -= OnPlayerDeath;
         }
 
         private void OnPlayerDeath(ulong clientID)
         {
-            foreach (var component in _componentsToDisableOnDeath)
-                component.enabled = false;
+            Debug.Log($"OnPlayerDeath() invoke (client: {clientID})");
 
-            _ragdollController.EnableRagdollClientRpc();
+            _ragdollController.RequestEnableRagdollServerRpc();
 
             StartCoroutine(DelayRespawnRequest(clientID));
         }

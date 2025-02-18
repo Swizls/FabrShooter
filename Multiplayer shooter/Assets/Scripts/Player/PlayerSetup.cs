@@ -16,7 +16,7 @@ public class PlayerSetup : NetworkBehaviour
 
         foreach (var script in _localScripts)
         {
-            script.enabled = false;
+            Destroy(script);
         }
     }
 }
