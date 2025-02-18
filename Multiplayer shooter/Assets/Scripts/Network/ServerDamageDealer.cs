@@ -7,15 +7,13 @@ namespace FabrShooter
     public class ServerDamageDelaer : NetworkBehaviour
     {
         [ServerRpc(RequireOwnership = false)]
-        public void DealDamageServerRpc(ulong clientID, int damage)
+        public void DealDamageServerRpc(AttackData data)
         {
-            if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(clientID, out NetworkObject targetObject))
+            if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(data.TargetID, out NetworkObject targetObject))
                 return;
 
             if (targetObject.TryGetComponent(out Health health))
-                health.TakeDamageClientRpc(damage);
-
-            //Debug.Log($"Perform damage deal to client({clientID}); Damage: {damage}");
+                health.TakeDamageClientRpc(data.Damage);
         }
     }
 }

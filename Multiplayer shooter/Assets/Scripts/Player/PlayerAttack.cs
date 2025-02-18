@@ -45,7 +45,10 @@ namespace FabrShooter
                 if (TryGetNetworkObject(hit.collider.gameObject, out NetworkObject networkObject))
                 {
                     ulong targetId = networkObject.NetworkObjectId;
-                    _damageDealer.DealDamageServerRpc(targetId, _damage);
+
+                    AttackData attackData = new AttackData(DamageSenderType.Client, targetId, _damage);
+
+                    _damageDealer.DealDamageServerRpc(attackData);
                 }
             }
 
