@@ -24,6 +24,24 @@ namespace FabrShooter
             _playerInput.Player.Hook.performed += StartHook;
         }
 
+        private void OnEnable()
+        {
+            if (_playerInput == null)
+                return;
+
+            _playerInput.Player.Hook.performed += StartHook;
+            _playerInput.Player.Enable();
+        }
+
+        private void OnDisable()
+        {
+            if (_playerInput == null)
+                return;
+
+            _playerInput.Player.Hook.performed -= StartHook;
+            _playerInput.Player.Disable();
+        }
+
         private void StartHook(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))

@@ -1,9 +1,9 @@
 using System;
-using Game.Player;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FabrShooter;
+using FabrShooter.Player;
 
 namespace Game.Input
 {
@@ -58,6 +58,24 @@ namespace Game.Input
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Jump.performed += Jump;
             _stamina = _config.MaxStamina;
+        }
+
+        private void OnEnable()
+        {
+            if (_playerInputActions == null)
+                return;
+
+            _playerInputActions.Player.Jump.performed += Jump;
+            _playerInputActions.Player.Enable();
+        }
+
+        private void OnDisable()
+        {
+            if (_playerInputActions == null)
+                return;
+
+            _playerInputActions.Player.Jump.performed -= Jump;
+            _playerInputActions.Player.Disable();
         }
 
         private void Update()

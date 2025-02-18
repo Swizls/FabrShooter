@@ -2,7 +2,7 @@ using TMPro;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
-public class TestIP : MonoBehaviour
+public class IPInputField : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private UnityTransport _transport;

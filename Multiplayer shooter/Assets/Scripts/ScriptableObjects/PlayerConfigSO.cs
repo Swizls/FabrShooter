@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game.Player
+namespace FabrShooter.Player
 {
     [CreateAssetMenu(fileName = "Player Config", menuName = "Configs/Player")]
     public class PlayerConfigSO : ScriptableObject

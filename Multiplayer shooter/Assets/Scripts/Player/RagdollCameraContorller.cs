@@ -1,4 +1,4 @@
-using Game.Input;
+using FabrShooter.Input;
 using System.Collections;
 using UnityEngine;
 

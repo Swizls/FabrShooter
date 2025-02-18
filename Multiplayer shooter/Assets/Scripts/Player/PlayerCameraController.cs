@@ -1,10 +1,9 @@
-using Game.Player;
-using Unity.Netcode;
+using FabrShooter.Player;
 using UnityEngine;
 
-namespace Game.Input
+namespace FabrShooter.Input
 {
-    public class PlayerCameraController : NetworkBehaviour
+    public class PlayerCameraController : MonoBehaviour
     {
         [SerializeField] private PlayerConfigSO _config;
 

@@ -8,22 +8,18 @@ namespace FabrShooter
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private Transform[] _spawnPoints;
 
-        [SerializeField] private ServerDamageDelaer _damageDealer;
-
         public override void OnNetworkSpawn()
         {
-            if (IsServer)
-            {
-                NetworkManager.Singleton.OnClientConnectedCallback += SpawnPlayer;
-            }
+            if (!IsServer) return;
+                
+            NetworkManager.Singleton.OnClientConnectedCallback += SpawnPlayer;
         }
 
         public override void OnNetworkDespawn()
         {
-            if (IsServer)
-            {
-                NetworkManager.Singleton.OnClientConnectedCallback -= SpawnPlayer;
-            }
+            if (!IsServer) return;
+
+            NetworkManager.Singleton.OnClientConnectedCallback -= SpawnPlayer;
         }
 
         private void SpawnPlayer(ulong clientId)
