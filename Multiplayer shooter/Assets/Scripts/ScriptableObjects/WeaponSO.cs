@@ -7,8 +7,10 @@ namespace FabrShooter
     {
         [SerializeField] private int _damage;
         [SerializeField] private bool _useKnockback;
+        [SerializeField] private float _knockbackForce;
 
         public int Damage => _damage;
         public bool UseKnockback => _useKnockback;
+        public float KnockbackForce => _knockbackForce;
     }
 }

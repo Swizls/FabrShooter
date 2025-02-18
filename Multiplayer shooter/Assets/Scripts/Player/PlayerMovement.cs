@@ -3,11 +3,12 @@ using Game.Player;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FabrShooter;
 
 namespace Game.Input
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, IPlayerInitializableComponent
     {
         private const float GRAVITY = -9.81f;
 
@@ -49,7 +50,7 @@ namespace Game.Input
         public bool IsFlying => !_characterController.isGrounded;
 
         #region MONO
-        private void Start()
+        public void Initialize()
         {
             _characterController = GetComponent<CharacterController>();
             _playerInputActions = new PlayerInput();

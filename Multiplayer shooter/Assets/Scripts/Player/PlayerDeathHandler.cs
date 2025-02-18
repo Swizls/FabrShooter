@@ -3,23 +3,24 @@ using UnityEngine;
 
 namespace FabrShooter
 {
-    public class PlayerDeathHandler : MonoBehaviour
+    public class PlayerDeathHandler : MonoBehaviour, IPlayerInitializableComponent
     {
         private Health _health;
         private RagdollController _ragdollController;
+        private KnockbackController _knockbackController;
 
-        private void Start()
+        public void Initialize()
         {
             _health = GetComponent<Health>();
             _ragdollController = GetComponentInChildren<RagdollController>();
+            _knockbackController = GetComponent<KnockbackController>();
 
             _health.OnDeath += OnPlayerDeath;
         }
 
         private void OnDisable()
         {
-            Debug.Log($"Disabling health component. Health is {_health}");
-            if(_health == null)
+            if(_health != null)
                 _health.OnDeath -= OnPlayerDeath;
         }
 
@@ -27,6 +28,7 @@ namespace FabrShooter
         {
             Debug.Log($"OnPlayerDeath() invoke (client: {clientID})");
 
+            _knockbackController.enabled = false;
             _ragdollController.RequestEnableRagdollServerRpc();
 
             StartCoroutine(DelayRespawnRequest(clientID));
@@ -35,7 +37,6 @@ namespace FabrShooter
         private IEnumerator DelayRespawnRequest(ulong clientID)
         {
             float timer = 5f;
-            Debug.Log($"Respawn timer started for client({clientID})");
             while (timer >= 0)
             {
                 timer -= Time.deltaTime;
@@ -43,7 +44,6 @@ namespace FabrShooter
             }
 
             GetComponentInChildren<Camera>().gameObject.SetActive(false);
-
             RequestRespawn(clientID);
         }
 

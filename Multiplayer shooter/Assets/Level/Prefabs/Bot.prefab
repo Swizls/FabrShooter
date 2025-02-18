@@ -226,7 +226,8 @@ GameObject:
   - component: {fileID: 1775676823156374439}
   - component: {fileID: 5684238350683270975}
   - component: {fileID: 8949657603742125681}
-  - component: {fileID: 8804388867665060221}
+  - component: {fileID: 2927649549863315336}
+  - component: {fileID: 5929347146123964711}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -312,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2108977968
+  GlobalObjectIdHash: 714347172
   InScenePlacedSourceGlobalObjectIdHash: 2108977968
   DeferredDespawnTick: 0
   Ownership: 1
@@ -389,7 +390,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 5596643511127790808}
---- !u!114 &8804388867665060221
+--- !u!114 &2927649549863315336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -398,12 +399,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2550542485756913437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d77971ee89fe55e4d8165f53e0e8f721, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b1395cbc9a494541be36f3de6a58172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5929347146123964711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2550542485756913437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1e3a941c544c44b8dcb4d4fd04d9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _componentsToDisableOnDeath:
-  - {fileID: 5596643511127790808}
+  _root: {fileID: 5547799274377042786}
+  _componentsToDisableOnRegdoll: []
 --- !u!1 &7180620484715221575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1350,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &5547799274377042786 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1134072514500038, guid: fb3d5dfd858d50849b27275f4d9be34c, type: 3}
+  m_PrefabInstance: {fileID: 5546668260583902884}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5547831379766799780 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1234039529431808, guid: fb3d5dfd858d50849b27275f4d9be34c, type: 3}

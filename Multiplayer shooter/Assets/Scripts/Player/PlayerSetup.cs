@@ -1,3 +1,5 @@
+using FabrShooter;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -5,16 +7,34 @@ public class PlayerSetup : NetworkBehaviour
 {
     [SerializeField] private GameObject _cameraObject;
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private MonoBehaviour[] _localScripts;
 
     public override void OnNetworkSpawn()
     {
-        if (IsOwner) return;
+        if (IsOwner)
+        {
+            IPlayerInitializableComponent[] components = GetComponents<IPlayerInitializableComponent>();
 
-        _cameraObject.SetActive(false);
-        _characterController.enabled = false;
+            foreach (IPlayerInitializableComponent component in components)
+                component.Initialize();
+        }
+        else
+        {
 
-        foreach (var script in _localScripts)
+            _cameraObject.SetActive(false);
+            _characterController.enabled = false;
+
+            DestroyLocalScripts();
+        }
+    }
+
+    private void DestroyLocalScripts()
+    {
+        MonoBehaviour[] localScripts = GetComponents<MonoBehaviour>()
+                                        .Where(component => !typeof(NetworkBehaviour).IsAssignableFrom(component.GetType())
+                                        && component.GetType() != typeof(NetworkObject))
+                                        .ToArray();
+
+        foreach (var script in localScripts)
         {
             Destroy(script);
         }

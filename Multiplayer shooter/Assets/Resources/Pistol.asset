@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   _damage: 20
-  _useKnockback: 0
+  _useKnockback: 1
+  _knockbackForce: 0

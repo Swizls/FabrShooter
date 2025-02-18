@@ -16,10 +16,12 @@ namespace FabrShooter
         public event Action OnRagdollEnable;
         public event Action OnRagdollDisable;
 
+        public bool IsRagdollActive { get; private set; }
+
         public override void OnNetworkSpawn()
         {
             if (_root == null)
-                throw new System.NullReferenceException("Rig root is not setted");
+                throw new NullReferenceException("Rig root is not setted");
 
             _rigidbodies = _root.GetComponentsInChildren<Rigidbody>();
 
@@ -37,13 +39,13 @@ namespace FabrShooter
                 component.enabled = true;
             }
 
-            Debug.Log($"Ragdoll disabled for client({OwnerClientId})");
-
             foreach (var rigidbody in _rigidbodies)
             {
                 rigidbody.isKinematic = true;
                 rigidbody.useGravity = false;
             }
+
+            IsRagdollActive = false;
 
             OnRagdollDisable?.Invoke();
         }
@@ -51,8 +53,6 @@ namespace FabrShooter
         [ClientRpc]
         public void EnableRagdollClientRpc()
         {
-            Debug.Log($"Ragdoll enabled for client({OwnerClientId})");
-
             foreach (var component in _componentsToDisableOnRegdoll)
             {
                 if (component == null)
@@ -67,16 +67,18 @@ namespace FabrShooter
                 rigidbody.useGravity = true;
             }
 
+            IsRagdollActive = true;
+
             OnRagdollEnable?.Invoke();
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void RequestDisableRagdollServerRpc()
         {
             DisableRagdollClientRpc();
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void RequestEnableRagdollServerRpc()
         {
             EnableRagdollClientRpc();

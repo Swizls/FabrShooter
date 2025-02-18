@@ -2,55 +2,56 @@ using Game.Input;
 using System.Collections;
 using UnityEngine;
 
-public class Hook : MonoBehaviour
+namespace FabrShooter
 {
-    [SerializeField] private float _hookSpeed;
-
-    private PlayerMovement _playerMovement;
-    private PlayerInput _playerInput;
-
-    private Transform _cameraTransform;
-
-    private void Start()
+    public class Hook : MonoBehaviour, IPlayerInitializableComponent
     {
-        _playerMovement = GetComponent<PlayerMovement>();
+        [SerializeField] private float _hookSpeed;
 
-        _cameraTransform = GetComponentInChildren<Camera>().transform;
+        private PlayerMovement _playerMovement;
+        private PlayerInput _playerInput;
 
-        _playerInput = new PlayerInput();
+        private Transform _cameraTransform;
 
-        _playerInput.Player.Enable();
-
-        _playerInput.Player.Hook.performed += StartHook;
-    }
-
-    private void StartHook(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
-        if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward , out RaycastHit hit))
-            return;
-
-        StartCoroutine(StartHook(hit.point));
-    }
-
-
-    private IEnumerator StartHook(Vector3 hitPostion)
-    {
-        _playerMovement.enabled = false;
-
-        while (_playerInput.Player.Hook.IsPressed())
+        public void Initialize()
         {
-            if(IsDistanceReached() == false)
-                transform.position = Vector3.MoveTowards(transform.position, hitPostion, _hookSpeed * Time.deltaTime);
+            _playerMovement = GetComponent<PlayerMovement>();
 
-            yield return new WaitForEndOfFrame();
+            _cameraTransform = GetComponentInChildren<Camera>().transform;
+
+            _playerInput = new PlayerInput();
+            _playerInput.Player.Enable();
+            _playerInput.Player.Hook.performed += StartHook;
         }
 
-        _playerMovement.enabled = true;
-
-        bool IsDistanceReached()
+        private void StartHook(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
-            const float MIN_DISTANCE_TO_STOP = 1f;
-            return Vector3.Distance(transform.position, hitPostion) < MIN_DISTANCE_TO_STOP;
+            if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
+                return;
+
+            StartCoroutine(StartHook(hit.point));
+        }
+
+
+        private IEnumerator StartHook(Vector3 hitPostion)
+        {
+            _playerMovement.enabled = false;
+
+            while (_playerInput.Player.Hook.IsPressed())
+            {
+                if (IsDistanceReached() == false)
+                    transform.position = Vector3.MoveTowards(transform.position, hitPostion, _hookSpeed * Time.deltaTime);
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            _playerMovement.enabled = true;
+
+            bool IsDistanceReached()
+            {
+                const float MIN_DISTANCE_TO_STOP = 1f;
+                return Vector3.Distance(transform.position, hitPostion) < MIN_DISTANCE_TO_STOP;
+            }
         }
     }
 }

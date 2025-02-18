@@ -6,7 +6,7 @@ namespace FabrShooter
 {
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Inventory))]
-    public class PlayerAttack : MonoBehaviour
+    public class PlayerAttack : MonoBehaviour, IPlayerInitializableComponent
     {
         [SerializeField] private int _damage;
         [SerializeField] private AudioClip _shotSFX;
@@ -19,7 +19,7 @@ namespace FabrShooter
 
         private ServerDamageDelaer _damageDealer;
 
-        private void Start()
+        public void Initialize()
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _audioSource = GetComponent<AudioSource>();
@@ -31,6 +31,12 @@ namespace FabrShooter
             _playerInput.Player.Attack.performed += Attack;
 
             _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
+        }
+
+        private void OnEnable()
+        {
+            if (_playerInput != null)
+                _playerInput.Player.Attack.performed += Attack;
         }
 
         private void OnDisable()
@@ -54,7 +60,8 @@ namespace FabrShooter
                         DamageSenderType.Client,
                         targetId,
                         _inventory.CurrentWeapon.Damage,
-                        _inventory.CurrentWeapon.UseKnockback
+                        _inventory.CurrentWeapon.UseKnockback,
+                        _inventory.CurrentWeapon.KnockbackForce
                     );
 
                     _damageDealer.DealDamageServerRpc(attackData);

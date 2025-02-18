@@ -14,6 +14,12 @@ namespace FabrShooter
 
             if (targetObject.TryGetComponent(out Health health))
                 health.TakeDamageClientRpc(data.Damage);
+
+            if (!data.UseKnockback)
+                return;
+
+            if (targetObject.TryGetComponent(out KnockbackController knockbackController))
+                knockbackController.ApplyKnockbackClientRpc(data.KnockbackForce);
         }
     }
 }

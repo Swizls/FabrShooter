@@ -1,7 +1,6 @@
 using TMPro;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TestIP : MonoBehaviour
 {
@@ -12,12 +11,11 @@ public class TestIP : MonoBehaviour
     {
         string ipAddress = _transport.ConnectionData.Address.ToString();
          _inputField.text = ipAddress;
-        Debug.Log(_inputField.text);
     }
 
     public void SetIP()
     {
-        Debug.Log(_inputField.text);
+        Debug.Log($"Connected to: {_inputField.text}");
 
         _transport.ConnectionData.Address = _inputField.text;
     }
