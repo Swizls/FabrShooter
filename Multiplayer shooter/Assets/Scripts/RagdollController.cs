@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,6 +12,9 @@ namespace FabrShooter
         [SerializeField] private List<Behaviour> _componentsToDisableOnRegdoll;
 
         private Rigidbody[] _rigidbodies;
+
+        public event Action OnRagdollEnable;
+        public event Action OnRagdollDisable;
 
         public override void OnNetworkSpawn()
         {
@@ -40,6 +44,8 @@ namespace FabrShooter
                 rigidbody.isKinematic = true;
                 rigidbody.useGravity = false;
             }
+
+            OnRagdollDisable?.Invoke();
         }
 
         [ClientRpc]
@@ -60,6 +66,8 @@ namespace FabrShooter
                 rigidbody.isKinematic = false;
                 rigidbody.useGravity = true;
             }
+
+            OnRagdollEnable?.Invoke();
         }
 
         [ServerRpc]
