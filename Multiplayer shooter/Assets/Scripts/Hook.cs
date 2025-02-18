@@ -1,4 +1,5 @@
-using Game.Input;
+using FabrShooter.Input;
+using FabrShooter.Player;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace FabrShooter
         [SerializeField] private float _hookSpeed;
 
         private PlayerMovement _playerMovement;
-        private PlayerInput _playerInput;
+        private PlayerInputActions _playerInputActions;
 
         private Transform _cameraTransform;
 
@@ -19,27 +20,27 @@ namespace FabrShooter
 
             _cameraTransform = GetComponentInChildren<Camera>().transform;
 
-            _playerInput = new PlayerInput();
-            _playerInput.Player.Enable();
-            _playerInput.Player.Hook.performed += StartHook;
+            _playerInputActions = new PlayerInputActions();
+            _playerInputActions.Player.Enable();
+            _playerInputActions.Player.Hook.performed += StartHook;
         }
 
         private void OnEnable()
         {
-            if (_playerInput == null)
+            if (_playerInputActions == null)
                 return;
 
-            _playerInput.Player.Hook.performed += StartHook;
-            _playerInput.Player.Enable();
+            _playerInputActions.Player.Hook.performed += StartHook;
+            _playerInputActions.Player.Enable();
         }
 
         private void OnDisable()
         {
-            if (_playerInput == null)
+            if (_playerInputActions == null)
                 return;
 
-            _playerInput.Player.Hook.performed -= StartHook;
-            _playerInput.Player.Disable();
+            _playerInputActions.Player.Hook.performed -= StartHook;
+            _playerInputActions.Player.Disable();
         }
 
         private void StartHook(UnityEngine.InputSystem.InputAction.CallbackContext context)
@@ -55,7 +56,7 @@ namespace FabrShooter
         {
             _playerMovement.enabled = false;
 
-            while (_playerInput.Player.Hook.IsPressed())
+            while (_playerInputActions.Player.Hook.IsPressed())
             {
                 if (IsDistanceReached() == false)
                     transform.position = Vector3.MoveTowards(transform.position, hitPostion, _hookSpeed * Time.deltaTime);

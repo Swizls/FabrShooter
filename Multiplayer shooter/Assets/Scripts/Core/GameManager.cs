@@ -26,7 +26,6 @@ namespace FabrShooter.Core
         public void EndGame()
         {
             NetworkManager.Singleton.Shutdown();
-            _sceneLoader.OnMainMenuLoad -= EndGame;
         }
 
         public void Disconnect(ulong clientID)
@@ -52,7 +51,6 @@ namespace FabrShooter.Core
                 NetworkManager.Singleton.StartClient();
 
             NetworkManager.Singleton.OnClientDisconnectCallback += Disconnect;
-            _sceneLoader.OnMainMenuLoad += EndGame;
         }
     }
 }

@@ -1,4 +1,4 @@
-using Game.Input;
+using FabrShooter.Player;
 using Unity.Netcode;
 using UnityEngine;
 

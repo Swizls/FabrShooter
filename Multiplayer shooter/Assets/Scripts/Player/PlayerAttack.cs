@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FabrShooter.Input;
 
 namespace FabrShooter 
 {
@@ -13,7 +14,7 @@ namespace FabrShooter
 
         private Transform _cameraTransform;
 
-        private PlayerInput _playerInput;
+        private PlayerInputActions _playerInputActions;
         private Inventory _inventory;
         private AudioSource _audioSource;
 
@@ -25,24 +26,30 @@ namespace FabrShooter
             _audioSource = GetComponent<AudioSource>();
             _inventory = GetComponent<Inventory>();
 
-            _playerInput = new PlayerInput();
+            _playerInputActions = new PlayerInputActions();
 
-            _playerInput.Enable();
-            _playerInput.Player.Attack.performed += Attack;
+            _playerInputActions.Enable();
+            _playerInputActions.Player.Attack.performed += Attack;
 
             _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
         }
 
         private void OnEnable()
         {
-            if (_playerInput != null)
-                _playerInput.Player.Attack.performed += Attack;
+            if (_playerInputActions == null)
+                return;
+
+            _playerInputActions.Player.Enable();
+            _playerInputActions.Player.Attack.performed += Attack;
         }
 
         private void OnDisable()
         {
-            if (_playerInput != null)
-                _playerInput.Player.Attack.performed -= Attack;
+            if (_playerInputActions == null)
+                return;
+
+            _playerInputActions.Player.Disable();
+            _playerInputActions.Player.Attack.performed -= Attack;
         }
 
         private void Attack(InputAction.CallbackContext context)

@@ -1,11 +1,10 @@
+using FabrShooter.Input;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using FabrShooter;
-using FabrShooter.Player;
 
-namespace Game.Input
+namespace FabrShooter.Player
 {
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour, IPlayerInitializableComponent
@@ -16,7 +15,7 @@ namespace Game.Input
         [SerializeField] private Camera _camera;
 
         private CharacterController _characterController;
-        private PlayerInput _playerInputActions;
+        private PlayerInputActions _playerInputActions;
 
         private Vector3 _movementDirection;
         private Vector3 _velocity;
@@ -53,7 +52,7 @@ namespace Game.Input
         public void Initialize()
         {
             _characterController = GetComponent<CharacterController>();
-            _playerInputActions = new PlayerInput();
+            _playerInputActions = new PlayerInputActions();
 
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Jump.performed += Jump;
@@ -167,7 +166,7 @@ namespace Game.Input
             forward.Normalize();
             right.Normalize();
 
-            _movementDirection = (forward * playerInput.y) + (right * playerInput.x);
+            _movementDirection = forward * playerInput.y + right * playerInput.x;
         }
     }
 }
