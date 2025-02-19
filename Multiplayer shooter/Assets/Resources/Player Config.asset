@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkingSpeed: 5
   _spritingMultiplier: 3
-  _movementInertia: 0.4
+  _movementInertia: 0.1
   _maxStamina: 100
   _staminaConsumptionSpeed: 1
   _staminaRestoreSpeed: 1
   _jumpForce: 2
+  _wallJumpForce: 3
   _jumpInertia: 0.01
   _sensitivity: 5
   _maxYAngle: 90

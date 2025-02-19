@@ -15,6 +15,7 @@ namespace FabrShooter.Player
         [SerializeField] private float _staminaRestoreSpeed;
         [Space]
         [SerializeField] private float _jumpForce;
+        [SerializeField] private float _wallJumpForce;
         [SerializeField][Range(0f, 1f)] private float _jumpInertia;
 
         [Space]
@@ -26,6 +27,7 @@ namespace FabrShooter.Player
         public float SprintingMultiplier => _spritingMultiplier;
         public float MovementInertia => _movementInertia;
         public float JumpForce => _jumpForce;
+        public float WallJumpForce => _wallJumpForce;
         public float JumpInertia => _jumpInertia;
 
         public float MaxStamina => _maxStamina;

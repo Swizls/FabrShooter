@@ -56,10 +56,12 @@ namespace FabrShooter
         {
             _playerMovement.enabled = false;
 
+            Vector3 hookDirection = _cameraTransform.forward;
+
             while (_playerInputActions.Player.Hook.IsPressed())
             {
                 if (IsDistanceReached() == false)
-                    transform.position = Vector3.MoveTowards(transform.position, hitPostion, _hookSpeed * Time.deltaTime);
+                    _playerMovement.CharacterController.Move(hookDirection * _hookSpeed * Time.deltaTime);
 
                 yield return new WaitForEndOfFrame();
             }

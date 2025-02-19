@@ -36,6 +36,8 @@ namespace FabrShooter.Player
         public PlayerConfigSO Config => _config;
         public Vector3 MovementDirection => _movementDirection;
 
+        public CharacterController CharacterController => _characterController;
+
         public bool IsRunning
         {
             get { return _playerInputActions.Player.Sprint.ReadValue<float>() > 0 && IsMoving; }
@@ -110,7 +112,10 @@ namespace FabrShooter.Player
         private void ApplyGravity()
         {
             if (IsFlying == false)
+            {
+                _velocity.y = 0;
                 return;
+            }
 
             _velocity.y += GRAVITY * Time.deltaTime;
             _characterController.Move(_velocity * Time.deltaTime);
@@ -121,9 +126,10 @@ namespace FabrShooter.Player
             if (!Application.isPlaying)
                 return;
 
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.green;
             Gizmos.DrawRay(transform.position, _movementDirection);
-            Gizmos.DrawRay(transform.position, transform.forward);
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position, _velocity);
         }
         #endregion
 
@@ -139,11 +145,19 @@ namespace FabrShooter.Player
 
             float inertia = IsFlying ? _config.JumpInertia : _config.MovementInertia;
 
-            if (IsFlying)
-                _movementDirection = Vector3.zero;
+            Vector3 forwardComponent = Vector3.Project(_movementDirection, _velocity.normalized);
+            Vector3 sideComponent = _movementDirection - forwardComponent;
 
-            _velocity.x = Mathf.Lerp(_velocity.x, _movementDirection.x * speed, inertia);
-            _velocity.z = Mathf.Lerp(_velocity.z, _movementDirection.z * speed, inertia);
+            if (IsFlying)
+            {
+                forwardComponent *= _config.JumpInertia;
+                _movementDirection = forwardComponent + sideComponent;
+            }
+
+            Debug.Log($"Velocity direction: {_velocity}; Forward Component: {forwardComponent}; Movement Direction: {_movementDirection}; Inertia: {inertia}");
+
+            _velocity.x = Mathf.Lerp(_velocity.x, _movementDirection.x * speed, _config.MovementInertia);
+            _velocity.z = Mathf.Lerp(_velocity.z, _movementDirection.z * speed, _config.MovementInertia);
 
             _characterController.Move(_velocity * Time.deltaTime);
         }
@@ -158,9 +172,9 @@ namespace FabrShooter.Player
             if(!IsGroundend)
             {
                 if (IsSurfaceOnGivenDirection(-transform.right))
-                    jumpDirection += transform.right;
+                    jumpDirection += (transform.right + transform.forward) * _config.WallJumpForce;
                 else if (IsSurfaceOnGivenDirection(transform.right))
-                    jumpDirection -= transform.right;
+                    jumpDirection += (-transform.right + transform.forward) * _config.WallJumpForce;
             }
 
             _velocity = jumpDirection * Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
