@@ -10,6 +10,7 @@ namespace FabrShooter.Player
     public class PlayerMovement : MonoBehaviour, IPlayerInitializableComponent
     {
         private const float GRAVITY = -9.81f;
+        private const float DISTANCE_TO_DETECT_GROUND = 1.2f;
 
         [SerializeField] private PlayerConfigSO _config;
         [SerializeField] private Camera _camera;
@@ -46,7 +47,21 @@ namespace FabrShooter.Player
             get { return _movementDirection.x != 0 || _movementDirection.z != 0; }
         }
 
-        public bool IsFlying => !_characterController.isGrounded;
+        public bool IsFlying
+        {
+            get
+            {
+                return !IsGroundend;
+            }
+        }
+
+        public bool IsGroundend
+        {
+            get
+            {
+                return Physics.Raycast(transform.position, Vector3.down, DISTANCE_TO_DETECT_GROUND, LayerMask.GetMask("Default"));
+            }
+        }
 
         #region MONO
         public void Initialize()
@@ -119,9 +134,7 @@ namespace FabrShooter.Player
             float speed = IsRunning && IsAbleToRun ? _config.WalkingSpeed * _config.SprintingMultiplier : _config.WalkingSpeed;
 
             if(IsFlying == false)
-                _velocity = Vector3.MoveTowards(_velocity, _movementDirection * speed, _config.MovementInertia);
-
-            _velocity.y = 0;
+                _velocity = Vector3.Lerp(_velocity, _movementDirection * speed, _config.MovementInertia);
 
             _characterController.Move(_velocity * Time.deltaTime);
         }
