@@ -133,8 +133,13 @@ namespace FabrShooter.Player
 
             float speed = IsRunning && IsAbleToRun ? _config.WalkingSpeed * _config.SprintingMultiplier : _config.WalkingSpeed;
 
-            if(IsFlying == false)
-                _velocity = Vector3.Lerp(_velocity, _movementDirection * speed, _config.MovementInertia);
+            float inertia = IsFlying ? _config.JumpInertia : _config.MovementInertia;
+
+            if (IsFlying)
+                _movementDirection = Vector3.zero;
+
+            _velocity.x = Mathf.Lerp(_velocity.x, _movementDirection.x * speed, inertia);
+            _velocity.z = Mathf.Lerp(_velocity.z, _movementDirection.z * speed, inertia);
 
             _characterController.Move(_velocity * Time.deltaTime);
         }

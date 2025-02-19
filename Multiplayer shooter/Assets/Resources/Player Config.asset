@@ -18,6 +18,7 @@ MonoBehaviour:
   _maxStamina: 100
   _staminaConsumptionSpeed: 1
   _staminaRestoreSpeed: 1
-  _jumpForce: 3
+  _jumpForce: 2
+  _jumpInertia: 0.3
   _sensitivity: 5
   _maxYAngle: 90
