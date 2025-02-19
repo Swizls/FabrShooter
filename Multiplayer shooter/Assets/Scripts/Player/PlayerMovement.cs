@@ -11,9 +11,13 @@ namespace FabrShooter.Player
     {
         private const float GRAVITY = -9.81f;
         private const float DISTANCE_TO_DETECT_GROUND = 1.2f;
+        private const float DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP = 2f;
 
         [SerializeField] private PlayerConfigSO _config;
         [SerializeField] private Camera _camera;
+
+        [SerializeField] private WallDetector _leftWallDetector;
+        [SerializeField] private WallDetector _rightWallDetector;
 
         private CharacterController _characterController;
         private PlayerInputActions _playerInputActions;
@@ -146,13 +150,33 @@ namespace FabrShooter.Player
 
         private void Jump(InputAction.CallbackContext context)
         {
-            if (IsFlying)
+            if (IsFlying && CanDoWallJump() == false)
                 return;
 
-            _velocity.y = Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
+            Vector3 jumpDirection = Vector3.up;
+
+            if(!IsGroundend)
+            {
+                if (IsSurfaceOnGivenDirection(-transform.right))
+                    jumpDirection += transform.right;
+                else if (IsSurfaceOnGivenDirection(transform.right))
+                    jumpDirection -= transform.right;
+            }
+
+            _velocity = jumpDirection * Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
 
             _characterController.Move(_velocity * Time.deltaTime);
             Jumped?.Invoke();
+
+            bool CanDoWallJump()
+            {
+                return IsSurfaceOnGivenDirection(transform.right) || IsSurfaceOnGivenDirection(-transform.right);
+            }
+
+            bool IsSurfaceOnGivenDirection(Vector3 direction)
+            {
+                return Physics.Raycast(transform.position, direction, DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP, LayerMask.GetMask("Default"));
+            }
         }
 
         private IEnumerator ConsumeStamina()
