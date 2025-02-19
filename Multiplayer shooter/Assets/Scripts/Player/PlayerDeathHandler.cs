@@ -3,17 +3,22 @@ using UnityEngine;
 
 namespace FabrShooter
 {
+    [RequireComponent(typeof(AudioSource))]
     public class PlayerDeathHandler : MonoBehaviour, IPlayerInitializableComponent
     {
+        [SerializeField] private AudioClip[] _deathSounds; 
+
         private Health _health;
         private RagdollController _ragdollController;
         private KnockbackController _knockbackController;
+        private AudioSource _audioSource;
 
         public void Initialize()
         {
             _health = GetComponent<Health>();
             _ragdollController = GetComponentInChildren<RagdollController>();
             _knockbackController = GetComponent<KnockbackController>();
+            _audioSource = GetComponent<AudioSource>();
 
             _health.OnDeath += OnPlayerDeath;
         }
@@ -30,6 +35,7 @@ namespace FabrShooter
 
             _knockbackController.enabled = false;
             _ragdollController.RequestEnableRagdollServerRpc();
+            _audioSource.PlayOneShot(_deathSounds[Random.Range(0, _deathSounds.Length)]);
 
             StartCoroutine(DelayRespawnRequest(clientID));
         }

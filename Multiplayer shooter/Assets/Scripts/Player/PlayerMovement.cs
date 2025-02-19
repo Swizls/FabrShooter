@@ -16,9 +16,6 @@ namespace FabrShooter.Player
         [SerializeField] private PlayerConfigSO _config;
         [SerializeField] private Camera _camera;
 
-        [SerializeField] private WallDetector _leftWallDetector;
-        [SerializeField] private WallDetector _rightWallDetector;
-
         private CharacterController _characterController;
         private PlayerInputActions _playerInputActions;
 
@@ -143,18 +140,14 @@ namespace FabrShooter.Player
 
             float speed = IsRunning && IsAbleToRun ? _config.WalkingSpeed * _config.SprintingMultiplier : _config.WalkingSpeed;
 
-            float inertia = IsFlying ? _config.JumpInertia : _config.MovementInertia;
-
-            Vector3 forwardComponent = Vector3.Project(_movementDirection, _velocity.normalized);
-            Vector3 sideComponent = _movementDirection - forwardComponent;
-
             if (IsFlying)
             {
+                Vector3 forwardComponent = Vector3.Project(_movementDirection, _velocity.normalized);
+                Vector3 sideComponent = _movementDirection - forwardComponent;
+
                 forwardComponent *= _config.JumpInertia;
                 _movementDirection = forwardComponent + sideComponent;
             }
-
-            Debug.Log($"Velocity direction: {_velocity}; Forward Component: {forwardComponent}; Movement Direction: {_movementDirection}; Inertia: {inertia}");
 
             _velocity.x = Mathf.Lerp(_velocity.x, _movementDirection.x * speed, _config.MovementInertia);
             _velocity.z = Mathf.Lerp(_velocity.z, _movementDirection.z * speed, _config.MovementInertia);

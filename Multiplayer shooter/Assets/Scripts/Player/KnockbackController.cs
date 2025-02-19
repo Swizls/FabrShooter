@@ -5,16 +5,20 @@ using UnityEngine;
 namespace FabrShooter
 {
     [RequireComponent (typeof(RagdollController))]
+    [RequireComponent (typeof(AudioSource))]
     public class KnockbackController : NetworkBehaviour
     {
         private const float KNOCKBACK_TIME = 5f;
         [SerializeField] private Rigidbody _targetBoneRigidbody;
+        [SerializeField] private AudioClip[] _knockbackSounds;
         
         private RagdollController _ragdollController;
+        private AudioSource _audioSource;
 
         private void Start()
         {
             _ragdollController = GetComponent<RagdollController>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void OnDisable()
@@ -32,6 +36,7 @@ namespace FabrShooter
             _targetBoneRigidbody.AddForce(-transform.forward * knockbackForce, ForceMode.Force);
 
             StartCoroutine(WaitForKnockbackEnd(KNOCKBACK_TIME));
+            _audioSource.PlayOneShot(_knockbackSounds[Random.Range(0, _knockbackSounds.Length)]);
             _ragdollController.RequestEnableRagdollServerRpc();
         }
 
