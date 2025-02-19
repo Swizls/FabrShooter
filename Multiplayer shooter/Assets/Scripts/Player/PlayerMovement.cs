@@ -90,6 +90,9 @@ namespace FabrShooter.Player
 
         private void ApplyGravity()
         {
+            if (IsFlying == false)
+                return;
+
             _velocity.y += GRAVITY * Time.deltaTime;
             _characterController.Move(_velocity * Time.deltaTime);
         }
@@ -115,12 +118,17 @@ namespace FabrShooter.Player
 
             float speed = IsRunning && IsAbleToRun ? _config.WalkingSpeed * _config.SprintingMultiplier : _config.WalkingSpeed;
 
-            _characterController.Move(_movementDirection * speed * Time.deltaTime);
+            if(IsFlying == false)
+                _velocity = Vector3.MoveTowards(_velocity, _movementDirection * speed, _config.MovementInertia);
+
+            _velocity.y = 0;
+
+            _characterController.Move(_velocity * Time.deltaTime);
         }
 
         private void Jump(InputAction.CallbackContext context)
         {
-            if (_characterController.isGrounded == false)
+            if (IsFlying)
                 return;
 
             _velocity.y = Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);

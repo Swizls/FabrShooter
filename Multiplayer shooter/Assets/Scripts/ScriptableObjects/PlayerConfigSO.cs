@@ -6,8 +6,9 @@ namespace FabrShooter.Player
     public class PlayerConfigSO : ScriptableObject
     {
         [Header("Movement")]
-        [SerializeField][Range(0f, 30f)] private float _walkingSpeed;
-        [SerializeField][Range(1f, 3f)] private float _spritingMultiplier;
+        [SerializeField] private float _walkingSpeed;
+        [SerializeField] private float _spritingMultiplier;
+        [SerializeField][Range(0f, 1f)] private float _movementInertia;
         [Space]
         [SerializeField] private float _maxStamina;
         [SerializeField] private float _staminaConsumptionSpeed;
@@ -22,6 +23,7 @@ namespace FabrShooter.Player
 
         public float WalkingSpeed => _walkingSpeed;
         public float SprintingMultiplier => _spritingMultiplier;
+        public float MovementInertia => _movementInertia;
         public float JumpForce => _jumpForce;
 
         public float MaxStamina => _maxStamina;
