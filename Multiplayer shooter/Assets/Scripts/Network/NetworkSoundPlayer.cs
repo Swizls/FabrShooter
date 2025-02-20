@@ -11,7 +11,6 @@ namespace FabrShooter
 
         private Dictionary<string, AudioClip[]> _audioClips = new Dictionary<string, AudioClip[]>();
 
-        public bool IsClipsAdded { get; private set; }
         public bool IsPlaying => _audioSource.isPlaying;
 
         public override void OnNetworkSpawn()
@@ -21,8 +20,13 @@ namespace FabrShooter
 
         public void AddClips(string key,AudioClip[] audioClipArray)
         {
+            if (_audioClips.ContainsKey(key))
+            {
+                Debug.LogError($"Key {key} already added in client({OwnerClientId})");
+                return;
+            }
+
             _audioClips.Add(key, audioClipArray);
-            IsClipsAdded = true;
         }
 
         [ServerRpc(RequireOwnership = false)]

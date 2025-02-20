@@ -7,21 +7,20 @@ using System.Collections;
 
 namespace FabrShooter 
 {
-    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(NetworkSoundPlayer))]
     [RequireComponent(typeof(Inventory))]
     public class PlayerAttack : MonoBehaviour, IPlayerInitializableComponent
     {
         private const float MAX_ATTACK_RANGE = 5f;
         private const float PUNCH_COOLDOWN_TIME = 2f;
 
-        [SerializeField] private int _damage;
-        [SerializeField] private AudioClip _shotSFX;
+        [SerializeField] private AudioClip[] _shotSFX;
 
         private Transform _cameraTransform;
 
         private PlayerInputActions _playerInputActions;
         private Inventory _inventory;
-        private AudioSource _audioSource;
+        private NetworkSoundPlayer _soundPlayer;
 
         private ServerDamageDelaer _damageDealer;
 
@@ -32,7 +31,7 @@ namespace FabrShooter
         public void Initialize()
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
-            _audioSource = GetComponent<AudioSource>();
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
             _inventory = GetComponent<Inventory>();
 
             _playerInputActions = new PlayerInputActions();
@@ -42,6 +41,8 @@ namespace FabrShooter
             _playerInputActions.Player.Punch.performed += Punch;
 
             _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
+
+            _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
         }
 
         private void OnEnable()
@@ -62,6 +63,15 @@ namespace FabrShooter
             _playerInputActions.Player.Disable();
             _playerInputActions.Player.Attack.performed -= WeaponAttack;
             _playerInputActions.Player.Punch.performed -= Punch;
+        }
+
+        private void OnDestroy()
+        {
+            if(_soundPlayer == null)
+
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
+
+            _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
         }
 
         private void WeaponAttack(InputAction.CallbackContext context)
@@ -123,8 +133,7 @@ namespace FabrShooter
 
         private void PlayShotSFX()
         {
-            _audioSource.clip = _shotSFX;
-            _audioSource.Play();
+            _soundPlayer.PlaySoundServerRpc(nameof(_shotSFX), UnityEngine.Random.Range(0, _shotSFX.Length));
         }
 
         private IEnumerator PunchCooldown()
