@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 6968080305832661315}
   - component: {fileID: 9139203954337533800}
   - component: {fileID: 7094672004646933515}
+  - component: {fileID: 3482158015321595006}
   m_Layer: 6
   m_Name: Footsteps
   m_TagString: Untagged
@@ -427,7 +428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccec6cc4090664243b5a68d779874eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
   _walkingSFX:
   - {fileID: 8300000, guid: 32a5a643a2ab43f4fa196bf2106eb798, type: 3}
   - {fileID: 8300000, guid: 71b417317857e7747960d87a208cede8, type: 3}
@@ -451,6 +451,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d807c3a15aa83d841a4afafa12df7572, type: 3}
   - {fileID: 8300000, guid: 7f8efc62fd61a3b4ba086a9153181196, type: 3}
   - {fileID: 8300000, guid: 6adfea5df9159824c990915a7f172297, type: 3}
+--- !u!114 &3482158015321595006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190931819157302208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65e36a3d40efbc94fbf2fffbc1f7252b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &7224542654078037021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,6 +1227,7 @@ MonoBehaviour:
   - {fileID: 8902774501964331573}
   - {fileID: 1667992498702006102}
   - {fileID: 1780928761626770333}
+  - {fileID: 7094672004646933515}
 --- !u!114 &1285732701526285236
 MonoBehaviour:
   m_ObjectHideFlags: 0

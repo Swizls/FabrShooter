@@ -13,6 +13,7 @@ namespace FabrShooter
     {
         private const float MAX_ATTACK_RANGE = 5f;
         private const float PUNCH_COOLDOWN_TIME = 2f;
+
         [SerializeField] private int _damage;
         [SerializeField] private AudioClip _shotSFX;
 

@@ -1,112 +1,94 @@
 using FabrShooter.Player;
-using Unity.Netcode;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class PlayerMovementSoundController : NetworkBehaviour
+namespace FabrShooter
 {
-    [SerializeField] private AudioClip[] _walkingSFX;
-    [SerializeField] private AudioClip[] _runningSFX;
-    [SerializeField] private AudioClip[] _jumpingSFX;
-
-    private AudioSource _audioSource;
-    private PlayerMovement _playerMovement;
-
-    public override void OnNetworkSpawn()
+    [RequireComponent(typeof(NetworkSoundPlayer))]
+    public class PlayerMovementSoundController : MonoBehaviour, IPlayerInitializableComponent
     {
-        _audioSource = GetComponent<AudioSource>();
-        _playerMovement = GetComponentInParent<PlayerMovement>();
+        [SerializeField] private AudioClip[] _walkingSFX;
+        [SerializeField] private AudioClip[] _runningSFX;
+        [SerializeField] private AudioClip[] _jumpingSFX;
 
-        _playerMovement.Jumped += PlayJumpSound;
-    }
+        private NetworkSoundPlayer _soundPlayer;
+        private PlayerMovement _playerMovement;
 
-    private void OnDisable()
-    {
-        _playerMovement.Jumped -= PlayJumpSound;
-    }
-
-    private void Update()
-    {
-        if (!IsOwner) return; 
-
-        if (_playerMovement.IsMoving && !_audioSource.isPlaying)
+        public void Initialize()
         {
-            if (_playerMovement.IsFlying)
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
+            _playerMovement = GetComponentInParent<PlayerMovement>();
+
+            _playerMovement.Jumped += PlayJumpSound;
+
+            _soundPlayer.AddClips(nameof(_walkingSFX), _walkingSFX);
+            _soundPlayer.AddClips(nameof(_runningSFX), _runningSFX);
+            _soundPlayer.AddClips(nameof(_jumpingSFX), _jumpingSFX);
+        }
+
+        private void OnEnable()
+        {
+            if (_playerMovement == null)
+                return;
+            
+            _playerMovement.Jumped += PlayJumpSound;
+        }
+
+        private void OnDisable()
+        {
+            if (_playerMovement == null)
                 return;
 
-            if (_playerMovement.IsRunning)
-                PlayRunningSound();
-            else
-                PlayWalkingSound();
+            _playerMovement.Jumped -= PlayJumpSound;
         }
-        else if (!_playerMovement.IsMoving && !_playerMovement.IsFlying)
+
+        private void OnDestroy()
         {
-            StopAnySound();
+            if (_soundPlayer != null)
+                return;
+
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
+
+            _soundPlayer.AddClips(nameof(_walkingSFX), _walkingSFX);
+            _soundPlayer.AddClips(nameof(_runningSFX), _runningSFX);
+            _soundPlayer.AddClips(nameof(_jumpingSFX), _jumpingSFX);
         }
-    }
 
-    private void PlayRunningSound()
-    {
-        _audioSource.clip = _runningSFX[Random.Range(0, _runningSFX.Length)];
-        _audioSource.Play();
+        private void Update()
+        {
+            if (_playerMovement.IsMoving && !_soundPlayer.IsPlaying)
+            {
+                if (_playerMovement.IsFlying)
+                    return;
 
-        PlayRunningSoundClientRpc();
-    }
+                if (_playerMovement.IsRunning)
+                    PlayRunningSound();
+                else
+                    PlayWalkingSound();
+            }
+            else if (!_playerMovement.IsMoving && !_playerMovement.IsFlying)
+            {
+                StopAnySound();
+            }
+        }
 
-    private void PlayJumpSound()
-    {
-        _audioSource.clip = _jumpingSFX[Random.Range(0, _jumpingSFX.Length)];
-        _audioSource.Play();
+        private void PlayRunningSound()
+        {
+            _soundPlayer.PlaySoundServerRpc(nameof(_runningSFX), Random.Range(0, _runningSFX.Length));
+        }
 
-        PlayJumpSoundClientRpc();
-    }
+        private void PlayJumpSound()
+        {
+            _soundPlayer.PlaySoundServerRpc(nameof(_jumpingSFX), Random.Range(0, _jumpingSFX.Length));
+        }
 
-    private void PlayWalkingSound()
-    {
-        _audioSource.clip = _walkingSFX[Random.Range(0, _walkingSFX.Length)];
-        _audioSource.Play();
+        private void PlayWalkingSound()
+        {
+            _soundPlayer.PlaySoundServerRpc(nameof(_walkingSFX), Random.Range(0, _walkingSFX.Length));
+        }
 
-        PlayFootstepSoundClientRpc();
-    }
-
-    private void StopAnySound()
-    {
-        _audioSource.Stop();
-
-        StopAnySoundClientRpc();
-    }
-
-    [ClientRpc]
-    private void PlayJumpSoundClientRpc()
-    {
-        if (IsOwner) return;
-
-        _audioSource.clip = _jumpingSFX[Random.Range(0, _jumpingSFX.Length)];
-        _audioSource.Play();
-    }
-
-    [ClientRpc]
-    private void PlayFootstepSoundClientRpc()
-    {
-        if(IsOwner) return;
-
-        _audioSource.clip = _walkingSFX[Random.Range(0, _walkingSFX.Length)];
-        _audioSource.Play();
-    }
-
-    [ClientRpc]
-    private void PlayRunningSoundClientRpc()
-    {
-        _audioSource.clip = _runningSFX[Random.Range(0, _runningSFX.Length)];
-        _audioSource.Play();
-    }
-
-
-    [ClientRpc]
-    private void StopAnySoundClientRpc()
-    {
-        if (IsOwner) return;
-
-        _audioSource.Stop();
+        private void StopAnySound()
+        {
+            _soundPlayer.StopSoundServerRpc();
+        }
     }
 }

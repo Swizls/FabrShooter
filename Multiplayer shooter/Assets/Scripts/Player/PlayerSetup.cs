@@ -1,4 +1,5 @@
 using FabrShooter;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,32 +12,34 @@ public class PlayerSetup : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (IsOwner)
-        {
-            IPlayerInitializableComponent[] components = GetComponents<IPlayerInitializableComponent>();
-
-            foreach (IPlayerInitializableComponent component in components)
-                component.Initialize();
-        }
+            InitializeLocalPlayer();
         else
-        {
+            InitializeClientPlayer();
+    }
 
-            _cameraObject.SetActive(false);
-            _characterController.enabled = false;
+    private void InitializeClientPlayer()
+    {
+        _cameraObject.SetActive(false);
+        _characterController.enabled = false;
 
-            DestroyLocalScripts();
-        }
+        DestroyLocalScripts();
+    }
+
+    private void InitializeLocalPlayer()
+    {
+        List<IPlayerInitializableComponent> components = GetComponentsInChildren<IPlayerInitializableComponent>().ToList();
+
+        foreach (IPlayerInitializableComponent component in components)
+            component.Initialize();
     }
 
     private void DestroyLocalScripts()
     {
-        MonoBehaviour[] localScripts = GetComponents<MonoBehaviour>()
+        List<MonoBehaviour> localScripts = GetComponentsInChildren<MonoBehaviour>()
                                         .Where(component => !typeof(NetworkBehaviour).IsAssignableFrom(component.GetType())
-                                        && component.GetType() != typeof(NetworkObject))
-                                        .ToArray();
+                                        && component.GetType() != typeof(NetworkObject)).ToList();
 
         foreach (var script in localScripts)
-        {
             Destroy(script);
-        }
     }
 }
