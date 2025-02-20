@@ -12,6 +12,8 @@ namespace FabrShooter
         private const string IS_FLYING = "IsFlying";
         private const string IS_RUNNING = "IsRunning";
         private const string PUNCH = "Punch";
+        private const string IS_SLIDING = "IsSliding";
+
         private float ANIMATION_CHANGE_SPEED = 0.1f;
 
         private PlayerMovement _playerMovement;
@@ -45,6 +47,12 @@ namespace FabrShooter
             SetMovementDirection();
             SetFlyingBool();
             SetIsRunningBool();
+            SetIsSlidingBool();
+        }
+
+        private void SetIsSlidingBool()
+        {
+            _animator.SetBool(IS_SLIDING, _playerMovement.IsSliding);
         }
 
         private void SetIsRunningBool()

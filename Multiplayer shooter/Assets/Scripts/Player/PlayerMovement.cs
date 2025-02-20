@@ -35,6 +35,7 @@ namespace FabrShooter.Player
         public Vector3 Velocity => _velocity;
 
         public CharacterController CharacterController => _characterController;
+        public bool IsSliding { get; private set; }
 
         public bool IsRunning
         {
@@ -99,6 +100,18 @@ namespace FabrShooter.Player
         private void Update()
         {
             ListenMovementInput();
+            ListenSlideInput();
+        }
+
+        private void ListenSlideInput()
+        {
+            if (IsRunning == false || _playerInputActions.Player.Crouch.IsPressed() == false)
+            {
+                IsSliding = false;
+                return;
+            }
+
+            IsSliding = true;
         }
 
         private void FixedUpdate()
@@ -141,7 +154,7 @@ namespace FabrShooter.Player
 
             float speed = IsRunning && IsAbleToRun ? _config.WalkingSpeed * _config.SprintingMultiplier : _config.WalkingSpeed;
 
-            if (IsFlying)
+            if (IsFlying || IsSliding)
             {
                 Vector3 forwardComponent = Vector3.Project(_movementDirection, _velocity.normalized);
                 Vector3 sideComponent = _movementDirection - forwardComponent;
