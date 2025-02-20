@@ -12,6 +12,7 @@ namespace FabrShooter
         [SerializeField] private List<Behaviour> _componentsToDisableOnRegdoll;
 
         private Rigidbody[] _rigidbodies;
+        private Collider[] _colliders;
 
         public event Action OnRagdollEnable;
         public event Action OnRagdollDisable;
@@ -24,6 +25,7 @@ namespace FabrShooter
                 throw new NullReferenceException("Rig root is not setted");
 
             _rigidbodies = _root.GetComponentsInChildren<Rigidbody>();
+            _colliders = _root.GetComponentsInChildren<Collider>();
 
             DisableRagdollClientRpc();
         }
@@ -43,6 +45,12 @@ namespace FabrShooter
             {
                 rigidbody.isKinematic = true;
                 rigidbody.useGravity = false;
+            }
+
+            if (IsOwner)
+            {
+                foreach (var collider in _colliders)
+                    collider.enabled = false;
             }
 
             IsRagdollActive = false;
@@ -65,6 +73,12 @@ namespace FabrShooter
             {
                 rigidbody.isKinematic = false;
                 rigidbody.useGravity = true;
+            }
+
+            if (IsOwner)
+            {
+                foreach (var collider in _colliders)
+                    collider.enabled = true;
             }
 
             IsRagdollActive = true;
