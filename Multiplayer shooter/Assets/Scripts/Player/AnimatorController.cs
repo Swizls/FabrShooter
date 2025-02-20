@@ -12,7 +12,7 @@ namespace FabrShooter
         private const string IS_FLYING = "IsFlying";
         private const string IS_RUNNING = "IsRunning";
         private const string PUNCH = "Punch";
-        private float ANIMATION_CHANGE_SPEED = 0.3f;
+        private float ANIMATION_CHANGE_SPEED = 0.1f;
 
         private PlayerMovement _playerMovement;
         private PlayerAttack _playerAttack;

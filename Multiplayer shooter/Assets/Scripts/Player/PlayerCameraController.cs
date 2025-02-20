@@ -6,10 +6,20 @@ namespace FabrShooter.Input
     public class PlayerCameraController : MonoBehaviour
     {
         [SerializeField] private PlayerConfigSO _config;
+        [SerializeField] private Transform _cameraAnchor;
+
+        private PlayerInputActions _playerInputActions;
 
         private Vector2 _currentRotation;
 
         private bool _canMoveCamera = true;
+
+        private void Start()
+        {
+            _playerInputActions = new PlayerInputActions();
+
+            _playerInputActions.Player.Enable();
+        }
 
         private void OnEnable()
         {
@@ -18,14 +28,21 @@ namespace FabrShooter.Input
 
         private void Update()
         {
+            if (_cameraAnchor == null)
+                return;
+
+            transform.position = _cameraAnchor.position;
+
             if (!_canMoveCamera)
                 return;
 
             if (Cursor.lockState != CursorLockMode.Locked)
                 return;
 
-            float mouseX = UnityEngine.Input.GetAxis("Mouse X") * _config.Sensitivity;
-            float mouseY = UnityEngine.Input.GetAxis("Mouse Y") * _config.Sensitivity;
+            Vector2 mouseInput = _playerInputActions.Player.Look.ReadValue<Vector2>();
+
+            float mouseX = mouseInput.x * _config.Sensitivity * Time.deltaTime;
+            float mouseY = mouseInput.y * _config.Sensitivity * Time.deltaTime;
 
             _currentRotation.x += mouseX;
             _currentRotation.y -= mouseY;
