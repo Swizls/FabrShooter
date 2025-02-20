@@ -31,7 +31,8 @@ namespace FabrShooter.Player
 
         public float Stamina => _stamina;
         public PlayerConfigSO Config => _config;
-        public Vector3 MovementDirection => _movementDirection;
+        public Vector2 InputDirection => _playerInputActions.Player.Move.ReadValue<Vector2>();
+        public Vector3 Velocity => _velocity;
 
         public CharacterController CharacterController => _characterController;
 

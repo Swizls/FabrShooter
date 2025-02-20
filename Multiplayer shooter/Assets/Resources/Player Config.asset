@@ -22,4 +22,4 @@ MonoBehaviour:
   _wallJumpForce: 3
   _jumpInertia: 0.01
   _sensitivity: 5
-  _maxYAngle: 90
+  _maxYAngle: 80
