@@ -19,7 +19,7 @@ namespace FabrShooter
         private Transform _cameraTransform;
 
         private RagdollController _ragdollController;
-        private PlayerCameraController _ragdollCameraController;
+        private PlayerCamera _ragdollCameraController;
 
         private Vector3 _defaultCameraOffset;
 
@@ -27,7 +27,7 @@ namespace FabrShooter
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _ragdollController = GetComponent<RagdollController>();
-            _ragdollCameraController = _ragdollCameraParent.GetComponent<PlayerCameraController>();
+            _ragdollCameraController = _ragdollCameraParent.GetComponent<PlayerCamera>();
 
             _defaultCameraParent = _cameraTransform.parent;
             _defaultCameraOffset = _cameraTransform.localPosition;

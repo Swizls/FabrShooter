@@ -1,5 +1,6 @@
 using FabrShooter.Core;
 using FabrShooter.Core.SceneManagment;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace FabrShooter
         private GameConnectionManager _connectionManager;
 
         private bool _isAnotherGEPsInScene;
+
+        public event Action GameInitialized;
 
         private void Awake()
         {
@@ -28,7 +31,7 @@ namespace FabrShooter
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Start ()
+        private void Start()
         {
             if (_isAnotherGEPsInScene)
                 return;
@@ -38,6 +41,8 @@ namespace FabrShooter
 
             ServiceLocator.Register<GameConnectionManager>(_connectionManager);
             ServiceLocator.Register<SceneLoader>(_sceneLoader);
+
+            GameInitialized?.Invoke();
         }
 
         private void OnDestroy()

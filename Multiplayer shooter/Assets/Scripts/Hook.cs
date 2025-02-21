@@ -14,7 +14,7 @@ namespace FabrShooter
 
         private Transform _cameraTransform;
 
-        public void Initialize()
+        public void InitializeLocalPlayer()
         {
             _playerMovement = GetComponent<PlayerMovement>();
 
@@ -23,6 +23,11 @@ namespace FabrShooter
             _playerInputActions = new PlayerInputActions();
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Hook.performed += StartHook;
+        }
+
+        public void InitializeClientPlayer()
+        {
+            Destroy(this);
         }
 
         private void OnEnable()

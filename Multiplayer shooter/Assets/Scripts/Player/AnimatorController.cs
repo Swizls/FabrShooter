@@ -20,13 +20,18 @@ namespace FabrShooter
         private PlayerAttack _playerAttack;
         private Animator _animator;
 
-        public void Initialize()
+        public void InitializeLocalPlayer()
         {
             _animator = GetComponentInChildren<Animator>();
             _playerMovement = GetComponent<PlayerMovement>();
             _playerAttack = GetComponent<PlayerAttack>();
 
             _playerAttack.OnPunch += ActivateTriggerPunch;
+        }
+
+        public void InitializeClientPlayer()
+        {
+            Destroy(this);
         }
 
         private void OnEnable()

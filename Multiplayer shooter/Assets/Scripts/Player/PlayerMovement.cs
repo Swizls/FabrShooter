@@ -69,7 +69,7 @@ namespace FabrShooter.Player
         }
 
         #region MONO
-        public void Initialize()
+        public void InitializeLocalPlayer()
         {
             _characterController = GetComponent<CharacterController>();
             _playerInputActions = new PlayerInputActions();
@@ -78,6 +78,12 @@ namespace FabrShooter.Player
             _playerInputActions.Player.Jump.performed += Jump;
             _stamina = _config.MaxStamina;
         }
+
+        public void InitializeClientPlayer()
+        {
+            Destroy(this);
+        }
+
 
         private void OnEnable()
         {

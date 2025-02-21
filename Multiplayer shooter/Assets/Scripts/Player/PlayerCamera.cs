@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace FabrShooter.Input
 {
-    public class PlayerCameraController : MonoBehaviour
+    public class PlayerCamera : MonoBehaviour, IPlayerInitializableComponent
     {
         [SerializeField] private PlayerConfigSO _config;
         [SerializeField] private Transform _cameraAnchor;
@@ -14,11 +14,18 @@ namespace FabrShooter.Input
 
         private bool _canMoveCamera = true;
 
-        private void Start()
+        public void InitializeLocalPlayer()
         {
             _playerInputActions = new PlayerInputActions();
-
             _playerInputActions.Player.Enable();
+
+            if (!TryGetComponent(out Camera camera))
+                return;
+
+            camera.enabled = true;
+            GetComponent<AudioListener>().enabled = true;
+
+            enabled = true;
         }
 
         private void Update()

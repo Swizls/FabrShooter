@@ -1,5 +1,6 @@
+using FabrShooter;
+using System;
 using TMPro;
-using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
@@ -9,17 +10,20 @@ public class IPInputField : MonoBehaviour
 
     private UnityTransport _transport;
 
-    private void Start()
+    private void Awake()
+    {
+        FindFirstObjectByType<GameEntryPoint>().GameInitialized += OnGameInitializing;
+    }
+
+    private void OnGameInitializing()
     {
         _transport = FindFirstObjectByType<UnityTransport>();
         string ipAddress = _transport.ConnectionData.Address.ToString();
-         _inputField.text = ipAddress;
+        _inputField.text = ipAddress;
     }
 
     public void SetIP()
     {
-        Debug.Log($"Connected to: {_inputField.text}");
-
         _transport.ConnectionData.Address = _inputField.text;
     }
 }

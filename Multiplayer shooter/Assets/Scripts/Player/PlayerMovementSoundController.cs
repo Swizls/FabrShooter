@@ -13,7 +13,7 @@ namespace FabrShooter
         private NetworkSoundPlayer _soundPlayer;
         private PlayerMovement _playerMovement;
 
-        public void Initialize()
+        public void InitializeLocalPlayer()
         {
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
             _playerMovement = GetComponentInParent<PlayerMovement>();
@@ -23,6 +23,17 @@ namespace FabrShooter
             _soundPlayer.AddClips(nameof(_walkingSFX), _walkingSFX);
             _soundPlayer.AddClips(nameof(_runningSFX), _runningSFX);
             _soundPlayer.AddClips(nameof(_jumpingSFX), _jumpingSFX);
+        }
+
+        public void InitializeClientPlayer()
+        {
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
+
+            _soundPlayer.AddClips(nameof(_walkingSFX), _walkingSFX);
+            _soundPlayer.AddClips(nameof(_runningSFX), _runningSFX);
+            _soundPlayer.AddClips(nameof(_jumpingSFX), _jumpingSFX);
+
+            Destroy(this);
         }
 
         private void OnEnable()
@@ -39,18 +50,6 @@ namespace FabrShooter
                 return;
 
             _playerMovement.Jumped -= PlayJumpSound;
-        }
-
-        private void OnDestroy()
-        {
-            if (_soundPlayer != null)
-                return;
-
-            _soundPlayer = GetComponent<NetworkSoundPlayer>();
-
-            _soundPlayer.AddClips(nameof(_walkingSFX), _walkingSFX);
-            _soundPlayer.AddClips(nameof(_runningSFX), _runningSFX);
-            _soundPlayer.AddClips(nameof(_jumpingSFX), _jumpingSFX);
         }
 
         private void Update()

@@ -2,6 +2,8 @@ namespace FabrShooter
 { 
     public interface IPlayerInitializableComponent
     {
-        public void Initialize();
+        public void InitializeLocalPlayer() { }
+
+        public void InitializeClientPlayer() { }
     }
 }

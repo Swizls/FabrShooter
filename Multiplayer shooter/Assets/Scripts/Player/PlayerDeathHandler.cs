@@ -13,7 +13,7 @@ namespace FabrShooter
         private KnockbackController _knockbackController;
         private NetworkSoundPlayer _soundPlayer;
 
-        public void Initialize()
+        public void InitializeLocalPlayer()
         {
             _health = GetComponent<Health>();
             _ragdollController = GetComponentInChildren<RagdollController>();
@@ -25,20 +25,17 @@ namespace FabrShooter
             _soundPlayer.AddClips(nameof(_deathSounds), _deathSounds);
         }
 
+        public void InitializeClientPlayer()
+        {
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
+            _soundPlayer.AddClips(nameof(_deathSounds), _deathSounds);
+            Destroy(this);
+        }
+
         private void OnDisable()
         {
             if(_health != null)
                 _health.OnDeath -= OnPlayerDeath;            
-        }
-
-        private void OnDestroy()
-        {
-            if (_soundPlayer != null)
-                return;
-
-            _soundPlayer = GetComponent<NetworkSoundPlayer>();
-
-            _soundPlayer.AddClips(nameof(_deathSounds), _deathSounds);
         }
 
         private void OnPlayerDeath(ulong clientID)
