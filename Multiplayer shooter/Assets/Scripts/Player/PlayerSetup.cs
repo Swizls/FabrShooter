@@ -14,21 +14,31 @@ public class PlayerSetup : NetworkBehaviour
         _initializableScripts = GetComponentsInChildren<IPlayerInitializableComponent>();
         if (IsOwner)
         {
-            foreach(IPlayerInitializableComponent component in _initializableScripts)
-            {
-                component.InitializeLocalPlayer();
-            }
-
-            gameObject.name = "Local Player";
+            InitializeLocalPlayer();
         }
         else
         {
-            foreach (IPlayerInitializableComponent component in _initializableScripts)
-            {
-                component.InitializeClientPlayer();
-            }
-
-            gameObject.name = "Client Player";
+            InitializeClientPlayer();
         }
+    }
+
+    private void InitializeClientPlayer()
+    {
+        foreach (IPlayerInitializableComponent component in _initializableScripts)
+        {
+            component.InitializeClientPlayer();
+        }
+
+        gameObject.name = "Client Player";
+    }
+
+    private void InitializeLocalPlayer()
+    {
+        foreach (IPlayerInitializableComponent component in _initializableScripts)
+        {
+            component.InitializeLocalPlayer();
+        }
+
+        gameObject.name = "Local Player";
     }
 }
