@@ -156,8 +156,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.09549457
-  m_Center: {x: 0, y: 0.09549457, z: 0}
+  m_Radius: 0.15
+  m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!54 &956795321928874406
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3736,7 +3736,6 @@ GameObject:
   - component: {fileID: 5226998639205829117}
   - component: {fileID: 3529260802371218056}
   - component: {fileID: 3813117579886819635}
-  - component: {fileID: 6840692338951154148}
   - component: {fileID: 3725553104798687083}
   m_Layer: 6
   m_Name: Player
@@ -3926,6 +3925,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368dcec2302eb5848958ed2fe57fc29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gunConfig: {fileID: 11400000, guid: 2d438c0b628e60243beb977360554464, type: 2}
+  _fists: {fileID: 11400000, guid: 657221a273fe5294381d8f7c6f5ea46f, type: 2}
   _shotSFX:
   - {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
 --- !u!114 &8902774501964331573
@@ -3965,7 +3966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd3baf3da4e81a458ac4a523dc4a6ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hookSpeed: 500
+  _hookSpeed: 50
 --- !u!114 &1285732701526285236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4127,22 +4128,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7704223465c87254a92c3f9702621f27, type: 3}
   - {fileID: 8300000, guid: 08b022ca87aca03479018ed37877a69e, type: 3}
   - {fileID: 8300000, guid: a13612c0d35538641bf829e9d98372ea, type: 3}
---- !u!114 &6840692338951154148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442e389180dc6f9418fa557f96c44127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetBoneTransform: {fileID: 6063438896275218434}
-  _ragdollCameraParent: {fileID: 1691927865662683772}
-  _ragdollCameraOffset: {x: 0, y: 10, z: 5}
-  _rotationOffset: {x: 0.21643962, y: 0, z: 0, w: 0.976296}
 --- !u!114 &3725553104798687083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4175,6 +4160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1691927865662683772}
   - component: {fileID: 1797466063308886312}
+  - component: {fileID: 6695915282132701219}
   m_Layer: 6
   m_Name: RagdollCameraPoint
   m_TagString: Untagged
@@ -4211,6 +4197,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 3b669aaf34f7cbb41839fa2145680a6d, type: 2}
   _cameraAnchor: {fileID: 0}
+--- !u!114 &6695915282132701219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8314001998798772150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442e389180dc6f9418fa557f96c44127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ragdollCamera: {fileID: 1797466063308886312}
+  _ragdollController: {fileID: 3725553104798687083}
+  _cameraTransform: {fileID: 2106839548618876534}
+  _targetBoneTransform: {fileID: 6063183637538376282}
+  _ragdollCameraParent: {fileID: 1691927865662683772}
+  _ragdollCameraOffset: {x: 0, y: 2, z: -3}
 --- !u!1 &9144688526637197671
 GameObject:
   m_ObjectHideFlags: 0

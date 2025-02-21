@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -15,11 +16,13 @@ namespace FabrShooter
         
         private RagdollController _ragdollController;
         private NetworkSoundPlayer _soundPlayer;
+        private HitboxController _hitboxController;
 
-        private void Start()
+        public override void OnNetworkSpawn()
         {
             _ragdollController = GetComponent<RagdollController>();
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
+            _hitboxController = GetComponentInChildren<HitboxController>();
 
             _soundPlayer.AddClips(nameof(_knockbackSounds), _knockbackSounds);
         }
@@ -32,22 +35,21 @@ namespace FabrShooter
         [ClientRpc]
         public void ApplyKnockbackClientRpc(float knockbackForce)
         {
-            if (!IsOwner) return;
-
             if (_ragdollController.IsRagdollActive) return;
 
-            _targetBoneRigidbody.AddForce(-transform.forward * knockbackForce, ForceMode.Force);
-
-            StartCoroutine(WaitForKnockbackEnd(KNOCKBACK_TIME));
             _soundPlayer.PlaySoundServerRpc(nameof(_knockbackSounds), Random.Range(0, _knockbackSounds.Length));
             _ragdollController.RequestEnableRagdollServerRpc();
-        }
 
-        private IEnumerator WaitForKnockbackEnd(float time)
+            StartCoroutine(WaitForKnockbackEnd(KNOCKBACK_TIME, knockbackForce));
+        }
+        private IEnumerator WaitForKnockbackEnd(float time, float knockbackForce)
         {
             float timer = time;
 
-            Debug.Log($"Knockback timer started for client({OwnerClientId})");
+            yield return new WaitUntil(() => _ragdollController.IsRagdollActive);
+
+            _hitboxController.LastHittedHitbox.Rigidbody.AddForce(Vector3.up * knockbackForce, ForceMode.Impulse);
+            Debug.Log($"Knockback force is applied to {_hitboxController.LastHittedHitbox.name} hitbox; Recieved force: {knockbackForce}");
 
             while (timer > 0)
             {
@@ -57,8 +59,6 @@ namespace FabrShooter
 
             if (enabled == false)
                 yield return null;
-
-            Debug.Log($"Knockback timer ended for client({OwnerClientId}; Requesting ragdoll disabling)");
 
             _ragdollController.RequestDisableRagdollServerRpc();
         }

@@ -13,14 +13,15 @@ namespace FabrShooter
         private const float MAX_ATTACK_RANGE = 5f;
         private const float PUNCH_COOLDOWN_TIME = 2f;
 
+        [SerializeField] private WeaponSO _gunConfig;
+        [SerializeField] private WeaponSO _fists;
+        [Space]
         [SerializeField] private AudioClip[] _shotSFX;
 
         private Transform _cameraTransform;
 
         private PlayerInputActions _playerInputActions;
-        private Inventory _inventory;
         private NetworkSoundPlayer _soundPlayer;
-
         private ServerDamageDelaer _damageDealer;
 
         private bool _isPunchOnCooldown = false;
@@ -31,7 +32,6 @@ namespace FabrShooter
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
-            _inventory = GetComponent<Inventory>();
 
             _playerInputActions = new PlayerInputActions();
 
@@ -86,9 +86,9 @@ namespace FabrShooter
                         DamageSenderType.Client,
                         hitbox.NetworkBehaviourId,
                         hitbox.NetworkObjectId,
-                        _inventory.CurrentWeapon.Damage,
-                        _inventory.CurrentWeapon.UseKnockback,
-                        _inventory.CurrentWeapon.KnockbackForce
+                        _gunConfig.Damage,
+                        _gunConfig.UseKnockback,
+                        _gunConfig.KnockbackForce
                     );
 
                     _damageDealer.DealDamageServerRpc(attackData);
@@ -118,9 +118,9 @@ namespace FabrShooter
                         DamageSenderType.Client,
                         hitbox.NetworkBehaviourId,
                         hitbox.NetworkObjectId,
-                        5,
-                        true,
-                        50
+                        _fists.Damage,
+                        _fists.UseKnockback,
+                        _fists.KnockbackForce
                     );
 
                     _damageDealer.DealDamageServerRpc(attackData);

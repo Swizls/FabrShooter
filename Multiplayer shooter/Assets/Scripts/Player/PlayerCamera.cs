@@ -28,12 +28,15 @@ namespace FabrShooter.Input
             enabled = true;
         }
 
+        public void InitializeClientPlayer()
+        {
+            Destroy(this);
+        }
+
         private void Update()
         {
-            if (_cameraAnchor == null)
-                return;
-
-            transform.position = _cameraAnchor.position;
+            if (_cameraAnchor != null)
+                transform.position = _cameraAnchor.position;
 
             if (!_canMoveCamera)
                 return;

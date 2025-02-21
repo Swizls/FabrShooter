@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1673151711891d04389b3ca931d5cd95, type: 3}
   m_Name: Fist
   m_EditorClassIdentifier: 
-  _damage: 50
+  _damage: 5
   _useKnockback: 1
-  _knockbackForce: 50
+  _knockbackForce: 100

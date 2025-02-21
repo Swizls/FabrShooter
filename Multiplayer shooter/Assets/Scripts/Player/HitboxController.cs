@@ -1,27 +1,26 @@
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
-using UnityEngine;
 
 namespace FabrShooter
 {
     public class HitboxController : NetworkBehaviour
     {
-        private Hitbox _lastHittedHitbox;
+        private List<Hitbox> _hitboxes = new List<Hitbox>();
 
-        public Hitbox LastHittedHitbox => _lastHittedHitbox;
+        public Hitbox LastHittedHitbox { get; private set; }
+
+        public override void OnNetworkSpawn()
+        {
+            _hitboxes = GetComponentsInChildren<Hitbox>().ToList();
+        }
 
         [ClientRpc]
-        public void RegisterHitClientRpc(ulong hitboxID)
+        public void RegisterHitClientRpc(ulong targetID, ulong hitboxID)
         {
-            if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(hitboxID, out NetworkObject hitboxObject))
-                return;
+            Hitbox hittedHitbox = _hitboxes.Where(component => component.NetworkBehaviourId == hitboxID).First();
 
-            var test = hitboxObject.GetComponentsInChildren<Hitbox>().ToList().Where(component => component.NetworkBehaviourId == hitboxID);
-
-            Debug.Log(test.ToList());
-
-            _lastHittedHitbox = test.First();
-            Debug.Log($"Last hitted hitbox: {_lastHittedHitbox.name}");
+            LastHittedHitbox = hittedHitbox;
         }
     }
 }

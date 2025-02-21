@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FabrShooter
 {
-    public class RagdollCameraContorller : MonoBehaviour
+    public class RagdollCameraContorller : MonoBehaviour, IPlayerInitializableComponent
     {
         private const float THIRD_PERSON_CAMERA_X_ROTATION = 25f;
 
@@ -22,7 +22,7 @@ namespace FabrShooter
 
         private Vector3 _defaultCameraOffset;
 
-        private void Start()
+        public void InitializeLocalPlayer()
         {
             _mainCamera = _cameraTransform.GetComponent<PlayerCamera>();
 
@@ -31,6 +31,11 @@ namespace FabrShooter
 
             _ragdollController.OnRagdollEnable += OnRagdollEnable;
             _ragdollController.OnRagdollDisable += OnRagdollDisable;
+        }
+
+        public void InitializeClientPlayer()
+        {
+            Destroy(this);
         }
 
         private void OnDisable()
@@ -56,7 +61,8 @@ namespace FabrShooter
 
         private void SetCameraTransform(Transform parent, Vector3 offset, bool enableThirdPersonCameraControll)
         {
-            _mainCamera.enabled = !enableThirdPersonCameraControll;
+            if(_mainCamera != null)
+                _mainCamera.enabled = !enableThirdPersonCameraControll;
             _ragdollCamera.enabled = enableThirdPersonCameraControll;
 
             _cameraTransform.parent = parent;
