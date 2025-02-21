@@ -81,6 +81,7 @@ namespace FabrShooter.Player
 
         public void InitializeClientPlayer()
         {
+            GetComponent<CharacterController>().enabled = false;
             Destroy(this);
         }
 

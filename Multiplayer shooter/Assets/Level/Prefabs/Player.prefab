@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6064232043683043180
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +320,7 @@ GameObject:
   - component: {fileID: 6142855484859376587}
   - component: {fileID: 5032520427666839008}
   - component: {fileID: 8366064632802351622}
+  - component: {fileID: 7580282614195054741}
   m_Layer: 6
   m_Name: Elbow_L
   m_TagString: Untagged
@@ -438,6 +440,19 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &7580282614195054741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065376051241443616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065506698334256726
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,6 +499,7 @@ GameObject:
   - component: {fileID: 3736821255849184556}
   - component: {fileID: 2153099723471259098}
   - component: {fileID: 1878215294936989919}
+  - component: {fileID: 2478303539155202004}
   m_Layer: 6
   m_Name: Shoulder_R
   m_TagString: Untagged
@@ -603,6 +619,19 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &2478303539155202004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065543572259883196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065569636559526982
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065710814896479288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,6 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065718711785505894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,6 +1221,7 @@ GameObject:
   - component: {fileID: 254113591052379977}
   - component: {fileID: 3380391540830473942}
   - component: {fileID: 8433884513229451328}
+  - component: {fileID: 4303101444601675430}
   m_Layer: 6
   m_Name: Shoulder_L
   m_TagString: Untagged
@@ -1309,6 +1341,19 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &4303101444601675430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065775504267362250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065811188963313946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1653,6 +1698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065856961884086764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,6 +1968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065946709602984346
 GameObject:
   m_ObjectHideFlags: 0
@@ -2130,6 +2177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6065971733069614002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,6 +2411,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6069386640222607590}
   - component: {fileID: 6159075296024010482}
+  - component: {fileID: 6692706920567241433}
   m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
@@ -2409,6 +2458,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6692706920567241433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6066102415600468988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e467a2234ad1daa43920f8dbe527d88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6066133460394452680
 GameObject:
   m_ObjectHideFlags: 0
@@ -2697,6 +2759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6066265275204839550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2803,6 +2866,7 @@ GameObject:
   - component: {fileID: 2115827954780105204}
   - component: {fileID: 1015666557769878654}
   - component: {fileID: 1786310584263137063}
+  - component: {fileID: 5595826684507056472}
   m_Layer: 6
   m_Name: Elbow_R
   m_TagString: Untagged
@@ -2922,6 +2986,19 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5595826684507056472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6066332173380790158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673c417077d9e2b429bdbf0596dd3820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6190931819157302208
 GameObject:
   m_ObjectHideFlags: 0
@@ -4063,8 +4140,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetBoneTransform: {fileID: 6063438896275218434}
-  _ragdollCameraParent: {fileID: 1931521616382658913}
-  _ragdollCameraOffset: {x: 0, y: 4, z: 4}
+  _ragdollCameraParent: {fileID: 1691927865662683772}
+  _ragdollCameraOffset: {x: 0, y: 10, z: 5}
   _rotationOffset: {x: 0.21643962, y: 0, z: 0, w: 0.976296}
 --- !u!114 &3725553104798687083
 MonoBehaviour:

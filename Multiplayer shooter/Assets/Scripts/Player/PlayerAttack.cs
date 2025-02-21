@@ -1,4 +1,3 @@
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FabrShooter.Input;
@@ -28,7 +27,7 @@ namespace FabrShooter
 
         public event Action OnPunch;
 
-        public void Initialize()
+        public void InitializeLocalPlayer()
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
@@ -43,6 +42,14 @@ namespace FabrShooter
             _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
 
             _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
+        }
+
+        public void InitializeClientPlayer()
+        {
+            _soundPlayer = GetComponent<NetworkSoundPlayer>();
+
+            _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
+            Destroy(this);
         }
 
         private void OnEnable()
@@ -65,15 +72,6 @@ namespace FabrShooter
             _playerInputActions.Player.Punch.performed -= Punch;
         }
 
-        private void OnDestroy()
-        {
-            if(_soundPlayer == null)
-
-            _soundPlayer = GetComponent<NetworkSoundPlayer>();
-
-            _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
-        }
-
         private void WeaponAttack(InputAction.CallbackContext context)
         {
             PlayShotSFX();
@@ -81,13 +79,13 @@ namespace FabrShooter
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
             {
                 Debug.Log($"Client perform attack; Hitted {hit.collider.gameObject.name}");
-                if (TryGetNetworkObject(hit.collider.gameObject, out NetworkObject networkObject))
+                if (hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
                 {
-                    ulong targetId = networkObject.NetworkObjectId;
 
                     AttackData attackData = new AttackData(
                         DamageSenderType.Client,
-                        targetId,
+                        hitbox.NetworkBehaviourId,
+                        hitbox.NetworkObjectId,
                         _inventory.CurrentWeapon.Damage,
                         _inventory.CurrentWeapon.UseKnockback,
                         _inventory.CurrentWeapon.KnockbackForce
@@ -106,7 +104,7 @@ namespace FabrShooter
             OnPunch?.Invoke();
 
             _isPunchOnCooldown = true;
-            StartCoroutine(PunchCooldown());
+            StartCoroutine(StartPunchCooldown());
 
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
             {
@@ -114,13 +112,12 @@ namespace FabrShooter
                     return;
 
                 Debug.Log($"Client perform attack; Hitted {hit.collider.gameObject.name}");
-                if (TryGetNetworkObject(hit.collider.gameObject, out NetworkObject networkObject))
+                if (hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
                 {
-                    ulong targetId = networkObject.NetworkObjectId;
-
                     AttackData attackData = new AttackData(
                         DamageSenderType.Client,
-                        targetId,
+                        hitbox.NetworkBehaviourId,
+                        hitbox.NetworkObjectId,
                         5,
                         true,
                         50
@@ -136,27 +133,10 @@ namespace FabrShooter
             _soundPlayer.PlaySoundServerRpc(nameof(_shotSFX), UnityEngine.Random.Range(0, _shotSFX.Length));
         }
 
-        private IEnumerator PunchCooldown()
+        private IEnumerator StartPunchCooldown()
         {
             yield return new WaitForSeconds(PUNCH_COOLDOWN_TIME);
             _isPunchOnCooldown = false;
-        }
-
-        private bool TryGetNetworkObject(GameObject gameObj, out NetworkObject obj)
-        {
-            obj = gameObj.GetComponent<NetworkObject>();
-            if (obj != null)
-                return true;
-
-            obj = gameObj.GetComponentInChildren<NetworkObject>();
-            if (obj != null)
-                return true;
-
-            obj = gameObj.GetComponentInParent<NetworkObject>();
-            if (obj != null)
-                return true;
-
-            return false;
         }
     }
 }
