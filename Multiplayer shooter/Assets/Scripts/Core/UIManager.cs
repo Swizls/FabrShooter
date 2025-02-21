@@ -22,6 +22,9 @@ namespace FabrShooter.UI
 
         private void OnEnable()
         {
+            ServiceLocator.Get<GameConnectionManager>().OnGameStart += DisableCursor;
+            ServiceLocator.Get<GameConnectionManager>().OnGameStop += EnableCursor;
+
             if (_playerInputActions == null)
                 return;
 
@@ -38,6 +41,18 @@ namespace FabrShooter.UI
             _playerInputActions.UI.Pause.performed -= TogglePauseMenu;
         }
 
+        private void EnableCursor()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        private void DisableCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
         private void TogglePauseMenu(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             Cursor.lockState = PauseMenu.gameObject.activeInHierarchy ? CursorLockMode.Locked : CursorLockMode.None;
@@ -48,9 +63,7 @@ namespace FabrShooter.UI
 
         public void Disconnect()
         {
-            GameManager gameManager = FindAnyObjectByType<GameManager>();
-
-            gameManager.EndGame();
+            ServiceLocator.Get<GameConnectionManager>().EndGame();
         }
     }
 }

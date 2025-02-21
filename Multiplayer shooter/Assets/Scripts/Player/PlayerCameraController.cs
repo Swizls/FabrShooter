@@ -21,11 +21,6 @@ namespace FabrShooter.Input
             _playerInputActions.Player.Enable();
         }
 
-        private void OnEnable()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
         private void Update()
         {
             if (_cameraAnchor == null)

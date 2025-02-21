@@ -732,13 +732,13 @@ GameObject:
   - component: {fileID: 8902774501964331573}
   - component: {fileID: 673459907000437321}
   - component: {fileID: 3044149546643821798}
-  - component: {fileID: 5791546456260378216}
   - component: {fileID: 1285732701526285236}
   - component: {fileID: 4916741586388440953}
-  - component: {fileID: 7541696177156031811}
   - component: {fileID: 5226998639205829117}
-  - component: {fileID: 1011844193941403986}
   - component: {fileID: 3529260802371218056}
+  - component: {fileID: 3813117579886819635}
+  - component: {fileID: 6840692338951154148}
+  - component: {fileID: 3725553104798687083}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -967,29 +967,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hookSpeed: 500
---- !u!114 &5791546456260378216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac1e3a941c544c44b8dcb4d4fd04d9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  _root: {fileID: 6066231928263577928}
-  _componentsToDisableOnRegdoll:
-  - {fileID: 993355081631408958}
-  - {fileID: 3044149546643821798}
-  - {fileID: 673459907000437321}
-  - {fileID: 6159075296024010482}
-  - {fileID: 8902774501964331573}
-  - {fileID: 1667992498702006102}
-  - {fileID: 1780928761626770333}
-  - {fileID: 7094672004646933515}
 --- !u!114 &1285732701526285236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,22 +1083,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7541696177156031811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a37b0be8882922a4fa59d59a14bfed9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetBoneTransform: {fileID: 6063438896275218434}
-  _ragdollCameraParent: {fileID: 1691927865662683772}
-  _ragdollCameraOffset: {x: 0, y: 2, z: -4}
-  _rotationOffset: {x: 0.21643962, y: 0, z: 0, w: 0.976296}
 --- !u!114 &5226998639205829117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1135,25 +1096,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentWeapon: {fileID: 11400000, guid: 2d438c0b628e60243beb977360554464, type: 2}
---- !u!114 &1011844193941403986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c688134840ebaa647a7a8f9596a36b6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  _targetBoneRigidbody: {fileID: 8573797915732850415}
-  _knockbackSounds:
-  - {fileID: 8300000, guid: 78a6d069fc91551429f0c7acb4aac725, type: 3}
-  - {fileID: 8300000, guid: 7704223465c87254a92c3f9702621f27, type: 3}
-  - {fileID: 8300000, guid: 08b022ca87aca03479018ed37877a69e, type: 3}
-  - {fileID: 8300000, guid: a13612c0d35538641bf829e9d98372ea, type: 3}
 --- !u!114 &3529260802371218056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1167,6 +1109,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &3813117579886819635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525b5abfbaa81c140b14c2658282956b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  _targetBoneRigidbody: {fileID: 8573797915732850415}
+  _knockbackSounds:
+  - {fileID: 8300000, guid: 78a6d069fc91551429f0c7acb4aac725, type: 3}
+  - {fileID: 8300000, guid: 7704223465c87254a92c3f9702621f27, type: 3}
+  - {fileID: 8300000, guid: 08b022ca87aca03479018ed37877a69e, type: 3}
+  - {fileID: 8300000, guid: a13612c0d35538641bf829e9d98372ea, type: 3}
+--- !u!114 &6840692338951154148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442e389180dc6f9418fa557f96c44127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetBoneTransform: {fileID: 6063438896275218434}
+  _ragdollCameraParent: {fileID: 1931521616382658913}
+  _ragdollCameraOffset: {x: 0, y: 4, z: 4}
+  _rotationOffset: {x: 0.21643962, y: 0, z: 0, w: 0.976296}
+--- !u!114 &3725553104798687083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220282700334942448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66bbf1d35d6a4e43b6f1ce2eac86636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  _root: {fileID: 6066231928263577928}
+  _componentsToDisableOnRegdoll:
+  - {fileID: 1667992498702006102}
+  - {fileID: 993355081631408958}
+  - {fileID: 8902774501964331573}
+  - {fileID: 673459907000437321}
+  - {fileID: 3044149546643821798}
+  - {fileID: 5226998639205829117}
+  - {fileID: 6159075296024010482}
 --- !u!1 &8314001998798772150
 GameObject:
   m_ObjectHideFlags: 0

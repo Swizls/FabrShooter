@@ -1,14 +1,17 @@
 using TMPro;
+using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 public class IPInputField : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _inputField;
-    [SerializeField] private UnityTransport _transport;
 
-    private void Awake()
+    private UnityTransport _transport;
+
+    private void Start()
     {
+        _transport = FindFirstObjectByType<UnityTransport>();
         string ipAddress = _transport.ConnectionData.Address.ToString();
          _inputField.text = ipAddress;
     }

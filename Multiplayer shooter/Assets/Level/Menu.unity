@@ -4865,9 +4865,10 @@ GameObject:
   m_Component:
   - component: {fileID: 324458861}
   - component: {fileID: 324458863}
-  - component: {fileID: 324458864}
   - component: {fileID: 324458866}
   - component: {fileID: 324458865}
+  - component: {fileID: 324458864}
+  - component: {fileID: 324458867}
   m_Layer: 5
   m_Name: Lobby
   m_TagString: Untagged
@@ -4936,7 +4937,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputField: {fileID: 25082812}
-  _transport: {fileID: 854352210}
 --- !u!114 &324458865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4975,6 +4975,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324458860}
   m_CullTransparentMesh: 1
+--- !u!114 &324458867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324458860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2a7b5c046263142a15f298d98d4489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ipInputField: {fileID: 324458864}
 --- !u!1 &333944969
 GameObject:
   m_ObjectHideFlags: 0
@@ -5875,10 +5888,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 384541030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c81d600314415f4e947245c4b297e50, type: 3}
+  m_Script: {fileID: 11500000, guid: 5342c644e698ebb46ae484d2cb0b3c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneLoader: {fileID: 384541031}
+  _networkManager: {fileID: 3411777764852255482, guid: 8f6550a488fd42b44940e133ae4e70b5, type: 3}
 --- !u!1001 &384938677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13505,111 +13519,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4602716832683212, guid: 486fe0f83b403324785cfabb3a2d5e69, type: 3}
   m_PrefabInstance: {fileID: 852805223}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &854352208
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 854352209}
-  - component: {fileID: 854352211}
-  - component: {fileID: 854352210}
-  m_Layer: 0
-  m_Name: NetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &854352209
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 854352208}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.050758, y: -103.264755, z: 146.92009}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &854352210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 854352208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ProtocolType: 0
-  m_UseWebSockets: 0
-  m_UseEncryption: 0
-  m_MaxPacketQueueSize: 128
-  m_MaxPayloadSize: 6144
-  m_HeartbeatTimeoutMS: 500
-  m_ConnectTimeoutMS: 1000
-  m_MaxConnectAttempts: 60
-  m_DisconnectTimeoutMS: 30000
-  ConnectionData:
-    Address: 77.38.246.125
-    Port: 7777
-    ServerListenAddress: 0.0.0.0
-  DebugSimulator:
-    PacketDelayMS: 0
-    PacketJitterMS: 0
-    PacketDropRate: 0
---- !u!114 &854352211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 854352208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkManagerExpanded: 0
-  NetworkConfig:
-    ProtocolVersion: 0
-    NetworkTransport: {fileID: 854352210}
-    PlayerPrefab: {fileID: 0}
-    Prefabs:
-      NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 8d4421b049d811c4fb916f02a5cda285, type: 2}
-    TickRate: 120
-    ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
-    ConnectionData: 
-    EnableTimeResync: 0
-    TimeResyncInterval: 30
-    EnsureNetworkVariableLengthSafety: 0
-    EnableSceneManagement: 1
-    ForceSamePrefabs: 0
-    RecycleNetworkIds: 1
-    NetworkIdRecycleDelay: 120
-    RpcHashSize: 0
-    LoadSceneTimeOut: 120
-    SpawnTimeout: 10
-    EnableNetworkLogs: 1
-    NetworkTopology: 0
-    UseCMBService: 0
-    AutoSpawnPlayerPrefabClientSide: 1
-    NetworkMessageMetrics: 1
-    NetworkProfilingMetrics: 1
-    OldPrefabList: []
-  RunInBackground: 1
-  LogLevel: 1
 --- !u!1 &854798492
 GameObject:
   m_ObjectHideFlags: 0
@@ -13693,33 +13602,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 384541033}
-        m_TargetAssemblyTypeName: FabrShooter.Core.GameManager, Assembly-CSharp
-        m_MethodName: SetIsHostOrClient
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 324458864}
-        m_TargetAssemblyTypeName: TestIP, Assembly-CSharp
-        m_MethodName: SetIP
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 384541033}
-        m_TargetAssemblyTypeName: FabrShooter.Core.GameManager, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 324458867}
+        m_TargetAssemblyTypeName: FabrShooter.MainMenuButtons, Assembly-CSharp
+        m_MethodName: OnJoinButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19216,33 +19101,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 384541033}
-        m_TargetAssemblyTypeName: FabrShooter.Core.GameManager, Assembly-CSharp
-        m_MethodName: SetIsHostOrClient
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 324458864}
-        m_TargetAssemblyTypeName: TestIP, Assembly-CSharp
-        m_MethodName: SetIP
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 384541033}
-        m_TargetAssemblyTypeName: FabrShooter.Core.GameManager, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 324458867}
+        m_TargetAssemblyTypeName: FabrShooter.MainMenuButtons, Assembly-CSharp
+        m_MethodName: OnHostButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26357,7 +26218,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1553583946}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a39c79cd009f55947afe6554c82fe2fe, type: 3}
@@ -33123,7 +32984,6 @@ SceneRoots:
   - {fileID: 1553583948}
   - {fileID: 1232431784}
   - {fileID: 384541032}
-  - {fileID: 854352209}
   - {fileID: 1186241617}
   - {fileID: 1246450634}
   - {fileID: 1667185146}
