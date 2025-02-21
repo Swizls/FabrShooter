@@ -4,30 +4,27 @@ using UnityEngine;
 
 namespace FabrShooter
 {
-    [RequireComponent(typeof(RagdollController))]
     public class RagdollCameraContorller : MonoBehaviour
     {
         private const float THIRD_PERSON_CAMERA_X_ROTATION = 25f;
 
+        [SerializeField] private PlayerCamera _ragdollCamera;
+        [SerializeField] private RagdollController _ragdollController;
+        [SerializeField] private Transform _cameraTransform;
+        [Space]
         [SerializeField] private Transform _targetBoneTransform;
         [SerializeField] private Transform _ragdollCameraParent;
         [Space]
         [SerializeField] private Vector3 _ragdollCameraOffset;
-        [SerializeField] private Quaternion _rotationOffset;
 
         private Transform _defaultCameraParent;
-        private Transform _cameraTransform;
-
-        private RagdollController _ragdollController;
-        private PlayerCamera _ragdollCameraController;
+        private PlayerCamera _mainCamera;
 
         private Vector3 _defaultCameraOffset;
 
         private void Start()
         {
-            _cameraTransform = GetComponentInChildren<Camera>().transform;
-            _ragdollController = GetComponent<RagdollController>();
-            _ragdollCameraController = _ragdollCameraParent.GetComponent<PlayerCamera>();
+            _mainCamera = _cameraTransform.GetComponent<PlayerCamera>();
 
             _defaultCameraParent = _cameraTransform.parent;
             _defaultCameraOffset = _cameraTransform.localPosition;
@@ -59,14 +56,15 @@ namespace FabrShooter
 
         private void SetCameraTransform(Transform parent, Vector3 offset, bool enableThirdPersonCameraControll)
         {
+            _mainCamera.enabled = !enableThirdPersonCameraControll;
+            _ragdollCamera.enabled = enableThirdPersonCameraControll;
+
             _cameraTransform.parent = parent;
             _cameraTransform.localPosition = offset;
 
             Quaternion rotation = enableThirdPersonCameraControll ? Quaternion.Euler(THIRD_PERSON_CAMERA_X_ROTATION, 0, 0) : Quaternion.identity;
 
             _cameraTransform.localRotation = rotation;
-
-            _ragdollCameraController.enabled = enableThirdPersonCameraControll;
         }
 
         private IEnumerator FollowTargetBonePosition()
