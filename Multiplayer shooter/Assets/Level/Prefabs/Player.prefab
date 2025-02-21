@@ -253,7 +253,7 @@ Transform:
   m_GameObject: {fileID: 7224542654078037021}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000029802319, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7872124, z: 0.0338604}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -896,7 +896,7 @@ MonoBehaviour:
   TransitionStateInfoList:
   - IsCrossFadeExit: 0
     Layer: 2
-    OriginatingState: -1946155342
+    OriginatingState: 1101281814
     DestinationState: -217830139
     TransitionDuration: 0.17057317
     TriggerNameHash: -316645540
@@ -1237,7 +1237,7 @@ Transform:
   m_GameObject: {fileID: 9144688526637197671}
   serializedVersion: 2
   m_LocalRotation: {x: -0.45857102, y: 0.5382496, z: -0.45857102, w: 0.5382496}
-  m_LocalPosition: {x: -0, y: 0.35, z: 0.1}
+  m_LocalPosition: {x: -0, y: 0.258, z: 0.324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
