@@ -46,8 +46,10 @@ namespace FabrShooter.Input
 
             Vector2 mouseInput = _playerInputActions.Player.Look.ReadValue<Vector2>();
 
-            float mouseX = mouseInput.x * _config.Sensitivity * Time.deltaTime;
-            float mouseY = mouseInput.y * _config.Sensitivity * Time.deltaTime;
+            float mouseSensivity = PlayerPrefs.GetFloat(MouseSensivitySlider.MOUSE_SENSIVITY_STRING) * 100;
+
+            float mouseX = mouseInput.x * mouseSensivity * Time.deltaTime;
+            float mouseY = mouseInput.y * mouseSensivity * Time.deltaTime;
 
             _currentRotation.x += mouseX;
             _currentRotation.y -= mouseY;
