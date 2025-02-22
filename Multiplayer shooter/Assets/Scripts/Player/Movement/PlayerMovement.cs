@@ -39,7 +39,7 @@ namespace FabrShooter.Player.Movement
 
         public bool IsMoving
         {
-            get { return CharacterController.velocity.magnitude > 0; }
+            get { return Velocity.magnitude > 0; }
         }
 
         public bool IsFlying
@@ -62,11 +62,7 @@ namespace FabrShooter.Player.Movement
         public void InitializeLocalPlayer()
         {
             _characterController = GetComponent<CharacterController>();
-            _playerInputActions = new PlayerInputActions();
             _currentMover = new WalkMover(this, _playerInputActions, _camera);
-
-            _playerInputActions.Player.Enable();
-            _playerInputActions.Player.Jump.performed += Jump;
         }
 
         public void InitializeClientPlayer()
@@ -79,10 +75,11 @@ namespace FabrShooter.Player.Movement
         private void OnEnable()
         {
             if (_playerInputActions == null)
-                return;
+                _playerInputActions = new PlayerInputActions();
 
-            _playerInputActions.Player.Jump.performed += Jump;
             _playerInputActions.Player.Enable();
+            _playerInputActions.Player.Jump.performed += Jump;
+            _playerInputActions.Player.Sprint.performed += StartRun;
         }
 
         private void OnDisable()
@@ -91,6 +88,7 @@ namespace FabrShooter.Player.Movement
                 return;
 
             _playerInputActions.Player.Jump.performed -= Jump;
+            _playerInputActions.Player.Sprint.performed -= StartRun;
             _playerInputActions.Player.Disable();
         }
 
@@ -145,6 +143,12 @@ namespace FabrShooter.Player.Movement
             IsSliding = true;
         }
 
+        private void StartRun(InputAction.CallbackContext context)
+        {
+            _currentMover = new RunMover(this, _playerInputActions, _camera);
+
+            StartCoroutine(WaitForRunEnd());
+        }
         private void Jump(InputAction.CallbackContext context)
         {
             if (IsFlying && CanDoWallJump() == false)
@@ -177,6 +181,12 @@ namespace FabrShooter.Player.Movement
             {
                 return Physics.Raycast(transform.position, direction, DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP, LayerMask.GetMask("Default"));
             }
+        }
+
+        private IEnumerator WaitForRunEnd()
+        {
+            yield return new WaitUntil(() => IsRunning == false);
+            _currentMover = new WalkMover(this, _playerInputActions, _camera);
         }
 
         private IEnumerator WaitForLand()

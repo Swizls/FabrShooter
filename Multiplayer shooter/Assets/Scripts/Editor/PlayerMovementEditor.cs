@@ -20,6 +20,8 @@ namespace FabrShooter.EditorExtension
 
             EditorGUILayout.LabelField($"Current Mover: {playerMovement.CurrentMover.GetType().Name}");
             EditorGUILayout.LabelField($"Velocity: {playerMovement.Velocity}");
+            EditorGUILayout.LabelField($"Velocity magnitude: {playerMovement.Velocity.magnitude}");
+            EditorGUILayout.LabelField($"Velocity normalized: {playerMovement.Velocity.normalized}");
             EditorGUILayout.LabelField($"Movement Direction: {playerMovement.CurrentMover.MovementDirection}");
             EditorGUILayout.LabelField($"IsMoving: {playerMovement.IsMoving}", playerMovement.IsMoving? succesfulStyle : unsuccefulStyle);
             EditorGUILayout.LabelField($"IsGrounded: {playerMovement.IsGroundend}", playerMovement.IsGroundend ? succesfulStyle : unsuccefulStyle);
