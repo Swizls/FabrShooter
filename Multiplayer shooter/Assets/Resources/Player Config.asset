@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a0612da0c21c5e4c8fa6cd9cc2b6258, type: 3}
   m_Name: Player Config
   m_EditorClassIdentifier: 
-  _walkingSpeed: 5
+  _walkingSpeed: 10
   _spritingMultiplier: 3
   _movementInertia: 0.1
   _maxStamina: 100
   _staminaConsumptionSpeed: 1
   _staminaRestoreSpeed: 5
-  _jumpForce: 2
-  _wallJumpForce: 3
-  _jumpInertia: 0.1
+  _jumpForce: 1
+  _wallJumpForce: 100
+  _jumpInertia: 0.2
   _sensitivity: 20
   _maxYAngle: 85

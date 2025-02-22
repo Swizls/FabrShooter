@@ -1,4 +1,4 @@
-using FabrShooter.Player;
+using FabrShooter.Player.Movement;
 using UnityEngine;
 
 namespace FabrShooter

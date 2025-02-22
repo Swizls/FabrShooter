@@ -1,5 +1,5 @@
 using FabrShooter.Input;
-using FabrShooter.Player;
+using FabrShooter.Player.Movement;
 using System.Collections;
 using UnityEngine;
 
