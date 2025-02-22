@@ -11,7 +11,18 @@ namespace FabrShooter.Player.Movement
 
         public override void Move()
         {
-            throw new System.NotImplementedException();
+            float speed = Config.WalkingSpeed * Config.SprintingMultiplier;
+
+            Vector3 forwardComponent = Vector3.Project(MovementDirection, PlayerMovement.Velocity.normalized);
+            Vector3 sideComponent = MovementDirection - forwardComponent;
+
+            forwardComponent *= Config.JumpInertia;
+            Vector3 CalculatedMovementDirection = forwardComponent + sideComponent;
+
+            PlayerMovement.Velocity.x = Mathf.MoveTowards(PlayerMovement.Velocity.x, CalculatedMovementDirection.x * speed, Config.MovementInertia);
+            PlayerMovement.Velocity.z = Mathf.MoveTowards(PlayerMovement.Velocity.z, CalculatedMovementDirection.z * speed, Config.MovementInertia);
+
+            CharacterController.Move(PlayerMovement.Velocity * Time.deltaTime);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace FabrShooter.Player.Movement
 
         public override void Move()
         {
-            CalculatedVelocity.x = Mathf.Lerp(PlayerMovement.Velocity.x, MovementDirection.x * Config.WalkingSpeed, Config.MovementInertia);
-            CalculatedVelocity.z = Mathf.Lerp(PlayerMovement.Velocity.z, MovementDirection.z * Config.WalkingSpeed, Config.MovementInertia);
+            CalculatedVelocity.x = Mathf.MoveTowards(PlayerMovement.Velocity.x, MovementDirection.x * Config.WalkingSpeed, Config.MovementInertia);
+            CalculatedVelocity.z = Mathf.MoveTowards(PlayerMovement.Velocity.z, MovementDirection.z * Config.WalkingSpeed, Config.MovementInertia);
 
             PlayerMovement.Velocity.x = CalculatedVelocity.x;
             PlayerMovement.Velocity.z = CalculatedVelocity.z;

@@ -1,5 +1,6 @@
 using FabrShooter.Input;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -161,6 +162,10 @@ namespace FabrShooter.Player.Movement
 
             Velocity += jumpDirection * Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
             _characterController.Move(Velocity * Time.deltaTime);
+            _currentMover = new AirMover(this, _playerInputActions, _camera);
+
+            StartCoroutine(WaitForLand());
+
             Jumped?.Invoke();
 
             bool CanDoWallJump()
@@ -172,6 +177,12 @@ namespace FabrShooter.Player.Movement
             {
                 return Physics.Raycast(transform.position, direction, DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP, LayerMask.GetMask("Default"));
             }
+        }
+
+        private IEnumerator WaitForLand()
+        {
+            yield return new WaitUntil(() => IsGroundend);
+            _currentMover = new WalkMover(this, _playerInputActions, _camera);
         }
     }
 }

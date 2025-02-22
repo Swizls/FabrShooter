@@ -20,6 +20,6 @@ MonoBehaviour:
   _staminaRestoreSpeed: 5
   _jumpForce: 1
   _wallJumpForce: 100
-  _jumpInertia: 0.2
+  _jumpInertia: 0.1
   _sensitivity: 20
   _maxYAngle: 85
