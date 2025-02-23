@@ -3733,7 +3733,6 @@ GameObject:
   - component: {fileID: 3044149546643821798}
   - component: {fileID: 1285732701526285236}
   - component: {fileID: 4916741586388440953}
-  - component: {fileID: 5226998639205829117}
   - component: {fileID: 3529260802371218056}
   - component: {fileID: 3813117579886819635}
   - component: {fileID: 3725553104798687083}
@@ -4083,19 +4082,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5226998639205829117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220282700334942448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31673e38592ef994fa684ad804db1ef6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentWeapon: {fileID: 11400000, guid: 2d438c0b628e60243beb977360554464, type: 2}
 --- !u!114 &3529260802371218056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4148,7 +4134,6 @@ MonoBehaviour:
   - {fileID: 8902774501964331573}
   - {fileID: 673459907000437321}
   - {fileID: 3044149546643821798}
-  - {fileID: 5226998639205829117}
   - {fileID: 6159075296024010482}
 --- !u!1 &8314001998798772150
 GameObject:

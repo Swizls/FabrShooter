@@ -1,11 +1,11 @@
-/Multiplayer Shooter/Library/
-/Multiplayer Shooter/Temp/
-/Multiplayer Shooter/Obj/
-/Multiplayer Shooter/Build/
+/FabrShooter/Library/
+/FabrShooter/Temp/
+/FabrShooter/Obj/
+/FabrShooter/Build/
 /Builds/
-/Multiplayer Shooter/Logs/
-/Multiplayer Shooter/UserSettings/
-/Multiplayer Shooter/Assets/Thirdparty
+/FabrShooter/Logs/
+/FabrShooter/UserSettings/
+/FabrShooter/Assets/Thirdparty
 
 ExportedObj/
 .consulo/
@@ -36,10 +36,5 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
-VR/ProjectSettings/
 
-Multiplayer Shooter/Assets/Resources/ScriptableObjects/Generator settings.asset
-
-Multiplayer Shooter/Assets/Resources/ScriptableObjects/Generator settings.asset.meta
-
-Multiplayer shooter/ProjectSettings/Packages/com.unity.probuilder/Settings.json
+FabrShooter/ProjectSettings/Packages/com.unity.probuilder/Settings.json
