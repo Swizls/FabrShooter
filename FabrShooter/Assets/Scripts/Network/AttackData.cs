@@ -18,7 +18,7 @@ namespace FabrShooter
         public bool UseKnockback => _useKnockback;
         public float KnockbackForce => _knockbackForce;
 
-        public AttackData(DamageSenderType senderType, ulong hitboxID, ulong targetID, int damage, bool useKnockback, float knockbackForce)
+        public AttackData(DamageSenderType senderType, ulong hitboxID, ulong targetID, int damage, bool useKnockback = false, float knockbackForce = 0)
         {
             _senderType = senderType;
             _hitboxID = hitboxID;
