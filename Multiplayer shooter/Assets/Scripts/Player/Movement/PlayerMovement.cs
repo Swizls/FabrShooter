@@ -12,6 +12,7 @@ namespace FabrShooter.Player.Movement
         private const float GRAVITY = -9.81f;
         private const float DISTANCE_TO_DETECT_GROUND = 1.2f;
         private const float DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP = 2f;
+        private const float SPEED_TO_STOP_SLIDE = 8f;
 
         [SerializeField] private PlayerConfigSO _config;
         [SerializeField] private Camera _camera;
@@ -21,6 +22,7 @@ namespace FabrShooter.Player.Movement
         private Mover _currentMover;
 
         public Action Jumped;
+        public Action<bool> SlideStateChanged;
         public Action StartedStaminaConsumption;
         public Action EndedStaminaConsumtion;
 
@@ -32,31 +34,10 @@ namespace FabrShooter.Player.Movement
         public Mover CurrentMover => _currentMover;
         public bool IsSliding { get; private set; }
 
-        public bool IsRunning
-        {
-            get { return _playerInputActions.Player.Sprint.ReadValue<float>() > 0 && IsMoving; }
-        }
-
-        public bool IsMoving
-        {
-            get { return Velocity.magnitude > 0; }
-        }
-
-        public bool IsFlying
-        {
-            get
-            {
-                return !IsGroundend;
-            }
-        }
-
-        public bool IsGroundend
-        {
-            get
-            {
-                return Physics.Raycast(transform.position, Vector3.down, DISTANCE_TO_DETECT_GROUND, LayerMask.GetMask("Default"));
-            }
-        }
+        public bool IsRunning => _playerInputActions.Player.Sprint.ReadValue<float>() > 0 && IsMoving;
+        public bool IsMoving => Velocity.magnitude > 0;
+        public bool IsFlying => !IsGroundend;
+        public bool IsGroundend => Physics.Raycast(transform.position, Vector3.down, DISTANCE_TO_DETECT_GROUND, LayerMask.GetMask("Default"));
 
         #region MONO
         public void InitializeLocalPlayer()
@@ -117,7 +98,7 @@ namespace FabrShooter.Player.Movement
 
         private void ApplyGravity()
         {
-            if (!IsFlying)
+            if (IsGroundend)
             {
                 Velocity.y = 0;
                 return;
@@ -127,26 +108,38 @@ namespace FabrShooter.Player.Movement
             _characterController.Move(Velocity * Time.deltaTime);
         }
 
-        private void ChangeMover<T> (T value) where T : Mover
+        private void SetMover<T> (T value) where T : Mover
         {
             //_currentMover = new T();
         }
 
         private void ListenSlideInput()
         {
-            if (IsRunning == false || _playerInputActions.Player.Crouch.IsPressed() == false)
-            {
-                IsSliding = false;
+            if (_playerInputActions.Player.Move.ReadValue<Vector2>().y <= 0)
                 return;
-            }
 
-            IsSliding = true;
+            if (IsSliding)
+                return;
+
+            if (Velocity.magnitude < Config.WalkingSpeed)
+                return;
+
+            if (IsRunning == false || _playerInputActions.Player.Crouch.IsPressed() == false)
+                return;
+
+            _currentMover = new SlideMover(this, _playerInputActions, _camera);
+            StartCoroutine(WaitForSlideEnd());
         }
 
         private void StartRun(InputAction.CallbackContext context)
         {
-            _currentMover = new RunMover(this, _playerInputActions, _camera);
+            if (IsFlying)
+                return;
 
+            if (IsSliding)
+                return;
+
+            _currentMover = new RunMover(this, _playerInputActions, _camera);
             StartCoroutine(WaitForRunEnd());
         }
         private void Jump(InputAction.CallbackContext context)
@@ -159,13 +152,15 @@ namespace FabrShooter.Player.Movement
             if (!IsGroundend)
             {
                 if (IsSurfaceOnGivenDirection(-transform.right))
-                    jumpDirection += (transform.right + transform.forward) * _config.WallJumpForce * Time.deltaTime;
+                    jumpDirection += (transform.right) * _config.WallJumpForce * Time.deltaTime;
                 else if (IsSurfaceOnGivenDirection(transform.right))
-                    jumpDirection += (-transform.right + transform.forward) * _config.WallJumpForce * Time.deltaTime;
+                    jumpDirection += (-transform.right) * _config.WallJumpForce * Time.deltaTime;
             }
 
             Velocity += jumpDirection * Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
             _characterController.Move(Velocity * Time.deltaTime);
+
+            IsSliding = false;
             _currentMover = new AirMover(this, _playerInputActions, _camera);
 
             StartCoroutine(WaitForLand());
@@ -192,7 +187,27 @@ namespace FabrShooter.Player.Movement
         private IEnumerator WaitForLand()
         {
             yield return new WaitUntil(() => IsGroundend);
-            _currentMover = new WalkMover(this, _playerInputActions, _camera);
+
+            if(_playerInputActions.Player.Sprint.IsPressed())
+                _currentMover = new RunMover(this, _playerInputActions, _camera);
+            else
+                _currentMover = new WalkMover(this, _playerInputActions, _camera);
+        }
+
+        private IEnumerator WaitForSlideEnd()
+        {
+            IsSliding = true;
+            SlideStateChanged?.Invoke(IsSliding);
+
+            yield return new WaitUntil(() => Velocity.magnitude < SPEED_TO_STOP_SLIDE || IsSliding == false);
+
+            if(_playerInputActions.Player.Sprint.IsPressed())
+                _currentMover = new RunMover(this, _playerInputActions, _camera);
+            else
+                _currentMover = new WalkMover(this, _playerInputActions, _camera);
+
+            IsSliding = false;
+            SlideStateChanged?.Invoke(IsSliding);
         }
     }
 }

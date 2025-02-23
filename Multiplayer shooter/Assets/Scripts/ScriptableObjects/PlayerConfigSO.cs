@@ -17,10 +17,13 @@ namespace FabrShooter.Player
         [SerializeField] private float _jumpForce;
         [SerializeField] private float _wallJumpForce;
         [SerializeField][Range(0f, 1f)] private float _jumpInertia;
+        [Space]
+        [SerializeField][Range(1f, 2f)] private float _slopeAcceleration;
+        [SerializeField][Range(0f, 1f)] private float _slopeDecceleration;
+        [SerializeField][Range(0f, 1f)] private float _slideInertia;
 
         [Space]
         [Header("Camera")]
-        [SerializeField][Range(0f, 150f)] private float _sensitivity;
         [SerializeField][Range(0f, 120f)] private float _maxYAngle;
 
         public float WalkingSpeed => _walkingSpeed;
@@ -29,12 +32,14 @@ namespace FabrShooter.Player
         public float JumpForce => _jumpForce;
         public float WallJumpForce => _wallJumpForce;
         public float JumpInertia => _jumpInertia;
+        public float SlopeAcceleration => _slopeAcceleration;
+        public float SlopeDecceleration => _slopeDecceleration;
+        public float SlideInertia => _slideInertia;
 
         public float MaxStamina => _maxStamina;
         public float StaminaConsumptionSpeed => _staminaConsumptionSpeed;
         public float StaminaRestoreSpeed => _staminaRestoreSpeed;
 
-        public float Sensitivity => _sensitivity;
         public float MaxYAngle => _maxYAngle;
     }
 }

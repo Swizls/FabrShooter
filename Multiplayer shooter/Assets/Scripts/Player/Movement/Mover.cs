@@ -7,7 +7,7 @@ namespace FabrShooter.Player.Movement
     {
         protected PlayerMovement PlayerMovement;
         private PlayerInputActions _playerInputActions;
-        private Camera _camera;
+        protected Camera Camera;
 
         protected Vector3 CalculatedVelocity;
 
@@ -20,7 +20,7 @@ namespace FabrShooter.Player.Movement
         {
             PlayerMovement = playerMovement;
             _playerInputActions = playerInputActions;
-            _camera = camera;
+            Camera = camera;
         }
 
         public abstract void Move();
@@ -29,8 +29,8 @@ namespace FabrShooter.Player.Movement
         {
             Vector2 playerInput = _playerInputActions.Player.Move.ReadValue<Vector2>();
 
-            Vector3 forward = _camera.transform.TransformDirection(Vector3.forward);
-            Vector3 right = _camera.transform.TransformDirection(Vector3.right);
+            Vector3 forward = Camera.transform.TransformDirection(Vector3.forward);
+            Vector3 right = Camera.transform.TransformDirection(Vector3.right);
 
             forward.y = 0;
             right.y = 0;

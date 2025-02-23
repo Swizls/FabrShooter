@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Player Config
   m_EditorClassIdentifier: 
   _walkingSpeed: 10
-  _spritingMultiplier: 3
-  _movementInertia: 0.5
+  _spritingMultiplier: 1.5
+  _movementInertia: 0.8
   _maxStamina: 100
   _staminaConsumptionSpeed: 1
   _staminaRestoreSpeed: 5
   _jumpForce: 3
-  _wallJumpForce: 100
-  _jumpInertia: 0.01
-  _sensitivity: 20
+  _wallJumpForce: 50
+  _jumpInertia: 0.2
+  _slopeAcceleration: 1
+  _slopeDecceleration: 1
+  _slideInertia: 0.01
   _maxYAngle: 85

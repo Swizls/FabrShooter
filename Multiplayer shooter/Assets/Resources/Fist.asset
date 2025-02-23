@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 5
   _useKnockback: 1
-  _knockbackForce: 100
+  _knockbackForce: 5000
