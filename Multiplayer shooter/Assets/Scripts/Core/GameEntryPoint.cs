@@ -13,16 +13,15 @@ namespace FabrShooter
 
         private GameConnectionManager _connectionManager;
 
-        private bool _isAnotherGEPsInScene;
+        private bool _isAnotherGameEntryPointInScene;
 
         public event Action GameInitialized;
 
         private void Awake()
         {
-            //GEP = GameEntryPoint
-            _isAnotherGEPsInScene = FindObjectsByType<GameEntryPoint>(FindObjectsSortMode.None).Length > 1;
+            _isAnotherGameEntryPointInScene = FindObjectsByType<GameEntryPoint>(FindObjectsSortMode.None).Length > 1;
 
-            if (_isAnotherGEPsInScene)
+            if (_isAnotherGameEntryPointInScene)
             {
                 Destroy(gameObject);
                 return;
@@ -33,7 +32,7 @@ namespace FabrShooter
 
         private void Start()
         {
-            if (_isAnotherGEPsInScene)
+            if (_isAnotherGameEntryPointInScene)
                 return;
 
             Instantiate(_networkManager);
@@ -47,7 +46,7 @@ namespace FabrShooter
 
         private void OnDestroy()
         {
-            if (_isAnotherGEPsInScene)
+            if (_isAnotherGameEntryPointInScene)
                 return;
 
             ServiceLocator.Clear();

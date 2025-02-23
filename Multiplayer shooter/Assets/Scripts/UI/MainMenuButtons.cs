@@ -20,5 +20,10 @@ namespace FabrShooter
 
             ServiceLocator.Get<GameConnectionManager>().StartGameAsClient();
         }
+
+        public void OnSigleplayerButtonClick()
+        {
+            ServiceLocator.Get<GameConnectionManager>().StartSingleplayer();
+        }
     }
 }

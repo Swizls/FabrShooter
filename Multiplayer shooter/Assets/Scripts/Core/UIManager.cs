@@ -41,26 +41,31 @@ namespace FabrShooter.UI
             _playerInputActions.UI.Pause.performed -= TogglePauseMenu;
         }
 
-        private void EnableCursor()
+        private void OnDestroy()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            EnableCursor();   
         }
 
-        private void DisableCursor()
+        private void EnableCursor()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
+        private void DisableCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
         private void TogglePauseMenu(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
+            PauseMenu.gameObject.SetActive(!PauseMenu.gameObject.activeInHierarchy);
+
             if (PauseMenu.gameObject.activeInHierarchy)
                 EnableCursor();
             else
                 DisableCursor();
-
-            PauseMenu.gameObject.SetActive(!PauseMenu.gameObject.activeInHierarchy);
         }
 
         public void Disconnect()

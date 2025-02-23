@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainLevelIndex: 1
+  _testLevelIndex: 2
   _mainMenuIndex: 0
 --- !u!114 &4178173610798314491
 MonoBehaviour:

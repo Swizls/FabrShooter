@@ -3897,8 +3897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gunConfig: {fileID: 11400000, guid: 2d438c0b628e60243beb977360554464, type: 2}
   _fists: {fileID: 11400000, guid: 657221a273fe5294381d8f7c6f5ea46f, type: 2}
-  _shotSFX:
-  - {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
+  _slideKick: {fileID: 11400000, guid: 3929f42345f1906409b75c9d4ee96178, type: 2}
 --- !u!54 &1015666557839632579
 Rigidbody:
   m_ObjectHideFlags: 0

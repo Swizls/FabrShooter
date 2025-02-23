@@ -1,4 +1,5 @@
 using FabrShooter.Core.SceneManagment;
+using FabrShooter.Player;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -30,6 +31,22 @@ namespace FabrShooter.Core
             SceneManager.sceneLoaded += OnSceneLoadedAsClient;
         }
 
+        public void StartSingleplayer()
+        {
+            _sceneLoader.LoadTestLevel();
+            SceneManager.sceneLoaded += OnSceneLoadedInSingleplayer;
+        }
+
+        public void EndGame()
+        {
+            Debug.Log("Disconnecting");
+
+            _sceneLoader.LoadMainMenu();
+            Cursor.lockState = CursorLockMode.None;
+            NetworkManager.Singleton.Shutdown();
+            OnGameStop?.Invoke();
+        }
+
         private void OnSceneLoadedAsHost(Scene scene, LoadSceneMode mode)
         {
             SceneManager.sceneLoaded -= OnSceneLoadedAsHost;
@@ -46,14 +63,9 @@ namespace FabrShooter.Core
             Debug.Log("Starting client");
         }
 
-        public void EndGame()
+        private void OnSceneLoadedInSingleplayer(Scene arg0, LoadSceneMode arg1)
         {
-            Debug.Log("Disconnecting");
-
-            _sceneLoader.LoadMainMenu();
-            Cursor.lockState = CursorLockMode.None;
-            NetworkManager.Singleton.Shutdown();
-            OnGameStop?.Invoke();
+            GameObject.FindAnyObjectByType<PlayerInitilaizer>().InitializeSingleplayerMode();
         }
     }
 }
