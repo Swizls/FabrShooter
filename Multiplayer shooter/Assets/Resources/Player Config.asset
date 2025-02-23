@@ -19,7 +19,7 @@ MonoBehaviour:
   _staminaConsumptionSpeed: 1
   _staminaRestoreSpeed: 5
   _jumpForce: 3
-  _wallJumpForce: 50
+  _wallJumpForce: 100
   _jumpInertia: 0.2
   _slopeAcceleration: 1
   _slopeDecceleration: 1

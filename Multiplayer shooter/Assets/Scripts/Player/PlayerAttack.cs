@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 using FabrShooter.Input;
 using System;
 using System.Collections;
+using FabrShooter.Player.Movement;
 
 namespace FabrShooter 
 {
     [RequireComponent(typeof(NetworkSoundPlayer))]
-    [RequireComponent(typeof(Inventory))]
     public class PlayerAttack : MonoBehaviour, IPlayerInitializableComponent
     {
         private const float MAX_ATTACK_RANGE = 5f;
@@ -15,51 +15,57 @@ namespace FabrShooter
 
         [SerializeField] private WeaponSO _gunConfig;
         [SerializeField] private WeaponSO _fists;
-        [Space]
-        [SerializeField] private AudioClip[] _shotSFX;
+        [SerializeField] private WeaponSO _slideKick;
 
         private Transform _cameraTransform;
 
         private PlayerInputActions _playerInputActions;
+        private PlayerMovement _playerMovement;
         private NetworkSoundPlayer _soundPlayer;
         private ServerDamageDelaer _damageDealer;
 
         private bool _isPunchOnCooldown = false;
+        private bool _isSlideKickActive;
 
         public event Action OnPunch;
 
+        #region MONO
         public void InitializeLocalPlayer()
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
+            _playerMovement = GetComponent<PlayerMovement>();
 
-            _playerInputActions = new PlayerInputActions();
-
-            _playerInputActions.Enable();
-            _playerInputActions.Player.Attack.performed += WeaponAttack;
-            _playerInputActions.Player.Punch.performed += Punch;
+            _playerMovement.SlideStateChanged += (bool value) => _isSlideKickActive = value;
 
             _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
 
-            _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
+            _soundPlayer.AddClips(nameof(_gunConfig), _gunConfig.SFX);
+            _soundPlayer.AddClips(nameof(_fists), _fists.SFX);
+            _soundPlayer.AddClips(nameof(_slideKick), _slideKick.SFX);
         }
 
         public void InitializeClientPlayer()
         {
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
 
-            _soundPlayer.AddClips(nameof(_shotSFX), _shotSFX);
+            _soundPlayer.AddClips(nameof(_gunConfig), _gunConfig.SFX);
+            _soundPlayer.AddClips(nameof(_fists), _fists.SFX);
+            _soundPlayer.AddClips(nameof(_slideKick), _slideKick.SFX);
             Destroy(this);
         }
 
         private void OnEnable()
         {
             if (_playerInputActions == null)
-                return;
+                _playerInputActions = new PlayerInputActions();
 
             _playerInputActions.Player.Enable();
             _playerInputActions.Player.Attack.performed += WeaponAttack;
             _playerInputActions.Player.Punch.performed += Punch;
+
+            if(_playerMovement != null)
+                _playerMovement.SlideStateChanged -= (bool value) => _isSlideKickActive = value;
         }
 
         private void OnDisable()
@@ -67,33 +73,54 @@ namespace FabrShooter
             if (_playerInputActions == null)
                 return;
 
-            _playerInputActions.Player.Disable();
             _playerInputActions.Player.Attack.performed -= WeaponAttack;
             _playerInputActions.Player.Punch.performed -= Punch;
+            _playerInputActions.Player.Disable();
+
+
+            if (_playerMovement != null)
+                _playerMovement.SlideStateChanged -= (bool value) => _isSlideKickActive = value;
         }
+
+        private void Update()
+        {
+            if (!_isSlideKickActive)
+                return;
+
+            SlideKickAttack();
+        }
+
+        private void SlideKickAttack()
+        {
+            Vector3 position = transform.position + transform.forward;
+
+            if (!Physics.SphereCast(position, 2f, transform.forward, out RaycastHit hit, 2f, LayerMask.GetMask("Player")))
+                return;
+
+            if (!hit.collider.TryGetComponent(out Hitbox hitbox))
+                return;
+
+            if (hitbox.HitboxController.RagdollController.IsRagdollActive)
+                return;
+
+            _soundPlayer.PlaySoundServerRpc(nameof(_slideKick), UnityEngine.Random.Range(0, _slideKick.SFX.Length));
+            _damageDealer.DealDamageServerRpc(CreateAttackData(hitbox, _slideKick));
+        }
+
+        #endregion
 
         private void WeaponAttack(InputAction.CallbackContext context)
         {
-            PlayShotSFX();
+            _soundPlayer.PlaySoundServerRpc(nameof(_gunConfig), UnityEngine.Random.Range(0, _gunConfig.SFX.Length));
 
-            if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
-            {
-                Debug.Log($"Client perform attack; Hitted {hit.collider.gameObject.name}");
-                if (hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
-                {
 
-                    AttackData attackData = new AttackData(
-                        DamageSenderType.Client,
-                        hitbox.NetworkBehaviourId,
-                        hitbox.NetworkObjectId,
-                        _gunConfig.Damage,
-                        _gunConfig.UseKnockback,
-                        _gunConfig.KnockbackForce
-                    );
+            if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
+                return;
 
-                    _damageDealer.DealDamageServerRpc(attackData);
-                }
-            }
+            if (!hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
+                return;
+
+            _damageDealer.DealDamageServerRpc(CreateAttackData(hitbox, _gunConfig));
         }
 
         private void Punch(InputAction.CallbackContext context)
@@ -106,31 +133,28 @@ namespace FabrShooter
             _isPunchOnCooldown = true;
             StartCoroutine(StartPunchCooldown());
 
-            if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
-            {
-                if (Vector3.Distance(transform.position, hit.point) > MAX_ATTACK_RANGE)
-                    return;
+            if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
+                return;
 
-                Debug.Log($"Client perform attack; Hitted {hit.collider.gameObject.name}");
-                if (hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
-                {
-                    AttackData attackData = new AttackData(
+            if (Vector3.Distance(transform.position, hit.point) > MAX_ATTACK_RANGE)
+                return;
+
+            if (!hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
+                return;
+
+            _soundPlayer.PlaySoundServerRpc(nameof(_fists), UnityEngine.Random.Range(0, _fists.SFX.Length));
+            _damageDealer.DealDamageServerRpc(CreateAttackData(hitbox, _fists));
+        }
+
+        private AttackData CreateAttackData(Hitbox hitbox, WeaponSO config)
+        {
+            return new AttackData(
                         DamageSenderType.Client,
                         hitbox.NetworkBehaviourId,
                         hitbox.NetworkObjectId,
-                        _fists.Damage,
-                        _fists.UseKnockback,
-                        _fists.KnockbackForce
-                    );
-
-                    _damageDealer.DealDamageServerRpc(attackData);
-                }
-            }
-        }
-
-        private void PlayShotSFX()
-        {
-            _soundPlayer.PlaySoundServerRpc(nameof(_shotSFX), UnityEngine.Random.Range(0, _shotSFX.Length));
+                        config.Damage,
+                        config.UseKnockback,
+                        config.KnockbackForce);
         }
 
         private IEnumerator StartPunchCooldown()

@@ -48,6 +48,7 @@ namespace FabrShooter.Player.Movement
 
         public void InitializeClientPlayer()
         {
+            _characterController = GetComponent<CharacterController>();
             _characterController.enabled = false;
             Destroy(this);
         }

@@ -9,10 +9,12 @@ namespace FabrShooter
         private List<Hitbox> _hitboxes = new List<Hitbox>();
 
         public Hitbox LastHittedHitbox { get; private set; }
+        public RagdollController RagdollController { get; private set; }
 
         public override void OnNetworkSpawn()
         {
             _hitboxes = GetComponentsInChildren<Hitbox>().ToList();
+            RagdollController = GetComponentInParent<RagdollController>();
         }
 
         [ClientRpc]

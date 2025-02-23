@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1673151711891d04389b3ca931d5cd95, type: 3}
-  m_Name: Pistol
+  m_Name: Slide Kick
   m_EditorClassIdentifier: 
-  _damage: 20
-  _useKnockback: 0
-  _knockbackForce: 0
+  _damage: 5
+  _useKnockback: 1
+  _knockbackForce: 500
   _sfx:
-  - {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
+  - {fileID: 0}

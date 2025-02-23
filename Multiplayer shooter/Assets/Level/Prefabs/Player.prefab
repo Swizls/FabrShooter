@@ -3800,7 +3800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3480057229
+  GlobalObjectIdHash: 2279822913
   InScenePlacedSourceGlobalObjectIdHash: 2279822913
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3928,8 +3928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gunConfig: {fileID: 11400000, guid: 2d438c0b628e60243beb977360554464, type: 2}
   _fists: {fileID: 11400000, guid: 657221a273fe5294381d8f7c6f5ea46f, type: 2}
-  _shotSFX:
-  - {fileID: 8300000, guid: 479da6a9cd8430349bdd125361b94b10, type: 3}
+  _slideKick: {fileID: 11400000, guid: 3929f42345f1906409b75c9d4ee96178, type: 2}
 --- !u!114 &8902774501964331573
 MonoBehaviour:
   m_ObjectHideFlags: 0
