@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace FabrShooter.EditorExtension 
 {
-    [CustomEditor(typeof(HitboxController))]
+    [CustomEditor(typeof(HitboxHitHandler))]
     public class HitboxControllerEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            HitboxController hitboxController = (HitboxController)target;
+            HitboxHitHandler hitboxController = (HitboxHitHandler)target;
 
             GUI.enabled = Application.isPlaying;
 

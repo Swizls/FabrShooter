@@ -16,13 +16,13 @@ namespace FabrShooter
         
         private RagdollController _ragdollController;
         private NetworkSoundPlayer _soundPlayer;
-        private HitboxController _hitboxController;
+        private HitboxHitHandler _hitboxController;
 
         public override void OnNetworkSpawn()
         {
             _ragdollController = GetComponent<RagdollController>();
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
-            _hitboxController = GetComponentInChildren<HitboxController>();
+            _hitboxController = GetComponentInChildren<HitboxHitHandler>();
 
             _soundPlayer.AddClips(nameof(_knockbackSounds), _knockbackSounds);
         }

@@ -16,7 +16,7 @@ namespace FabrShooter
             }
 
             var health = targetObject.GetComponent<Health>();
-            var hitboxController = targetObject.GetComponentInChildren<HitboxController>();
+            var hitboxController = targetObject.GetComponentInChildren<HitboxHitHandler>();
 
             health.TakeDamageClientRpc(data.Damage);
             hitboxController.RegisterHitClientRpc(data.TargetID, data.HitboxID);
