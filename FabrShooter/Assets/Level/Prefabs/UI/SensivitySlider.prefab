@@ -533,6 +533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 756907199774674415}
   - component: {fileID: 2209584667035214569}
+  - component: {fileID: 6826357347659771902}
   m_Layer: 5
   m_Name: SensivitySlider
   m_TagString: Untagged
@@ -587,3 +588,15 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6826357347659771902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092281732609960899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69a2e5ad4ad08444ea10f93a671c7c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
