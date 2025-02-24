@@ -40,7 +40,7 @@ namespace FabrShooter
 
         private void OnPlayerDeath(ulong clientID)
         {
-            Debug.Log($"OnPlayerDeath() invoke (client: {clientID})");
+            Debug.Log($"OnPlayerDeath() invoke client({clientID})");
 
             _knockbackController.enabled = false;
             _ragdollController.RequestEnableRagdollServerRpc();

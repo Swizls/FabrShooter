@@ -15,6 +15,7 @@ namespace FabrShooter
         public Action<ulong> OnDeath;
 
         public int Value => _value;
+        public bool IsDead => _value <= 0;
 
         public override void OnNetworkSpawn()
         {
@@ -41,6 +42,10 @@ namespace FabrShooter
         private void Die()
         {
             Debug.Log($"Client: {OwnerClientId}; Died;");
+
+            if (_value < 0)
+                _value = 0;
+
             OnDeath?.Invoke(OwnerClientId);
         }
     }

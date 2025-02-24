@@ -11,6 +11,7 @@ namespace FabrShooter
         [SerializeField] private GameObject _root;
         [SerializeField] private List<Behaviour> _componentsToDisableOnRegdoll;
 
+        private Health _health;
         private Rigidbody[] _rigidbodies;
         private Collider[] _colliders;
 
@@ -24,6 +25,7 @@ namespace FabrShooter
             if (_root == null)
                 throw new NullReferenceException("Rig root is not setted");
 
+            _health = GetComponent<Health>();
             _rigidbodies = _root.GetComponentsInChildren<Rigidbody>();
             _colliders = _root.GetComponentsInChildren<Collider>();
 
@@ -33,6 +35,9 @@ namespace FabrShooter
         [ClientRpc]
         public void DisableRagdollClientRpc()
         {
+            if (_health.IsDead)
+                return;
+
             foreach (var component in _componentsToDisableOnRegdoll)
             {
                 if (component == null)
