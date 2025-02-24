@@ -21,7 +21,7 @@ namespace FabrShooter
             if (!IsOwner) return;
 
             HealthUI healthUI = FindFirstObjectByType<HealthUI>();
-            healthUI.Initialize(this, OwnerClientId);
+            healthUI.Initialize(this);
         }
 
         [ClientRpc]
