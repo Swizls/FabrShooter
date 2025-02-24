@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Slide Kick
   m_EditorClassIdentifier: 
   _damage: 5
+  _attackType: 3
   _useKnockback: 1
   _knockbackForce: 500
   _sfx:

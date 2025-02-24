@@ -153,10 +153,11 @@ namespace FabrShooter
         {
             return new AttackData(
                         DamageSenderType.Client,
-                        _ownerClientID, 
+                        _ownerClientID,
                         hitbox.NetworkObjectId,
                         hitbox.NetworkBehaviourId,
                         config.Damage,
+                        config.AttackType, 
                         config.UseKnockback,
                         config.KnockbackForce);
         }

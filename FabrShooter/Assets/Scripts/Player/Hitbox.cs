@@ -5,6 +5,16 @@ namespace FabrShooter
 {
     public class Hitbox : NetworkBehaviour
     {
+        public enum HitboxType
+        {
+            Default,
+            Head,
+            Balls
+        }
+
+        [SerializeField] private HitboxType _hitboxType;
+
+        public HitboxType Hitboxtype => _hitboxType;
         public Rigidbody Rigidbody { get; private set; }
         public HitboxHitHandler HitboxController { get; private set; }
 

@@ -27,7 +27,13 @@ namespace FabrShooter
             if (hitbox == null)
                 return;
 
-            AttackData attackData = new AttackData(DamageSenderType.MonoBehaviour, 0, hitbox.NetworkObjectId, hitbox.NetworkBehaviourId, DAMAGE);
+            AttackData attackData = new AttackData(
+                DamageSenderType.MonoBehaviour, 
+                0, 
+                hitbox.NetworkObjectId, 
+                hitbox.NetworkBehaviourId, 
+                DAMAGE, 
+                AttackData.AttackType.System);
 
             _dealer.DealDamageServerRpc(attackData);
         }

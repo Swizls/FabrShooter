@@ -65,6 +65,7 @@ namespace FabrShooter.Core
 
         private void OnSceneLoadedInSingleplayer(Scene arg0, LoadSceneMode arg1)
         {
+            SceneManager.sceneLoaded -= OnSceneLoadedInSingleplayer;
             GameObject.FindAnyObjectByType<PlayerInitilaizer>().InitializeSingleplayerMode();
         }
     }

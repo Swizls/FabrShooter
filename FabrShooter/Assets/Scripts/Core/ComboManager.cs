@@ -1,6 +1,7 @@
 using FabrShooter.Core;
 using System;
 using System.Threading.Tasks;
+using Unity.Netcode;
 
 namespace FabrShooter
 {
@@ -34,12 +35,31 @@ namespace FabrShooter
         }
         private void OnDamageDeal(AttackData data)
         {
-            AddComboLevel();
+            if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(data.TargetID, out NetworkObject netObject))
+                return;
+
+            Hitbox lastHittedHitbox = netObject.GetComponentInChildren<HitboxHitHandler>().LastHittedHitbox;
+
+            switch (lastHittedHitbox.Hitboxtype)
+            {
+                case Hitbox.HitboxType.Head:
+                    AddComboLevel(2);
+                    break;
+                case Hitbox.HitboxType.Balls:
+                    AddComboLevel(3);
+                    break;
+            }
+
+            if (data.Attacktype == AttackData.AttackType.Punch)
+                AddComboLevel(1);
+
+            if (data.Attacktype == AttackData.AttackType.SlideKick)
+                AddComboLevel(1);
         }
 
-        private void AddComboLevel()
+        private void AddComboLevel(int value)
         {
-            ComboValue++;
+            ComboValue += value;
 
             if (_delayedComboLevelDecreaseTask == null)
                 _delayedComboLevelDecreaseTask = DelayComboLevelDecrease();
