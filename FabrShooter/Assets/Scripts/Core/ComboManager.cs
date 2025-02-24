@@ -1,52 +1,26 @@
 using FabrShooter.Core;
 using System;
-using System.Collections;
-using UnityEngine;
+using System.Threading.Tasks;
 
 namespace FabrShooter
 {
-    public class ComboManager : MonoBehaviour, IService
+    public class ComboManager : IService
     {
         private const float DECREASE_DELAY_TIME = 5f;
 
         private ServerDamageDealer _dealer;
-        private Coroutine _delayedComboLevelDecreaseRoutine;
+        private Task _delayedComboLevelDecreaseRoutine;
 
         public event Action ComboLevelValueChanged;
 
         public int ComboLevel { get; private set; }
 
-        #region MONO
-        private void Awake()
+        public ComboManager (ServerDamageDealer dealer)
         {
-            ServiceLocator.Register<ComboManager>(this);
-        }
-
-        private void Start ()
-        {
-            _dealer = FindAnyObjectByType<ServerDamageDealer>();
+            _dealer = dealer;
 
             _dealer.OnDamageDealing += OnDamageDeal;
         }
-
-        private void OnEnable()
-        {
-            if (_dealer != null)
-                _dealer.OnDamageDealing += OnDamageDeal;
-        }
-
-        private void OnDisable()
-        {
-            if(_dealer != null)
-                _dealer.OnDamageDealing -= OnDamageDeal;
-        }
-
-        private void OnDestroy()
-        {
-            ServiceLocator.Unregister<ComboManager>(this);
-        }
-        #endregion
-
         private void OnDamageDeal(AttackData data)
         {
             AddComboLevel();
@@ -56,16 +30,16 @@ namespace FabrShooter
         {
             ComboLevel++;
             if (_delayedComboLevelDecreaseRoutine == null)
-                _delayedComboLevelDecreaseRoutine = StartCoroutine(DelayComboLevelDecrease());
+                DelayComboLevelDecrease();
 
             ComboLevelValueChanged?.Invoke();
         }
 
-        private IEnumerator DelayComboLevelDecrease()
+        private async void DelayComboLevelDecrease()
         {
             while(ComboLevel > 0)
             {
-                yield return new WaitForSeconds(DECREASE_DELAY_TIME);
+                await Task.Delay(TimeSpan.FromSeconds(DECREASE_DELAY_TIME));
                 ComboLevel--;
                 ComboLevelValueChanged?.Invoke();
             }

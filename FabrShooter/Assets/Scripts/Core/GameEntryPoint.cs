@@ -3,6 +3,8 @@ using FabrShooter.Core.SceneManagment;
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace FabrShooter
 {
@@ -41,7 +43,25 @@ namespace FabrShooter
             ServiceLocator.Register<GameConnectionManager>(_connectionManager);
             ServiceLocator.Register<SceneLoader>(_sceneLoader);
 
+            _sceneLoader.OnMainLevelLoad += OnLevelLoad;
+            _sceneLoader.OnTestLevelLoad += OnLevelLoad;
+
             GameInitialized?.Invoke();
+        }
+
+        private void OnLevelLoad()
+        {
+            _sceneLoader.OnMainLevelLoad -= OnLevelLoad;
+            _sceneLoader.OnTestLevelLoad -= OnLevelLoad;
+
+            UnityAction<Scene, LoadSceneMode> callback = null;
+            callback = (Scene scene, LoadSceneMode mode) =>
+            {
+                ServiceLocator.Register<ComboManager>(new ComboManager(FindAnyObjectByType<ServerDamageDealer>()));
+                SceneManager.sceneLoaded -= callback;
+            };
+
+            SceneManager.sceneLoaded += callback;
         }
 
         private void OnDestroy()
