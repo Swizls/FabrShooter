@@ -4,13 +4,15 @@ using FabrShooter.Input;
 using System;
 using System.Collections;
 using FabrShooter.Player.Movement;
+using Unity.Netcode;
 
 namespace FabrShooter 
 {
     [RequireComponent(typeof(NetworkSoundPlayer))]
+    [RequireComponent(typeof(NetworkObject))]
     public class PlayerAttack : MonoBehaviour, IPlayerInitializableComponent
     {
-        private const float MAX_ATTACK_RANGE = 5f;
+        private const float PUNCH_MAX_ATTACK_RANGE = 5f;
         private const float PUNCH_COOLDOWN_TIME = 2f;
 
         [SerializeField] private WeaponSO _gunConfig;
@@ -22,8 +24,9 @@ namespace FabrShooter
         private PlayerInputActions _playerInputActions;
         private PlayerMovement _playerMovement;
         private NetworkSoundPlayer _soundPlayer;
-        private ServerDamageDelaer _damageDealer;
+        private ServerDamageDealer _damageDealer;
 
+        private ulong _ownerClientID;
         private bool _isPunchOnCooldown = false;
         private bool _isSlideKickActive;
 
@@ -35,10 +38,11 @@ namespace FabrShooter
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _soundPlayer = GetComponent<NetworkSoundPlayer>();
             _playerMovement = GetComponent<PlayerMovement>();
+            _ownerClientID = GetComponent<NetworkObject>().OwnerClientId;
 
             _playerMovement.SlideStateChanged += (bool value) => _isSlideKickActive = value;
 
-            _damageDealer = FindAnyObjectByType<ServerDamageDelaer>();
+            _damageDealer = FindAnyObjectByType<ServerDamageDealer>();
 
             _soundPlayer.AddClips(nameof(_gunConfig), _gunConfig.SFX);
             _soundPlayer.AddClips(nameof(_fists), _fists.SFX);
@@ -113,7 +117,6 @@ namespace FabrShooter
         {
             _soundPlayer.PlaySoundServerRpc(nameof(_gunConfig), UnityEngine.Random.Range(0, _gunConfig.SFX.Length));
 
-
             if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
                 return;
 
@@ -136,7 +139,7 @@ namespace FabrShooter
             if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit))
                 return;
 
-            if (Vector3.Distance(transform.position, hit.point) > MAX_ATTACK_RANGE)
+            if (Vector3.Distance(transform.position, hit.point) > PUNCH_MAX_ATTACK_RANGE)
                 return;
 
             if (!hit.collider.gameObject.TryGetComponent(out Hitbox hitbox))
@@ -150,8 +153,9 @@ namespace FabrShooter
         {
             return new AttackData(
                         DamageSenderType.Client,
-                        hitbox.NetworkBehaviourId,
+                        _ownerClientID, 
                         hitbox.NetworkObjectId,
+                        hitbox.NetworkBehaviourId,
                         config.Damage,
                         config.UseKnockback,
                         config.KnockbackForce);

@@ -1,11 +1,15 @@
+using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace FabrShooter 
 {
     [RequireComponent(typeof(NetworkObject))]
-    public class ServerDamageDelaer : NetworkBehaviour
+    public class ServerDamageDealer : NetworkBehaviour
     {
+        public event Action<AttackData> OnDamageDealing;
+
         [ServerRpc(RequireOwnership = false)]
         public void DealDamageServerRpc(AttackData data)
         {
@@ -23,11 +27,22 @@ namespace FabrShooter
 
             Debug.Log($"Server is dealing damage to client({data.TargetID}); Damage: {data.Damage}; Knockback: {data.UseKnockback}");
 
+            if(data.TryGetSenderID(out ulong senderID) )
+            {
+                ActionInvokeClientRpc(data, new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { senderID } } });
+            }
+
             if (!data.UseKnockback)
                 return;
 
             if (targetObject.TryGetComponent(out KnockbackController knockbackController))
                 knockbackController.ApplyKnockbackClientRpc(data.KnockbackForce);
+        }
+
+        [ClientRpc]
+        private void ActionInvokeClientRpc(AttackData data, ClientRpcParams rpcParams)
+        {
+            OnDamageDealing?.Invoke(data);
         }
     }
 }

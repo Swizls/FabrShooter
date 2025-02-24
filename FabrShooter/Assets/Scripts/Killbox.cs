@@ -7,7 +7,7 @@ namespace FabrShooter
     {
         private const int DAMAGE = 1000000;
 
-        private ServerDamageDelaer _dealer;
+        private ServerDamageDealer _dealer;
         private BoxCollider _collider;
 
         private void Start()
@@ -17,7 +17,7 @@ namespace FabrShooter
 
             _collider.includeLayers = LayerMask.GetMask("Player"); 
 
-            _dealer = FindAnyObjectByType<ServerDamageDelaer>();
+            _dealer = FindAnyObjectByType<ServerDamageDealer>();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -27,7 +27,7 @@ namespace FabrShooter
             if (hitbox == null)
                 return;
 
-            AttackData attackData = new AttackData(DamageSenderType.Client, hitbox.NetworkBehaviourId, hitbox.NetworkObjectId, DAMAGE);
+            AttackData attackData = new AttackData(DamageSenderType.MonoBehaviour, 0, hitbox.NetworkObjectId, hitbox.NetworkBehaviourId, DAMAGE);
 
             _dealer.DealDamageServerRpc(attackData);
         }
