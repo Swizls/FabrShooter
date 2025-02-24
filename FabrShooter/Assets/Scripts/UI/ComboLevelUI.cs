@@ -10,33 +10,33 @@ namespace FabrShooter.UI
         private const string MID_COMBO_LEVEL_NAME = "Chelobas";
         private const string HIGH_COMBO_LEVEL_NAME = "Fabro God";
 
-        private const int MID_COMBO_TRESHOLD = 5;
-        private const int HIGH_COMBO_TRESHOLD = 10;
-
         [SerializeField] private TextMeshProUGUI _value;
 
         private void Start()
         {
-            ServiceLocator.Get<ComboManager>().ComboLevelValueChanged += SetValue;
+            ServiceLocator.Get<ComboManager>().ComboStateChanged += SetValue;
             SetValue();
         }
 
         private void OnDestroy()
         {
-            ServiceLocator.Get<ComboManager>().ComboLevelValueChanged -= SetValue;
+            ServiceLocator.Get<ComboManager>().ComboStateChanged -= SetValue;
         }
 
         private void SetValue()
         {
-            int comboLevel = ServiceLocator.Get<ComboManager>().ComboLevel;
-
-            if (comboLevel < MID_COMBO_TRESHOLD)
-                _value.text = LOW_COMBO_LEVEL_NAME;
-            else if (comboLevel < HIGH_COMBO_TRESHOLD)
-                _value.text = MID_COMBO_LEVEL_NAME;
-            else
-                _value.text = HIGH_COMBO_LEVEL_NAME;
-
+            switch(ServiceLocator.Get<ComboManager>().ComboSate)
+            {
+                case ComboManager.ComboState.Low:
+                    _value.text = LOW_COMBO_LEVEL_NAME;
+                    break;
+                case ComboManager.ComboState.Mid:
+                    _value.text = MID_COMBO_LEVEL_NAME;
+                    break;
+                case ComboManager.ComboState.High:
+                    _value.text = HIGH_COMBO_LEVEL_NAME;
+                    break;
+            }
         }
     }
 }

@@ -6,14 +6,25 @@ namespace FabrShooter
 {
     public class ComboManager : IService
     {
+        public enum ComboState 
+        { 
+            Low,
+            Mid,
+            High
+        }
+
         private const float DECREASE_DELAY_TIME = 5f;
 
+        private const int MID_COMBO_TRESHOLD = 5;
+        private const int HIGH_COMBO_TRESHOLD = 10;
+
         private ServerDamageDealer _dealer;
-        private Task _delayedComboLevelDecreaseRoutine;
+        private Task _delayedComboLevelDecreaseTask;
 
-        public event Action ComboLevelValueChanged;
+        public event Action ComboStateChanged;
 
-        public int ComboLevel { get; private set; }
+        public int ComboValue { get; private set; }
+        public ComboState ComboSate { get; private set; }
 
         public ComboManager (ServerDamageDealer dealer)
         {
@@ -28,21 +39,41 @@ namespace FabrShooter
 
         private void AddComboLevel()
         {
-            ComboLevel++;
-            if (_delayedComboLevelDecreaseRoutine == null)
-                DelayComboLevelDecrease();
+            ComboValue++;
 
-            ComboLevelValueChanged?.Invoke();
+            if (_delayedComboLevelDecreaseTask == null)
+                _delayedComboLevelDecreaseTask = DelayComboLevelDecrease();
+
+            ChangeComboState();
         }
 
-        private async void DelayComboLevelDecrease()
+        private void ChangeComboState()
         {
-            while(ComboLevel > 0)
+            ComboState previousState = ComboSate;
+
+            if (ComboValue < MID_COMBO_TRESHOLD)
+                ComboSate = ComboState.Low;
+            else if (ComboValue < HIGH_COMBO_TRESHOLD)
+                ComboSate = ComboState.Mid;
+            else
+                ComboSate = ComboState.High;
+
+            if (previousState == ComboSate)
+                return;
+
+            ComboStateChanged?.Invoke();
+        }
+
+        private async Task DelayComboLevelDecrease()
+        {
+            while(ComboValue > 0)
             {
                 await Task.Delay(TimeSpan.FromSeconds(DECREASE_DELAY_TIME));
-                ComboLevel--;
-                ComboLevelValueChanged?.Invoke();
+                ComboValue--;
+                ChangeComboState();
             }
+
+            _delayedComboLevelDecreaseTask = null;
         }
     }
 }

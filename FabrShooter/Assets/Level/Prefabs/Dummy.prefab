@@ -21,6 +21,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3725553104798687083, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
+      propertyPath: '_componentsToDisableOnRegdoll.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3725553104798687083, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
       propertyPath: '_componentsToDisableOnRegdoll.Array.data[3]'
       value: 
       objectReference: {fileID: 0}
@@ -81,9 +85,12 @@ PrefabInstance:
     - {fileID: 993355081631408958, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
     - {fileID: 673459907000437321, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
     - {fileID: 3044149546643821798, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
+    - {fileID: 8902774501964331573, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
+    - {fileID: 6570250062829795874, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7224542654078037021, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
     - {fileID: 8314001998798772150, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
+    - {fileID: 6190931819157302208, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8224d69ff33c8a49b70b702e09c3010, type: 3}
