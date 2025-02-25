@@ -14,8 +14,9 @@ namespace FabrShooter.Player.Movement
             CalculatedVelocity.x = Mathf.MoveTowards(PlayerMovement.Velocity.x, MovementDirection.x * Config.WalkingSpeed, Config.MovementInertia);
             CalculatedVelocity.z = Mathf.MoveTowards(PlayerMovement.Velocity.z, MovementDirection.z * Config.WalkingSpeed, Config.MovementInertia);
 
-            PlayerMovement.Velocity.x = CalculatedVelocity.x;
-            PlayerMovement.Velocity.z = CalculatedVelocity.z;
+            CalculatedVelocity.y = PlayerMovement.Velocity.y;
+
+            PlayerMovement.Velocity = AdjustVelocityToSlope(CalculatedVelocity);
 
             CharacterController.Move(PlayerMovement.Velocity * Time.deltaTime);
         }

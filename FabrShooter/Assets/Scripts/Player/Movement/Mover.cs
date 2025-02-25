@@ -15,6 +15,7 @@ namespace FabrShooter.Player.Movement
         protected CharacterController CharacterController => PlayerMovement.CharacterController;
 
         public Vector3 MovementDirection { get; private set; }
+        public bool HasInput => MovementDirection.magnitude > 0;
 
         public Mover(PlayerMovement playerMovement, PlayerInputActions playerInputActions, Camera camera)
         {
@@ -39,6 +40,16 @@ namespace FabrShooter.Player.Movement
             right.Normalize();
 
             MovementDirection = forward * playerInput.y + right * playerInput.x;
+        }
+
+        protected Vector3 AdjustVelocityToSlope(Vector3 velocity)
+        {
+            Ray ray = new Ray(PlayerMovement.transform.position, Vector3.down);
+
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, PlayerMovement.GROUND_DETECTION_DISTANCE, LayerMask.GetMask("Default")))
+                return velocity;
+
+            return Vector3.ProjectOnPlane(velocity, hitInfo.normal);
         }
     }
 

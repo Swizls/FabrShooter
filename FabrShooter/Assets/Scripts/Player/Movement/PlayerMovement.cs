@@ -9,8 +9,9 @@ namespace FabrShooter.Player.Movement
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour, IPlayerInitializableComponent
     {
+        public const float GROUND_DETECTION_DISTANCE = 1.3f;
+
         private const float GRAVITY = -9.81f;
-        private const float DISTANCE_TO_DETECT_GROUND = 1.2f;
         private const float DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP = 2f;
         private const float SPEED_TO_STOP_SLIDE = 8f;
 
@@ -37,7 +38,7 @@ namespace FabrShooter.Player.Movement
         public bool IsRunning => _playerInputActions.Player.Sprint.ReadValue<float>() > 0 && IsMoving;
         public bool IsMoving => Velocity.magnitude > 0;
         public bool IsFlying => !IsGroundend;
-        public bool IsGroundend => Physics.Raycast(transform.position, Vector3.down, DISTANCE_TO_DETECT_GROUND, LayerMask.GetMask("Default"));
+        public bool IsGroundend => Physics.Raycast(transform.position, Vector3.down, GROUND_DETECTION_DISTANCE, LayerMask.GetMask("Default"));
 
         #region MONO
         public void InitializeLocalPlayer()
@@ -76,13 +77,14 @@ namespace FabrShooter.Player.Movement
 
         private void Update()
         {
+            _currentMover.ListenMovementInput();
             ListenSlideInput();
         }
 
         private void FixedUpdate()
         {
-            _currentMover.ListenMovementInput();
-            _currentMover.Move();
+            if (CharacterController.velocity.magnitude > 0 || _currentMover.HasInput)
+                _currentMover.Move();
             ApplyGravity();
         }
 

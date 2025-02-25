@@ -57,6 +57,12 @@ namespace FabrShooter
             UnityAction<Scene, LoadSceneMode> callback = null;
             callback = (Scene scene, LoadSceneMode mode) =>
             {
+                if (scene.name == "Test Level")
+                {
+                    SceneManager.sceneLoaded -= callback;
+                    return;
+                }
+
                 ServiceLocator.Register<ComboManager>(new ComboManager(FindAnyObjectByType<ServerDamageDealer>()));
                 SceneManager.sceneLoaded -= callback;
             };

@@ -1,4 +1,4 @@
-﻿using FabrShooter.Input;
+using FabrShooter.Input;
 using UnityEngine;
 
 namespace FabrShooter.Player.Movement
@@ -39,17 +39,24 @@ namespace FabrShooter.Player.Movement
 
             float verticalModifier = 1f;
 
-            if (CharacterController.velocity.y > 0)
-                verticalModifier = Config.SlopeDecceleration;
-            else if (CharacterController.velocity.y < 0)
-                verticalModifier = Config.SlopeAcceleration;
+            if (PlayerMovement.IsGroundend)
+            {
+                if (CharacterController.velocity.y > 0)
+                    verticalModifier = Config.SlopeDecceleration;
+                else if (CharacterController.velocity.y < 0)
+                    verticalModifier = Config.SlopeAcceleration;
+            }
 
             speed *= verticalModifier;
 
             Vector3 finalDirection = (_slideDirection + boostDirection).normalized;
 
-            PlayerMovement.Velocity.x = Mathf.MoveTowards(PlayerMovement.Velocity.x, finalDirection.x * speed, Config.MovementInertia);
-            PlayerMovement.Velocity.z = Mathf.MoveTowards(PlayerMovement.Velocity.z, finalDirection.z * speed, Config.MovementInertia);
+            CalculatedVelocity.x = Mathf.MoveTowards(PlayerMovement.Velocity.x, finalDirection.x * speed, Config.MovementInertia);
+            CalculatedVelocity.z = Mathf.MoveTowards(PlayerMovement.Velocity.z, finalDirection.z * speed, Config.MovementInertia);
+
+            CalculatedVelocity.y = PlayerMovement.Velocity.y;
+
+            PlayerMovement.Velocity = AdjustVelocityToSlope(CalculatedVelocity);
 
             CharacterController.Move(PlayerMovement.Velocity * Time.deltaTime);
         }

@@ -21,7 +21,7 @@ MonoBehaviour:
   _jumpForce: 3
   _wallJumpForce: 100
   _jumpInertia: 0.2
-  _slopeAcceleration: 1.5
+  _slopeAcceleration: 2
   _slopeDecceleration: 0.1
   _slideInertia: 0.01
   _maxYAngle: 85
