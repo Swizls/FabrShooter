@@ -5,8 +5,10 @@ namespace FabrShooter.Player.Movement
 {
     public abstract class Mover
     {
-        protected PlayerMovement PlayerMovement;
+        private const float GROUND_DETECTION_DISTANCE = 1.3f;
+
         private PlayerInputActions _playerInputActions;
+        protected PlayerMovement PlayerMovement;
         protected Camera Camera;
 
         protected Vector3 CalculatedVelocity;
@@ -46,10 +48,23 @@ namespace FabrShooter.Player.Movement
         {
             Ray ray = new Ray(PlayerMovement.transform.position, Vector3.down);
 
-            if (!Physics.Raycast(ray, out RaycastHit hitInfo, PlayerMovement.GROUND_DETECTION_DISTANCE, LayerMask.GetMask("Default")))
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo, GROUND_DETECTION_DISTANCE, LayerMask.GetMask("Default")))
                 return velocity;
 
-            return Vector3.ProjectOnPlane(velocity, hitInfo.normal);
+            Vector3 projectedVector = Vector3.ProjectOnPlane(velocity, hitInfo.normal);
+
+            if (projectedVector.y > 0)
+                projectedVector.y -= 10f;
+
+            return projectedVector;
+        }
+
+        protected void ApplyGravity()
+        {
+            float gravityY = PlayerMovement.IsFlying ? Physics.gravity.y * Time.deltaTime : Physics.gravity.y;
+            Vector3 gravityForce = new Vector3(0, gravityY, 0);
+
+            CalculatedVelocity += gravityForce;
         }
     }
 

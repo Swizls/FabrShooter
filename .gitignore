@@ -3,6 +3,7 @@
 /FabrShooter/Obj/
 /FabrShooter/obj/
 /FabrShooter/Build/
+/FabrShooter/ProjectSettings/Packages/com.unity.probuilder/Settings.json
 /Builds/
 /FabrShooter/Logs/
 /FabrShooter/UserSettings/
@@ -37,5 +38,3 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
-
-FabrShooter/ProjectSettings/Packages/com.unity.probuilder/Settings.json

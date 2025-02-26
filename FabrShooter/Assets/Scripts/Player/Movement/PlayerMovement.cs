@@ -9,9 +9,6 @@ namespace FabrShooter.Player.Movement
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour, IPlayerInitializableComponent
     {
-        public const float GROUND_DETECTION_DISTANCE = 1.3f;
-
-        private const float GRAVITY = -9.81f;
         private const float DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP = 2f;
         private const float SPEED_TO_STOP_SLIDE = 8f;
 
@@ -27,18 +24,16 @@ namespace FabrShooter.Player.Movement
         public Action StartedStaminaConsumption;
         public Action EndedStaminaConsumtion;
 
-        [HideInInspector] public Vector3 Velocity;
-
         public PlayerConfigSO Config => _config;
         public Vector2 InputDirection => _playerInputActions.Player.Move.ReadValue<Vector2>();
+        public Vector3 Velocity => CharacterController.velocity;
         public CharacterController CharacterController => _characterController;
         public Mover CurrentMover => _currentMover;
         public bool IsSliding { get; private set; }
-
         public bool IsRunning => _playerInputActions.Player.Sprint.ReadValue<float>() > 0 && IsMoving;
-        public bool IsMoving => Velocity.magnitude > 0;
+        public bool IsMoving => CharacterController.velocity.magnitude > 0;
         public bool IsFlying => !IsGroundend;
-        public bool IsGroundend => Physics.Raycast(transform.position, Vector3.down, GROUND_DETECTION_DISTANCE, LayerMask.GetMask("Default"));
+        public bool IsGroundend => CharacterController.isGrounded;
 
         #region MONO
         public void InitializeLocalPlayer()
@@ -83,9 +78,11 @@ namespace FabrShooter.Player.Movement
 
         private void FixedUpdate()
         {
-            if (CharacterController.velocity.magnitude > 0 || _currentMover.HasInput)
+            if (CharacterController.velocity.magnitude > 0 || _currentMover.HasInput || IsFlying)
+            {
                 _currentMover.Move();
-            ApplyGravity();
+                Debug.Log(CharacterController.collisionFlags);
+            }
         }
 
 
@@ -96,20 +93,10 @@ namespace FabrShooter.Player.Movement
 
             Gizmos.color = Color.red;
             Gizmos.DrawRay(transform.position, Velocity);
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, CharacterController.velocity);
         }
         #endregion
-
-        private void ApplyGravity()
-        {
-            if (IsGroundend)
-            {
-                Velocity.y = 0;
-                return;
-            }
-
-            Velocity.y += GRAVITY * Time.deltaTime;
-            _characterController.Move(Velocity * Time.deltaTime);
-        }
 
         private void SetMover<T> (T value) where T : Mover
         {
@@ -160,8 +147,9 @@ namespace FabrShooter.Player.Movement
                     jumpDirection += (-transform.right) * _config.WallJumpForce * Time.deltaTime;
             }
 
-            Velocity += jumpDirection * Mathf.Sqrt(_config.JumpForce * -2f * GRAVITY);
-            _characterController.Move(Velocity * Time.deltaTime);
+            float jumpStrength = Mathf.Sqrt(_config.JumpForce * -2f * Physics.gravity.y);
+
+            StartCoroutine(ApplyJumpForce(jumpDirection * jumpStrength));
 
             IsSliding = false;
             _currentMover = new AirMover(this, _playerInputActions, _camera);
@@ -178,6 +166,19 @@ namespace FabrShooter.Player.Movement
             bool IsSurfaceOnGivenDirection(Vector3 direction)
             {
                 return Physics.Raycast(transform.position, direction, DISTANCE_TO_DETECT_SURFACE_FOR_WALL_JUMP, LayerMask.GetMask("Default"));
+            }
+        }
+
+        private IEnumerator ApplyJumpForce(Vector3 jumpForce)
+        {
+            float elapsedTime = 0f;
+            float duration = 0.2f;
+
+            while (elapsedTime < duration)
+            {
+                _characterController.Move(jumpForce * Time.deltaTime);
+                elapsedTime += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
         }
 

@@ -19,10 +19,9 @@ namespace FabrShooter.EditorExtension
             GUIStyle unsuccefulStyle = new GUIStyle { normal = { textColor = Color.red } };
 
             EditorGUILayout.LabelField($"Current Mover: {playerMovement.CurrentMover.GetType().Name}");
-            EditorGUILayout.LabelField($"Character Controller Velocity: {playerMovement.CharacterController.velocity}");
-            EditorGUILayout.LabelField($"Velocity: {playerMovement.Velocity}");
-            EditorGUILayout.LabelField($"Velocity magnitude: {playerMovement.Velocity.magnitude}");
-            EditorGUILayout.LabelField($"Velocity normalized: {playerMovement.Velocity.normalized}");
+            EditorGUILayout.LabelField($"Velocity: {playerMovement.CharacterController.velocity}");
+            EditorGUILayout.LabelField($"Velocity magnitude: {playerMovement.CharacterController.velocity.magnitude}");
+            EditorGUILayout.LabelField($"Velocity normalized: {playerMovement.CharacterController.velocity.normalized}");
             EditorGUILayout.LabelField($"Movement Direction: {playerMovement.CurrentMover.MovementDirection}");
             EditorGUILayout.LabelField($"IsMoving: {playerMovement.IsMoving}", playerMovement.IsMoving? succesfulStyle : unsuccefulStyle);
             EditorGUILayout.LabelField($"IsGrounded: {playerMovement.IsGroundend}", playerMovement.IsGroundend ? succesfulStyle : unsuccefulStyle);

@@ -1,4 +1,4 @@
-using FabrShooter.Input;
+﻿using FabrShooter.Input;
 using UnityEngine;
 
 namespace FabrShooter.Player.Movement
@@ -56,9 +56,10 @@ namespace FabrShooter.Player.Movement
 
             CalculatedVelocity.y = PlayerMovement.Velocity.y;
 
-            PlayerMovement.Velocity = AdjustVelocityToSlope(CalculatedVelocity);
+            CalculatedVelocity = AdjustVelocityToSlope(CalculatedVelocity);
 
-            CharacterController.Move(PlayerMovement.Velocity * Time.deltaTime);
+            ApplyGravity();
+            CharacterController.Move(CalculatedVelocity * Time.deltaTime);
         }
     }
 }
