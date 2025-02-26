@@ -20,6 +20,7 @@ namespace FabrShooter.Player.Movement
             Vector3 CalculatedMovementDirection = forwardComponent + sideComponent;
 
             CalculatedVelocity.x = Mathf.MoveTowards(CharacterController.velocity.x, CalculatedMovementDirection.x * speed, Config.MovementInertia);
+            CalculatedVelocity.y = PlayerMovement.Velocity.y;
             CalculatedVelocity.z = Mathf.MoveTowards(CharacterController.velocity.z, CalculatedMovementDirection.z * speed, Config.MovementInertia);
 
             ApplyGravity();

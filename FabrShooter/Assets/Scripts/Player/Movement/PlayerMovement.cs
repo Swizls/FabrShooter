@@ -79,10 +79,7 @@ namespace FabrShooter.Player.Movement
         private void FixedUpdate()
         {
             if (CharacterController.velocity.magnitude > 0 || _currentMover.HasInput || IsFlying)
-            {
                 _currentMover.Move();
-                Debug.Log(CharacterController.collisionFlags);
-            }
         }
 
 
@@ -97,11 +94,6 @@ namespace FabrShooter.Player.Movement
             Gizmos.DrawRay(transform.position, CharacterController.velocity);
         }
         #endregion
-
-        private void SetMover<T> (T value) where T : Mover
-        {
-            //_currentMover = new T();
-        }
 
         private void ListenSlideInput()
         {
@@ -132,6 +124,7 @@ namespace FabrShooter.Player.Movement
             _currentMover = new RunMover(this, _playerInputActions, _camera);
             StartCoroutine(WaitForRunEnd());
         }
+
         private void Jump(InputAction.CallbackContext context)
         {
             if (IsFlying && CanDoWallJump() == false)
@@ -149,7 +142,9 @@ namespace FabrShooter.Player.Movement
 
             float jumpStrength = Mathf.Sqrt(_config.JumpForce * -2f * Physics.gravity.y);
 
-            StartCoroutine(ApplyJumpForce(jumpDirection * jumpStrength));
+            Vector3 velocityY = Vector3.zero;
+            velocityY += jumpDirection * Mathf.Sqrt(_config.JumpForce * -2f * Physics.gravity.y);
+            _characterController.Move(velocityY * Time.deltaTime);
 
             IsSliding = false;
             _currentMover = new AirMover(this, _playerInputActions, _camera);
@@ -169,19 +164,6 @@ namespace FabrShooter.Player.Movement
             }
         }
 
-        private IEnumerator ApplyJumpForce(Vector3 jumpForce)
-        {
-            float elapsedTime = 0f;
-            float duration = 0.2f;
-
-            while (elapsedTime < duration)
-            {
-                _characterController.Move(jumpForce * Time.deltaTime);
-                elapsedTime += Time.deltaTime;
-                yield return new WaitForEndOfFrame();
-            }
-        }
-
         private IEnumerator WaitForRunEnd()
         {
             yield return new WaitUntil(() => IsRunning == false);
@@ -192,7 +174,7 @@ namespace FabrShooter.Player.Movement
         {
             yield return new WaitUntil(() => IsGroundend);
 
-            if(_playerInputActions.Player.Sprint.IsPressed())
+            if (_playerInputActions.Player.Sprint.IsPressed())
                 _currentMover = new RunMover(this, _playerInputActions, _camera);
             else
                 _currentMover = new WalkMover(this, _playerInputActions, _camera);
@@ -205,7 +187,9 @@ namespace FabrShooter.Player.Movement
 
             yield return new WaitUntil(() => Velocity.magnitude < SPEED_TO_STOP_SLIDE || IsSliding == false);
 
-            if(_playerInputActions.Player.Sprint.IsPressed())
+            if (IsFlying)
+                _currentMover = new AirMover(this, _playerInputActions, _camera);
+            else if (_playerInputActions.Player.Sprint.IsPressed())
                 _currentMover = new RunMover(this, _playerInputActions, _camera);
             else
                 _currentMover = new WalkMover(this, _playerInputActions, _camera);
