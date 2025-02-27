@@ -26,14 +26,14 @@ namespace FabrShooter.Player.Movement
 
         public PlayerConfigSO Config => _config;
         public Vector2 InputDirection => _playerInputActions.Player.Move.ReadValue<Vector2>();
-        public Vector3 Velocity => CharacterController.velocity;
+        public Vector3 Velocity => _characterController.velocity;
         public CharacterController CharacterController => _characterController;
         public Mover CurrentMover => _currentMover;
         public bool IsSliding { get; private set; }
         public bool IsRunning => _playerInputActions.Player.Sprint.ReadValue<float>() > 0 && IsMoving;
-        public bool IsMoving => CharacterController.velocity.magnitude > 0;
+        public bool IsMoving => Velocity.magnitude > 0;
         public bool IsFlying => !IsGroundend;
-        public bool IsGroundend => CharacterController.isGrounded;
+        public bool IsGroundend => _characterController.isGrounded;
 
         #region MONO
         public void InitializeLocalPlayer()
@@ -78,7 +78,7 @@ namespace FabrShooter.Player.Movement
 
         private void FixedUpdate()
         {
-            if (CharacterController.velocity.magnitude > 0 || _currentMover.HasInput || IsFlying)
+            if (Velocity.magnitude > 0 || _currentMover.HasInput || IsFlying)
                 _currentMover.Move();
         }
 
@@ -88,10 +88,8 @@ namespace FabrShooter.Player.Movement
             if (!Application.isPlaying)
                 return;
 
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(transform.position, Velocity);
             Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position, CharacterController.velocity);
+            Gizmos.DrawRay(transform.position, Velocity);
         }
         #endregion
 
