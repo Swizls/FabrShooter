@@ -1,16 +1,14 @@
 using FabrShooter.Core;
-using FabrShooter.Core.SceneManagment;
 using System;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 namespace FabrShooter
 {
     public class GameEntryPoint : MonoBehaviour 
     {
-        [SerializeField] private SceneLoader _sceneLoader;
+        [SerializeField] private NetworkManager _networkManagerPrefab;
+        [SerializeField] private GameObject _inGameDebugConsolePrefab;
 
         private bool _isAnotherGameEntryPointInScene;
 
@@ -34,33 +32,12 @@ namespace FabrShooter
             if (_isAnotherGameEntryPointInScene)
                 return;
 
+            Instantiate(_networkManagerPrefab);
+            Instantiate(_inGameDebugConsolePrefab);
+
             ServiceLocator.Register<GameSessionManager>(new GameSessionManager(Resources.Load<SceneDataSO>("Scene Data")));
 
-            _sceneLoader.OnMainLevelLoad += OnLevelLoad;
-            _sceneLoader.OnTestLevelLoad += OnLevelLoad;
-
             GameInitialized?.Invoke();
-        }
-
-        private void OnLevelLoad()
-        {
-            _sceneLoader.OnMainLevelLoad -= OnLevelLoad;
-            _sceneLoader.OnTestLevelLoad -= OnLevelLoad;
-
-            UnityAction<Scene, LoadSceneMode> callback = null;
-            callback = (Scene scene, LoadSceneMode mode) =>
-            {
-                if (scene.name == "Test Level")
-                {
-                    SceneManager.sceneLoaded -= callback;
-                    return;
-                }
-
-                ServiceLocator.Register<ComboManager>(new ComboManager(FindAnyObjectByType<ServerDamageDealer>()));
-                SceneManager.sceneLoaded -= callback;
-            };
-
-            SceneManager.sceneLoaded += callback;
         }
 
         private void OnDestroy()

@@ -1,4 +1,3 @@
-using FabrShooter.Core.SceneManagment;
 using FabrShooter.Player;
 using System;
 using Unity.Netcode;
@@ -55,6 +54,7 @@ namespace FabrShooter.Core
 
             SceneManager.LoadScene(_config.MainMenuBuildIndex);
             NetworkManager.Singleton.Shutdown();
+
             OnGameStop?.Invoke();
         }
 
@@ -62,6 +62,7 @@ namespace FabrShooter.Core
         {
             SceneManager.sceneLoaded -= OnSceneLoadedAsHost;
             NetworkManager.Singleton.StartHost();
+
             OnGameStart?.Invoke();
             Debug.Log("Starting host");
         }
@@ -70,6 +71,7 @@ namespace FabrShooter.Core
         {
             SceneManager.sceneLoaded -= OnSceneLoadedAsClient;
             NetworkManager.Singleton.StartClient();
+
             OnGameStart?.Invoke();
             Debug.Log("Starting client");
         }

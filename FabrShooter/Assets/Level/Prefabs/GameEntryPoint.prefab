@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7405353288845174377}
-  - component: {fileID: 1065957691697685513}
   - component: {fileID: 4178173610798314491}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameEntryPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,21 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1065957691697685513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4701428357017997806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c40ad98e3c918ce4c84a141f5d4a6cba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mainLevelIndex: 1
-  _testLevelIndex: 2
-  _mainMenuIndex: 0
 --- !u!114 &4178173610798314491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5342c644e698ebb46ae484d2cb0b3c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneLoader: {fileID: 1065957691697685513}
-  _networkManager: {fileID: 3411777764852255482, guid: 8f6550a488fd42b44940e133ae4e70b5, type: 3}
+  _networkManagerPrefab: {fileID: 3411777764852255482, guid: 8f6550a488fd42b44940e133ae4e70b5, type: 3}
+  _inGameDebugConsolePrefab: {fileID: 132536, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}

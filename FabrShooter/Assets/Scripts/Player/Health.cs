@@ -1,4 +1,3 @@
-using FabrShooter.UI;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,14 +15,6 @@ namespace FabrShooter
 
         public int Value => _value;
         public bool IsDead => _value <= 0;
-
-        public override void OnNetworkSpawn()
-        {
-            if (!IsOwner) return;
-
-            HealthUI healthUI = FindFirstObjectByType<HealthUI>();
-            healthUI.Initialize(this);
-        }
 
         [ClientRpc]
         public void TakeDamageClientRpc(int damage)

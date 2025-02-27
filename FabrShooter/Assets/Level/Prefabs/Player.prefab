@@ -4112,7 +4112,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 3b669aaf34f7cbb41839fa2145680a6d, type: 2}
   _camera: {fileID: 6900957655646008781}
-  Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &6833741699472645983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4496,7 +4495,7 @@ Transform:
   m_GameObject: {fileID: 9144688526637197671}
   serializedVersion: 2
   m_LocalRotation: {x: -0.45857102, y: 0.5382496, z: -0.45857102, w: 0.5382496}
-  m_LocalPosition: {x: -0, y: 0.258, z: 0.324}
+  m_LocalPosition: {x: -0, y: 0.1, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

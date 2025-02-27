@@ -12,20 +12,23 @@ namespace FabrShooter.UI
 
         [SerializeField] private TextMeshProUGUI _value;
 
-        private void Start()
+        private ComboManager _comboManager;
+
+        public void Initialize(ComboManager comboManager)
         {
-            ServiceLocator.Get<ComboManager>().ComboStateChanged += SetValue;
+            _comboManager = comboManager;
+            _comboManager.ComboStateChanged += SetValue;
             SetValue();
         }
 
         private void OnDestroy()
         {
-            ServiceLocator.Get<ComboManager>().ComboStateChanged -= SetValue;
+            _comboManager.ComboStateChanged -= SetValue;
         }
 
         private void SetValue()
         {
-            switch(ServiceLocator.Get<ComboManager>().ComboSate)
+            switch(_comboManager.ComboSate)
             {
                 case ComboManager.ComboState.Low:
                     _value.text = LOW_COMBO_LEVEL_NAME;

@@ -10,12 +10,6 @@ namespace FabrShooter.UI
 
         private Health _health;
 
-        private void Start()
-        {
-            _healthTitleText.gameObject.SetActive(false);
-            _healthValueText.gameObject.SetActive(false);
-        }
-
         public void Initialize(Health health)
         {
             _health = health;
@@ -40,6 +34,9 @@ namespace FabrShooter.UI
 
         private void SetValue(int value)
         {
+            if (value < 0)
+                value = 0;
+
             _healthValueText.text = value.ToString();
         }
     }

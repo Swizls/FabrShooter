@@ -1,4 +1,3 @@
-using FabrShooter.Core;
 using System.Collections;
 using UnityEngine;
 
@@ -16,12 +15,12 @@ namespace FabrShooter
         private ComboManager _comboManager;
         private Coroutine _coroutine;
 
-        private void Start()
+        public void Initialize(ComboManager comboManager)
         {
             _audioSource = GetComponent<AudioSource>();
             _audioSource.volume = 0;
 
-            _comboManager = ServiceLocator.Get<ComboManager>();
+            _comboManager = comboManager;
             _comboManager.ComboStateChanged += ToggleMusic;
         }
 
