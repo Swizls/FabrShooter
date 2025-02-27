@@ -11,19 +11,19 @@ namespace FabrShooter
         {
             _ipInputField.SetIP();
 
-            ServiceLocator.Get<GameConnectionManager>().StartGameAsHost();
+            ServiceLocator.Get<GameSessionManager>().StartGameAsHost();
         }
 
         public void OnJoinButtonClick()
         {
             _ipInputField.SetIP();
 
-            ServiceLocator.Get<GameConnectionManager>().StartGameAsClient();
+            ServiceLocator.Get<GameSessionManager>().StartGameAsClient();
         }
 
         public void OnSigleplayerButtonClick()
         {
-            ServiceLocator.Get<GameConnectionManager>().StartSingleplayer();
+            ServiceLocator.Get<GameSessionManager>().StartSingleplayer();
         }
     }
 }

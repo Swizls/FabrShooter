@@ -7,33 +7,45 @@ using UnityEngine.SceneManagement;
 
 namespace FabrShooter.Core
 {
-    public class GameConnectionManager : IService
+    public class GameSessionManager : IService
     {
-        [SerializeField] private SceneLoader _sceneLoader;
+        public enum SessionType
+        {
+            Host,
+            Client,
+            Local
+        }
+
+        private SceneDataSO _config;
 
         public event Action OnGameStart;
         public event Action OnGameStop;
 
-        public GameConnectionManager(SceneLoader sceneLoader)
+        public SessionType Type { get; private set; }
+
+        public GameSessionManager(SceneDataSO config)
         {
-            _sceneLoader = sceneLoader;
+            _config = config;
         }
 
         public void StartGameAsHost()
         {
-            _sceneLoader.LoadMainLevel();
+            Type = SessionType.Host;
+            SceneManager.LoadScene(_config.MainLevelBuildIndex);
             SceneManager.sceneLoaded += OnSceneLoadedAsHost;
         }
 
         public void StartGameAsClient()
         {
-            _sceneLoader.LoadMainLevel();
+            Type = SessionType.Client;
+            SceneManager.LoadScene(_config.MainLevelBuildIndex);
             SceneManager.sceneLoaded += OnSceneLoadedAsClient;
         }
 
         public void StartSingleplayer()
         {
-            _sceneLoader.LoadTestLevel();
+            Type = SessionType.Local;
+            SceneManager.LoadScene(_config.TestLevelBuildIndex);
             SceneManager.sceneLoaded += OnSceneLoadedInSingleplayer;
         }
 
@@ -41,8 +53,7 @@ namespace FabrShooter.Core
         {
             Debug.Log("Disconnecting");
 
-            _sceneLoader.LoadMainMenu();
-            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene(_config.MainMenuBuildIndex);
             NetworkManager.Singleton.Shutdown();
             OnGameStop?.Invoke();
         }

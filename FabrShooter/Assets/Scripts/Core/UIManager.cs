@@ -22,8 +22,8 @@ namespace FabrShooter.UI
 
         private void OnEnable()
         {
-            ServiceLocator.Get<GameConnectionManager>().OnGameStart += DisableCursor;
-            ServiceLocator.Get<GameConnectionManager>().OnGameStop += EnableCursor;
+            ServiceLocator.Get<GameSessionManager>().OnGameStart += DisableCursor;
+            ServiceLocator.Get<GameSessionManager>().OnGameStop += EnableCursor;
 
             if (_playerInputActions == null)
                 return;
@@ -70,7 +70,7 @@ namespace FabrShooter.UI
 
         public void Disconnect()
         {
-            ServiceLocator.Get<GameConnectionManager>().EndGame();
+            ServiceLocator.Get<GameSessionManager>().EndGame();
         }
     }
 }

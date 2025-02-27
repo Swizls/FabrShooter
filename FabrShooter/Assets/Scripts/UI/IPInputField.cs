@@ -4,26 +4,24 @@ using TMPro;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
-public class IPInputField : MonoBehaviour
+namespace FabrShooter
 {
-    [SerializeField] private TMP_InputField _inputField;
-
-    private UnityTransport _transport;
-
-    private void Awake()
+    public class IPInputField : MonoBehaviour
     {
-        FindFirstObjectByType<GameEntryPoint>().GameInitialized += OnGameInitializing;
-    }
+        [SerializeField] private TMP_InputField _inputField;
 
-    private void OnGameInitializing()
-    {
-        _transport = FindFirstObjectByType<UnityTransport>();
-        string ipAddress = _transport.ConnectionData.Address.ToString();
-        _inputField.text = ipAddress;
-    }
+        private UnityTransport _transport;
 
-    public void SetIP()
-    {
-        _transport.ConnectionData.Address = _inputField.text;
+        private void Start()
+        {
+            _transport = FindFirstObjectByType<UnityTransport>();
+            string ipAddress = _transport.ConnectionData.Address.ToString();
+            _inputField.text = ipAddress;
+        }
+
+        public void SetIP()
+        {
+            _transport.ConnectionData.Address = _inputField.text;
+        }
     }
 }

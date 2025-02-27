@@ -1,5 +1,3 @@
-using FabrShooter.Core;
-using FabrShooter.Core.SceneManagment;
 using Unity.Netcode;
 using UnityEngine;
 

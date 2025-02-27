@@ -25,11 +25,11 @@ namespace FabrShooter
             health.TakeDamageClientRpc(data.Damage);
             hitboxController.RegisterHitClientRpc(data.TargetID, data.HitboxID);
 
-            Debug.Log($"Server is dealing damage to client({data.TargetID}); Damage: {data.Damage}; Knockback: {data.UseKnockback}");
+            Debug.Log($"Server is dealing damage to client({targetObject.OwnerClientId}); Damage: {data.Damage}; Knockback: {data.UseKnockback}");
 
             if(data.TryGetSenderID(out ulong senderID) )
             {
-                ActionInvokeClientRpc(data, new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { senderID } } });
+                NotifyClientsAboutDealtDamageClientRpc(data, new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { senderID } } });
             }
 
             if (!data.UseKnockback)
@@ -40,7 +40,7 @@ namespace FabrShooter
         }
 
         [ClientRpc]
-        private void ActionInvokeClientRpc(AttackData data, ClientRpcParams rpcParams)
+        private void NotifyClientsAboutDealtDamageClientRpc(AttackData data, ClientRpcParams rpcParams)
         {
             OnDamageDealing?.Invoke(data);
         }
