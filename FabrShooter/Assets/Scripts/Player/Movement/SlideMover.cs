@@ -13,11 +13,11 @@ namespace FabrShooter.Player.Movement
 
         public SlideMover(PlayerMovement playerMovement,
             PlayerInputActions playerInputActions,
-            Camera camera) : base(playerMovement, playerInputActions, camera)
+            Transform cameraTransform) : base(playerMovement, playerInputActions, cameraTransform)
         { 
             _isSlideStarted = true;
 
-            _slideDirection = camera.transform.forward;
+            _slideDirection = cameraTransform.transform.forward;
             _slideDirection.y = 0;
             _slideDirection.Normalize();
         }

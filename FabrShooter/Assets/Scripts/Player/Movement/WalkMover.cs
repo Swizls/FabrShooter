@@ -7,7 +7,7 @@ namespace FabrShooter.Player.Movement
     {
         public WalkMover(PlayerMovement playerMovement, 
             PlayerInputActions playerInputActions, 
-            Camera camera) : base(playerMovement, playerInputActions, camera) { }
+            Transform cameraTransform) : base(playerMovement, playerInputActions, cameraTransform) { }
 
         public override void Move()
         {

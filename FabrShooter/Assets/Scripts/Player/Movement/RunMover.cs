@@ -5,7 +5,7 @@ namespace FabrShooter.Player.Movement
 {
     public class RunMover : Mover
     {
-        public RunMover(PlayerMovement playerMovement, PlayerInputActions playerInputActions, Camera camera) : base(playerMovement, playerInputActions, camera) {}
+        public RunMover(PlayerMovement playerMovement, PlayerInputActions playerInputActions, Transform cameraTransform) : base(playerMovement, playerInputActions, cameraTransform) {}
 
         public override void Move()
         {

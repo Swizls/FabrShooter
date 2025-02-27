@@ -39,7 +39,7 @@ namespace FabrShooter.Player.Movement
         public void InitializeLocalPlayer()
         {
             _characterController = GetComponent<CharacterController>();
-            _currentMover = new WalkMover(this, _playerInputActions, _camera);
+            _currentMover = new WalkMover(this, _playerInputActions, _camera.transform);
         }
 
         public void InitializeClientPlayer()
@@ -107,7 +107,7 @@ namespace FabrShooter.Player.Movement
             if (IsRunning == false || _playerInputActions.Player.Crouch.IsPressed() == false)
                 return;
 
-            _currentMover = new SlideMover(this, _playerInputActions, _camera);
+            _currentMover = new SlideMover(this, _playerInputActions, _camera.transform);
             StartCoroutine(WaitForSlideEnd());
         }
 
@@ -119,7 +119,7 @@ namespace FabrShooter.Player.Movement
             if (IsSliding)
                 return;
 
-            _currentMover = new RunMover(this, _playerInputActions, _camera);
+            _currentMover = new RunMover(this, _playerInputActions, _camera.transform);
             StartCoroutine(WaitForRunEnd());
         }
 
@@ -145,7 +145,7 @@ namespace FabrShooter.Player.Movement
             _characterController.Move(velocityY * Time.deltaTime);
 
             IsSliding = false;
-            _currentMover = new AirMover(this, _playerInputActions, _camera);
+            _currentMover = new AirMover(this, _playerInputActions, _camera.transform);
 
             StartCoroutine(WaitForLand());
 
@@ -165,7 +165,7 @@ namespace FabrShooter.Player.Movement
         private IEnumerator WaitForRunEnd()
         {
             yield return new WaitUntil(() => IsRunning == false);
-            _currentMover = new WalkMover(this, _playerInputActions, _camera);
+            _currentMover = new WalkMover(this, _playerInputActions, _camera.transform);
         }
 
         private IEnumerator WaitForLand()
@@ -173,9 +173,9 @@ namespace FabrShooter.Player.Movement
             yield return new WaitUntil(() => IsGroundend);
 
             if (_playerInputActions.Player.Sprint.IsPressed())
-                _currentMover = new RunMover(this, _playerInputActions, _camera);
+                _currentMover = new RunMover(this, _playerInputActions, _camera.transform);
             else
-                _currentMover = new WalkMover(this, _playerInputActions, _camera);
+                _currentMover = new WalkMover(this, _playerInputActions, _camera.transform);
         }
 
         private IEnumerator WaitForSlideEnd()
@@ -186,11 +186,11 @@ namespace FabrShooter.Player.Movement
             yield return new WaitUntil(() => Velocity.magnitude < SPEED_TO_STOP_SLIDE || IsSliding == false);
 
             if (IsFlying)
-                _currentMover = new AirMover(this, _playerInputActions, _camera);
+                _currentMover = new AirMover(this, _playerInputActions, _camera.transform);
             else if (_playerInputActions.Player.Sprint.IsPressed())
-                _currentMover = new RunMover(this, _playerInputActions, _camera);
+                _currentMover = new RunMover(this, _playerInputActions, _camera.transform);
             else
-                _currentMover = new WalkMover(this, _playerInputActions, _camera);
+                _currentMover = new WalkMover(this, _playerInputActions, _camera.transform);
 
             IsSliding = false;
             SlideStateChanged?.Invoke(IsSliding);
